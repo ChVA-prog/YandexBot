@@ -27,7 +27,13 @@ namespace ZennoPosterProject1
         /// <returns>Код выполнения скрипта</returns>		
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
+
             int executionResult = 0;
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
+            HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'link link_theme_normal more__button i-bem')]", 0);
+            swipeAndClick.SwipeAndClickToElement(he);
+
+
 
             return executionResult;
         }
