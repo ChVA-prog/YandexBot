@@ -32,7 +32,11 @@ namespace ZennoPosterProject1
                 zennoPosterProjectModel.SendInfoToLog("Ждем загрузки страницы для свайпа до элемента");
                 instance.ActiveTab.WaitDownloading();
             }
-
+            if (HtmlElem.IsVoid)
+            {
+                zennoPosterProjectModel.SendErrorToLog("HTML элемент не найден");
+                return;
+            }
             instance.ActiveTab.Touch.SetTouchEmulationParameters(new Emulation(instance, zennoPosterProjectModel).CreateTouchParametrs());
             instance.ActiveTab.Touch.SwipeIntoView(HtmlElem);
         }
@@ -43,6 +47,11 @@ namespace ZennoPosterProject1
             {
                 zennoPosterProjectModel.SendInfoToLog("Ждем загрузки страницы для клика по элементу");
                 instance.ActiveTab.WaitDownloading();
+            }
+            if (HtmlElem.IsVoid)
+            {
+                zennoPosterProjectModel.SendErrorToLog("HTML элемент не найден");
+                return;
             }
             instance.ActiveTab.Touch.SetTouchEmulationParameters(new Emulation(instance, zennoPosterProjectModel).CreateTouchParametrs());
 
@@ -55,6 +64,11 @@ namespace ZennoPosterProject1
             {
                 zennoPosterProjectModel.SendInfoToLog("Ждем загрузки страницы для свайпа и клика по элементу");
                 instance.ActiveTab.WaitDownloading();
+            }
+            if (HtmlElem.IsVoid)
+            {
+                zennoPosterProjectModel.SendErrorToLog("HTML элемент не найден");
+                return;
             }
             int ElementPosition = Convert.ToInt32(HtmlElem.GetAttribute("topInTab"));
             int InstanceHeight = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerHeight"));

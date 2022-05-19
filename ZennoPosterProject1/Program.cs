@@ -31,7 +31,11 @@ namespace ZennoPosterProject1
             int executionResult = 0;
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'link link_theme_normal more__button i-bem')]", 0);
-            swipeAndClick.SwipeAndClickToElement(he);
+            
+                
+             swipeAndClick.SwipeAndClickToElement(he);
+            
+            
 
 
 
