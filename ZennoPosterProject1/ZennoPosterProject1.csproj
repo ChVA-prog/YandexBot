@@ -80,10 +80,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Emulation\EmulationValueGeneration.cs" />
+    <Compile Include="Emulation\GenerationEmulationValue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Emulation\SwipeToElement.cs" />
+    <Compile Include="Emulation\SwipeAndClick.cs" />
     <Compile Include="Emulation\TouchEmulationParametrs.cs" />
   </ItemGroup>
   <ItemGroup>

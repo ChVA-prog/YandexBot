@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ZennoPosterProject1
 {
     
-    public static class EmulationValueGeneration
+    public static class GenerationEmulationValue
     {       
        
         public static RangeValueInt ParseRangeValueInt(this string Line)
