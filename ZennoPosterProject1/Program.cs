@@ -11,6 +11,14 @@ using ZennoLab.CommandCenter;
 using ZennoLab.Emulation;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.InterfacesLibrary.ProjectModel.Enums;
+using ZennoLab.InterfacesLibrary;
+using ZennoLab.InterfacesLibrary.ProjectModel.Collections;
+using ZennoLab.Macros;
+using Global.ZennoExtensions;
+using ZennoLab.CommandCenter.TouchEvents;
+using ZennoLab.CommandCenter.FullEmulation;
+using ZennoLab.InterfacesLibrary.Enums;
+using ZennoPosterProject1.YandexWalk;
 
 namespace ZennoPosterProject1
 {
@@ -30,14 +38,17 @@ namespace ZennoPosterProject1
 
             int executionResult = 0;
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
-            HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'link link_theme_normal more__button i-bem')]", 0);
-            
-                
-             swipeAndClick.SwipeAndClickToElement(he);
-            
-            
+            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[@name='text']", 0);
+            //swipeAndClick.SwipeAndClickToElement(he);
+
+            YandexWalk.YandexWalk yandexWalkSettings = new YandexWalk.YandexWalk(instance, project);
+
+            yandexWalkSettings.GoToSearchQuery();
 
 
+
+            // HtmlElement HtmlElementSearchButton = instance.ActiveTab.FindElementByXPath("//button[@class='mini-suggest__button']", 0);
+            //swipeAndClick.ClickToElement(HtmlElementSearchButton);
 
             return executionResult;
         }

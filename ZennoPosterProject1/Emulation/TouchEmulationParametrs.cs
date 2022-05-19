@@ -100,10 +100,11 @@ namespace ZennoPosterProject1
             touchEmulationParameters.TouchLengthMs = GenerationEmulationValue.ParseRangeValueInt(TouchLengthMs).ValueRandom;
 
             return touchEmulationParameters;
+
         }
 
 
-       
+        
 
     }
 }

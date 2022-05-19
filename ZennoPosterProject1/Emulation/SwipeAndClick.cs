@@ -10,6 +10,7 @@ using ZennoLab.Emulation;
 using ZennoLab.CommandCenter.TouchEvents;
 using ZennoLab.CommandCenter.FullEmulation;
 using ZennoLab.InterfacesLibrary.Enums;
+using ZennoPosterProject1.YandexWalk;
 
 
 namespace ZennoPosterProject1
@@ -72,15 +73,33 @@ namespace ZennoPosterProject1
             }
             int ElementPosition = Convert.ToInt32(HtmlElem.GetAttribute("topInTab"));
             int InstanceHeight = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerHeight"));
-            if(ElementPosition > InstanceHeight && ElementPosition > 0)
+            if (ElementPosition > InstanceHeight && ElementPosition > 0)
             {
                 SwipeToElement(HtmlElem);
             }
-                
+
             ClickToElement(HtmlElem);
             instance.ActiveTab.WaitDownloading();
 
         }
 
+        public void SetText(HtmlElement HtmlElem, string text)
+        {
+            if (instance.ActiveTab.IsBusy)
+            {
+                zennoPosterProjectModel.SendInfoToLog("Ждем загрузки страницы для ввода текста");
+                instance.ActiveTab.WaitDownloading();
+            }
+            if (HtmlElem.IsVoid)
+            {
+                zennoPosterProjectModel.SendErrorToLog("HTML элемент не найден");
+                return;
+            }
+
+           
+            SwipeAndClickToElement(HtmlElem);
+            instance.SendText(text, new Random().Next(100,500));
+
+        }
     }
 }
