@@ -1,78 +1,67 @@
 ﻿using System;
 using ZennoLab.CommandCenter;
-using ZennoLab.InterfacesLibrary;
 using ZennoLab.InterfacesLibrary.ProjectModel;
-using ZennoLab.InterfacesLibrary.ProjectModel.Collections;
-using ZennoLab.InterfacesLibrary.ProjectModel.Enums;
-using ZennoLab.Macros;
-using Global.ZennoExtensions;
-using ZennoLab.Emulation;
-using ZennoLab.CommandCenter.TouchEvents;
-using ZennoLab.CommandCenter.FullEmulation;
-using ZennoLab.InterfacesLibrary.Enums;
-using ZennoPosterProject1.YandexWalk;
+using System.Threading;
 
 
-namespace ZennoPosterProject1
+
+namespace ZennoPosterEmulation
 {
     class SwipeAndClick
     {
         readonly Instance instance;
-        readonly IZennoPosterProjectModel zennoPosterProjectModel;
-        public SwipeAndClick(Instance _instance, IZennoPosterProjectModel _zennoPosterProjectModel)
+        readonly IZennoPosterProjectModel Project;
+        public SwipeAndClick(Instance _instance, IZennoPosterProjectModel _project)
         {
             this.instance = _instance;
-            this.zennoPosterProjectModel = _zennoPosterProjectModel;
-
+            this.Project = _project;
         }
-
         public void SwipeToElement(HtmlElement HtmlElem)
         {
-            if (instance.ActiveTab.IsBusy)
-            {
-                zennoPosterProjectModel.SendInfoToLog("Ждем загрузки страницы для свайпа до элемента");
-                instance.ActiveTab.WaitDownloading();
-            }
+            EmulationValue emulation = new EmulationValue(instance,Project);
+
+            instance.ActiveTab.WaitDownloading();
+            
             if (HtmlElem.IsVoid)
             {
-                zennoPosterProjectModel.SendErrorToLog("HTML элемент не найден");
+                Project.SendErrorToLog("HTML элемент не найден",true);
                 return;
             }
-            instance.ActiveTab.Touch.SetTouchEmulationParameters(new Emulation(instance, zennoPosterProjectModel).CreateTouchParametrs());
+
+            instance.ActiveTab.Touch.SetTouchEmulationParameters(emulation.CreateTouchParametrs());
             instance.ActiveTab.Touch.SwipeIntoView(HtmlElem);
         }
 
         public void ClickToElement(HtmlElement HtmlElem)
         {
-            if (instance.ActiveTab.IsBusy)
-            {
-                zennoPosterProjectModel.SendInfoToLog("Ждем загрузки страницы для клика по элементу");
-                instance.ActiveTab.WaitDownloading();
-            }
+            EmulationValue emulation = new EmulationValue(instance, Project);
+           
+            instance.ActiveTab.WaitDownloading();
+            
             if (HtmlElem.IsVoid)
             {
-                zennoPosterProjectModel.SendErrorToLog("HTML элемент не найден");
+                Project.SendErrorToLog("HTML элемент не найден");
                 return;
             }
-            instance.ActiveTab.Touch.SetTouchEmulationParameters(new Emulation(instance, zennoPosterProjectModel).CreateTouchParametrs());
 
+            instance.ActiveTab.Touch.SetTouchEmulationParameters(emulation.CreateTouchParametrs());                       
             instance.ActiveTab.Touch.Touch(HtmlElem);
+            instance.ActiveTab.WaitDownloading();
         }
 
         public void SwipeAndClickToElement(HtmlElement HtmlElem)
-        {
-            if (instance.ActiveTab.IsBusy)
-            {
-                zennoPosterProjectModel.SendInfoToLog("Ждем загрузки страницы для свайпа и клика по элементу");
-                instance.ActiveTab.WaitDownloading();
-            }
+        {         
+            instance.ActiveTab.WaitDownloading();
+            
             if (HtmlElem.IsVoid)
             {
-                zennoPosterProjectModel.SendErrorToLog("HTML элемент не найден");
+                Project.SendErrorToLog("HTML элемент не найден");
                 return;
             }
+
             int ElementPosition = Convert.ToInt32(HtmlElem.GetAttribute("topInTab"));
             int InstanceHeight = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerHeight"));
+
             if (ElementPosition > InstanceHeight && ElementPosition > 0)
             {
                 SwipeToElement(HtmlElem);
@@ -83,22 +72,29 @@ namespace ZennoPosterProject1
 
         }
 
+
+        int LatencyKeySetText {get{return EmulationValue.LatencyKey.ParseRangeValueInt().ValueRandom;}}
+
         public void SetText(HtmlElement HtmlElem, string text)
-        {
-            if (instance.ActiveTab.IsBusy)
-            {
-                zennoPosterProjectModel.SendInfoToLog("Ждем загрузки страницы для ввода текста");
-                instance.ActiveTab.WaitDownloading();
-            }
+        {          
+            instance.ActiveTab.WaitDownloading();
+            
             if (HtmlElem.IsVoid)
             {
-                zennoPosterProjectModel.SendErrorToLog("HTML элемент не найден");
+                Project.SendErrorToLog("HTML элемент не найден");
                 return;
             }
-
-           
+                         
             SwipeAndClickToElement(HtmlElem);
-            instance.SendText(text, new Random().Next(100,500));
+
+            char[] InputText = text.ToCharArray();
+
+            foreach(char InputChar in InputText)
+            {
+                instance.SendText(Convert.ToString(InputChar), 0);
+                Thread.Sleep(LatencyKeySetText);
+            }
+
 
         }
     }

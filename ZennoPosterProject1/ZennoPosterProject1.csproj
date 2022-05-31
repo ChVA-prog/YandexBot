@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Humaniator">
+      <HintPath>F:\Programs\ZennoPoster\RU\ZennoPoster Pro V7\7.7.0.0\Progs\ExternalAssemblies\Humaniator.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -80,13 +83,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Emulation\Extension.cs" />
     <Compile Include="Emulation\GenerationEmulationValue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emulation\SwipeAndClick.cs" />
-    <Compile Include="Emulation\TouchEmulationParametrs.cs" />
+    <Compile Include="Emulation\EmulationValue.cs" />
+    <Compile Include="YandexWalk\Extansion.cs" />
+    <Compile Include="YandexWalk\YandexNavigate.cs" />
     <Compile Include="YandexWalk\YandexWalk.cs" />
     <Compile Include="YandexWalk\YandexWalkSettings.cs" />
+    <Compile Include="YandexWalk\YandexWalkValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.2">
