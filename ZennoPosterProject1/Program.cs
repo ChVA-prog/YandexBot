@@ -18,7 +18,7 @@ using Global.ZennoExtensions;
 using ZennoLab.CommandCenter.TouchEvents;
 using ZennoLab.CommandCenter.FullEmulation;
 using ZennoLab.InterfacesLibrary.Enums;
-using ZennoPosterProject1.YandexWalk;
+using Humaniation;
 
 namespace ZennoPosterProject1
 {
@@ -37,18 +37,11 @@ namespace ZennoPosterProject1
         {
 
             int executionResult = 0;
-            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[@name='text']", 0);
-            //swipeAndClick.SwipeAndClickToElement(he);
 
-            YandexWalk.YandexWalk yandexWalkSettings = new YandexWalk.YandexWalk(instance, project);
+            ZennoPosterYandexWalk.YandexWalk yandexWalk = new ZennoPosterYandexWalk.YandexWalk(instance, project);
 
-            yandexWalkSettings.GoToSearchQuery();
+            yandexWalk.GoYandexWalk();
 
-
-
-            // HtmlElement HtmlElementSearchButton = instance.ActiveTab.FindElementByXPath("//button[@class='mini-suggest__button']", 0);
-            //swipeAndClick.ClickToElement(HtmlElementSearchButton);
 
             return executionResult;
         }

@@ -1,59 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Net.Sockets;
-using System.Resources;
-using System.Text;
 using ZennoLab.CommandCenter;
-using ZennoLab.Emulation;
 using ZennoLab.InterfacesLibrary.ProjectModel;
-using ZennoLab.InterfacesLibrary.ProjectModel.Enums;
-using ZennoLab.InterfacesLibrary;
-using ZennoLab.InterfacesLibrary.ProjectModel.Collections;
-using ZennoLab.Macros;
-using Global.ZennoExtensions;
-using ZennoLab.CommandCenter.TouchEvents;
-using ZennoLab.CommandCenter.FullEmulation;
-using ZennoLab.InterfacesLibrary.Enums;
+using ZennoPosterEmulation;
 
-namespace ZennoPosterProject1.YandexWalk
+namespace ZennoPosterYandexWalk
 {
     
 
 
     class YandexWalkSettings
     {
-        public string HtmlElementInputSearch { get; set; }
-        public string HtmlElementSearchButton { get; set; }
-
+        readonly IZennoPosterProjectModel Project;
         readonly Instance instance;
-        readonly IZennoPosterProjectModel zennoPosterProjectModel;
-
-        public YandexWalkSettings(Instance _instance, IZennoPosterProjectModel _zennoPosterProjectModel)
+        public YandexWalkSettings(Instance _instance, IZennoPosterProjectModel _project)
         {
             this.instance = _instance;
-            this.zennoPosterProjectModel = _zennoPosterProjectModel;
-
-            HtmlElementInputSearch = zennoPosterProjectModel.Variables["set_HtmlElementInputSearch"].Value;
-            HtmlElementSearchButton = zennoPosterProjectModel.Variables["set_HtmlElementSearchButton"].Value;
+            this.Project = _project;
         }
 
-       public string GetRandomYandexHost()
-       {
-            string[] YandexHosts = zennoPosterProjectModel.Variables["set_YandexHosts"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-            return YandexHosts[new Random().Next(0,YandexHosts.Length)];
-       }
+        Random Random = new Random();
 
         public string GetRandomSearchQueries()
         {
-            string[] YandexSearchQueries = zennoPosterProjectModel.Variables["set_SearchQueries"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] YandexSearchQueries = Project.Variables["set_SearchQueries"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-            return YandexSearchQueries[new Random().Next(0, YandexSearchQueries.Length)];
+            return YandexSearchQueries[Random.Next(0, YandexSearchQueries.Length)];
+        }
+        public int GetRandomPageCountSearch()
+        {
+            int CountPage = Extension.ParseRangeValueInt(YandexWalkValue.PageCountSearch).ValueRandom;
+
+            return CountPage;
+        }
+        public string GetRandomYandexHost()
+        {
+            string[] YandexHosts = Project.Variables["set_YandexHosts"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            
+            return YandexHosts[Random.Next(0,YandexHosts.Length)];
         }
 
+
+
+
+        public List<string> MyUrlList = new List<string>();
+        public void ReadMyUrl()
+        {
+
+            MyUrlList = YandexWalkValue.MyUrl.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+        }
+
+        public bool CheckMyUrl(string url)
+        {
+            string Url = url.GetUrlToDomain();
+            foreach(string site in MyUrlList)
+            {
+                if (site.Contains(Url))
+                    return true;
+            }
+            return false;
+        }
+        
+
+        
+
     }
+
 }
