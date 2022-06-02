@@ -17,6 +17,6 @@ namespace ZennoPosterSiteWalk
 
             List.Clear();
             List.AddRange(temp);
-        }
+        }//Перемешивание списка
     }
 }

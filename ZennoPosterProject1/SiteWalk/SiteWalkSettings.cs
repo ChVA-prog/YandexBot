@@ -23,18 +23,14 @@ namespace ZennoPosterSiteWalk
        
         public void ReadSiteVisitUrl()
         {
-            SiteVisitUrl = SiteWalkValue.UrlListToVisit.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
-            
-        }
+            SiteVisitUrl = SiteWalkValue.UrlListToVisit.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();           
+        }//Получение списка сайтов для посещения
 
         public void ShuffleListSitesForVisit()
         {
             new SiteWalkValue(instance, Project);
             ReadSiteVisitUrl();      
             SiteVisitUrl.ShuffleList();
-
-        }
-
-
+        }//Перемешивание списка сайтов для посещения
     }
 }

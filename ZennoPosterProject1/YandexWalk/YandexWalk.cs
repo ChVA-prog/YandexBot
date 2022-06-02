@@ -58,7 +58,7 @@ namespace ZennoPosterYandexWalk
             }
             while (CountPage > CounterPage);
                       
-        } //Бродилка по яндексу
+        } //Запуск бродилки по яндексу
 
     }
 }
