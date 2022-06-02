@@ -11,7 +11,7 @@ namespace ZennoPosterYandexWalk
         public static int CalcPercentLearnCard(this int Count, int Percent)
         {
             return (int)Math.Round((double)(Count * Percent) / 100, MidpointRounding.AwayFromZero);
-        }
+        }//Высчитываем рандомный процент из заданного диапазона
 
         public static string GetUrlToDomain(this string url)
         {
@@ -27,6 +27,6 @@ namespace ZennoPosterYandexWalk
             {
                 return "pustayastroka.loh";
             }
-        }
+        }//Вытаскиваем домен из ссылки в карточке поисковой выдачи
     }
 }

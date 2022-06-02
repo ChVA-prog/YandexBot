@@ -19,6 +19,8 @@ using ZennoLab.CommandCenter.TouchEvents;
 using ZennoLab.CommandCenter.FullEmulation;
 using ZennoLab.InterfacesLibrary.Enums;
 using Humaniation;
+using ZennoPosterSiteWalk;
+using ZennoPosterEmulation;
 
 namespace ZennoPosterProject1
 {
@@ -27,6 +29,7 @@ namespace ZennoPosterProject1
     /// </summary>
     public class Program : IZennoExternalCode
     {
+        
         /// <summary>
         /// Метод для запуска выполнения скрипта
         /// </summary>
@@ -37,10 +40,15 @@ namespace ZennoPosterProject1
         {
 
             int executionResult = 0;
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
+            new SiteWalkValue(instance, project);
+            Random random = new Random();
 
-            ZennoPosterYandexWalk.YandexWalk yandexWalk = new ZennoPosterYandexWalk.YandexWalk(instance, project);
 
-            yandexWalk.GoYandexWalk();
+
+ 
+
+
 
 
             return executionResult;

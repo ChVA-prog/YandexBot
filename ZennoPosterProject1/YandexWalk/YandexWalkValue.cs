@@ -7,7 +7,6 @@ namespace ZennoPosterYandexWalk
     {
         readonly IZennoPosterProjectModel Project;
         readonly Instance instance;
-
         public static string HtmlElementInputSearch { get; set; }
         public static string HtmlElementSearchButton { get; set; }
         public static string HtmlElementCheckingLoading { get; set; }
@@ -22,7 +21,6 @@ namespace ZennoPosterYandexWalk
         public static string CountGetCard { get; set; }
         public static string MyUrl { get; set; }
         
-
         public YandexWalkValue(Instance _instance, IZennoPosterProjectModel _project)
         {
             this.instance = _instance;
@@ -41,10 +39,7 @@ namespace ZennoPosterYandexWalk
             CountLearnCard = Project.Variables["set_CountLearnCard"].Value;
             CountGetCard = Project.Variables["set_CountGetCard"].Value;
             MyUrl = Project.Variables["set_MyUrl"].Value;
-        }
-
-       
-
+        }      
     }
     
 }

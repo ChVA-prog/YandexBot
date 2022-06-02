@@ -12,18 +12,19 @@ namespace ZennoPosterYandexWalk
         readonly Instance instance;
         readonly IZennoPosterProjectModel Project;
 
-        public YandexNavigate(Instance _instance, IZennoPosterProjectModel _project)
+        public YandexNavigate(Instance instance, IZennoPosterProjectModel project)
         {
-            this.instance = _instance;
-            this.Project = _project;
+            this.instance = instance;
+            this.Project = project;
         }
         
         public void GoToSearchQuery()
         { 
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
-            YandexWalkSettings yandexWalkSettings = new YandexWalkSettings(instance, Project);
+            new YandexWalkSettings(instance, Project);
+            RandomGeneration randomGeneration = new RandomGeneration(instance, Project);
 
-            string RandomSearchQueries = yandexWalkSettings.GetRandomSearchQueries();
+            string RandomSearchQueries = randomGeneration.GetRandomSearchQueries();
 
             GoToYandex();
 
@@ -44,8 +45,7 @@ namespace ZennoPosterYandexWalk
 
             CloseAdvertisement();
 
-        }
-
+        }//Ввод поискового запроса и переход по нему
 
         private void CloseAdvertisement()
         {
@@ -57,14 +57,14 @@ namespace ZennoPosterYandexWalk
             {
                 swipeAndClick.ClickToElement(HtmElementReklama);
             }
-        }
+        }//Закрытие рекламы
 
         private void GoToYandex()
         {
             
             Project.SendInfoToLog("Переходим на страницу яндекс");
-            instance.ActiveTab.Navigate(new YandexWalkSettings(instance, Project).GetRandomYandexHost());
+            instance.ActiveTab.Navigate(new RandomGeneration(instance, Project).GetRandomYandexHost());
             instance.ActiveTab.WaitDownloading();
-        }
+        }//Переход в яндекс
     }
 }

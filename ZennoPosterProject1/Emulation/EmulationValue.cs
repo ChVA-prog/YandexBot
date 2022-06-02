@@ -88,10 +88,6 @@ namespace ZennoPosterEmulation
             touchEmulationParameters.TouchLengthMs = Extension.ParseRangeValueInt(TouchLengthMs).ValueRandom;         
 
             return touchEmulationParameters;
-        }
-
-
-        
-
+        }//Генерация рандомных параметров эмуляции свайпа и тача
     }
 }

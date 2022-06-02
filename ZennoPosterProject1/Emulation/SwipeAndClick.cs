@@ -18,41 +18,41 @@ namespace ZennoPosterEmulation
         }
         public void SwipeToElement(HtmlElement HtmlElem)
         {
-            EmulationValue emulation = new EmulationValue(instance,Project);
+            EmulationValue emulation = new EmulationValue(instance, Project);
 
             instance.ActiveTab.WaitDownloading();
-            
+
             if (HtmlElem.IsVoid)
             {
-                Project.SendErrorToLog("HTML элемент не найден",true);
+                Project.SendErrorToLog("HTML элемент не найден", true);
                 return;
             }
 
             instance.ActiveTab.Touch.SetTouchEmulationParameters(emulation.CreateTouchParametrs());
             instance.ActiveTab.Touch.SwipeIntoView(HtmlElem);
-        }
+        }//Свайп до элемента
 
         public void ClickToElement(HtmlElement HtmlElem)
         {
             EmulationValue emulation = new EmulationValue(instance, Project);
-           
+
             instance.ActiveTab.WaitDownloading();
-            
+
             if (HtmlElem.IsVoid)
             {
                 Project.SendErrorToLog("HTML элемент не найден");
                 return;
             }
 
-            instance.ActiveTab.Touch.SetTouchEmulationParameters(emulation.CreateTouchParametrs());                       
+            instance.ActiveTab.Touch.SetTouchEmulationParameters(emulation.CreateTouchParametrs());
             instance.ActiveTab.Touch.Touch(HtmlElem);
             instance.ActiveTab.WaitDownloading();
-        }
+        }//Клик по элементу
 
         public void SwipeAndClickToElement(HtmlElement HtmlElem)
-        {         
+        {
             instance.ActiveTab.WaitDownloading();
-            
+
             if (HtmlElem.IsVoid)
             {
                 Project.SendErrorToLog("HTML элемент не найден");
@@ -70,32 +70,30 @@ namespace ZennoPosterEmulation
             ClickToElement(HtmlElem);
             instance.ActiveTab.WaitDownloading();
 
-        }
+        }//Свайп до элемента и клик по нему
 
-
-        int LatencyKeySetText {get{return EmulationValue.LatencyKey.ParseRangeValueInt().ValueRandom;}}
-
+        int LatencyKeySetText { get { return EmulationValue.LatencyKey.ParseRangeValueInt().ValueRandom; } }
         public void SetText(HtmlElement HtmlElem, string text)
-        {          
+        {
             instance.ActiveTab.WaitDownloading();
-            
+
             if (HtmlElem.IsVoid)
             {
                 Project.SendErrorToLog("HTML элемент не найден");
                 return;
             }
-                         
+
             SwipeAndClickToElement(HtmlElem);
 
             char[] InputText = text.ToCharArray();
 
-            foreach(char InputChar in InputText)
+            foreach (char InputChar in InputText)
             {
                 instance.SendText(Convert.ToString(InputChar), 0);
                 Thread.Sleep(LatencyKeySetText);
             }
 
 
-        }
+        }//Ввод текста
     }
 }
