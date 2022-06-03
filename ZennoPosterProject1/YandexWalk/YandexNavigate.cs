@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;

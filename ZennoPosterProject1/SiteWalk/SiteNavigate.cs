@@ -17,8 +17,6 @@ namespace ZennoPosterSiteWalk
             this.instance = instance;
             this.project = project;
         }
-
-
         public void GetRandomSite()
         {
             Random random = new Random();

@@ -21,6 +21,8 @@ using ZennoLab.InterfacesLibrary.Enums;
 using Humaniation;
 using ZennoPosterSiteWalk;
 using ZennoPosterEmulation;
+using ZennoPosterDataBaseAndProfile;
+using System.Data.SQLite;
 
 namespace ZennoPosterProject1
 {
@@ -44,12 +46,12 @@ namespace ZennoPosterProject1
             new SiteWalkValue(instance, project);
             Random random = new Random();
 
+            DB dB = new DB(instance,project);
 
-
- 
-
-
-
+            Profile profile = new Profile(instance, project);
+       
+            profile.DownloadProfileInZennoposter();
+            profile.UpdateStatusProfile("Free",4,4);
 
             return executionResult;
         }
