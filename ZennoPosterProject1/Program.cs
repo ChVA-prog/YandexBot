@@ -23,6 +23,9 @@ using ZennoPosterSiteWalk;
 using ZennoPosterEmulation;
 using ZennoPosterDataBaseAndProfile;
 using System.Data.SQLite;
+using ZennoPosterProxy;
+using ZennoPosterYandexWalk;
+using System.Threading;
 
 namespace ZennoPosterProject1
 {
@@ -41,17 +44,12 @@ namespace ZennoPosterProject1
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
 
+
             int executionResult = 0;
-            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
-            new SiteWalkValue(instance, project);
-            Random random = new Random();
-
-            DB dB = new DB(instance,project);
-
-            Profile profile = new Profile(instance, project);
-       
-            profile.DownloadProfileInZennoposter();
-            profile.UpdateStatusProfile("Free",4,4);
+            project.SendErrorToLog("Считываем входные настройки", true);
+            new InputSettings(instance,project).InitializationInputValue();
+            project.SendErrorToLog("Запускаем нагуливание кук.", true);
+            new StartMethod(instance, project).FeedingCookies();
 
             return executionResult;
         }

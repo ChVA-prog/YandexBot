@@ -142,11 +142,16 @@
     <Compile Include="DataBaseAndProfile\Profile.cs" />
     <Compile Include="Emulation\Extension.cs" />
     <Compile Include="Emulation\GenerationEmulationValue.cs" />
+    <Compile Include="InputSettings.cs" />
     <Compile Include="NitkaDogWalk\SiteNavigateMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emulation\SwipeAndClick.cs" />
     <Compile Include="Emulation\EmulationValue.cs" />
+    <Compile Include="Proxy\ProxyDB.cs" />
+    <Compile Include="Proxy\ProxySettings.cs" />
+    <Compile Include="Proxy\ProxyValue.cs" />
+    <Compile Include="StartMethod.cs" />
     <Compile Include="SiteWalk\Extension.cs" />
     <Compile Include="SiteWalk\SiteNavigate.cs" />
     <Compile Include="SiteWalk\SiteWalk.cs" />

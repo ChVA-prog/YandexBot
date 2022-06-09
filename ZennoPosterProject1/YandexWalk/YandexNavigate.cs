@@ -30,15 +30,15 @@ namespace ZennoPosterYandexWalk
             HtmlElement HtmlElementInputSearch = instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementInputSearch, 0);
             HtmlElement HtmlElementSearchButton = instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchButton, 0);
 
-            Project.SendInfoToLog("Вводим поисковый запрос");
+            Project.SendInfoToLog("Вводим поисковый запрос в строку",true);
 
             swipeAndClick.SetText(HtmlElementInputSearch, RandomSearchQueries);
 
             if (HtmlElementInputSearch.GetAttribute("value") != RandomSearchQueries)
             {
-                Project.SendInfoToLog("Поисковый запрос не ввелся в строку");
+                Project.SendErrorToLog("Поисковый запрос не ввелся в строку",true);
             }
-            Project.SendInfoToLog("Кликаем по кнопке найти");
+            Project.SendInfoToLog("Кликаем по кнопке найти",true);
 
             swipeAndClick.SwipeAndClickToElement(HtmlElementSearchButton);
 
@@ -56,12 +56,18 @@ namespace ZennoPosterYandexWalk
             {
                 swipeAndClick.ClickToElement(HtmElementReklama);
             }
+            HtmlElement HtmElementCookies = instance.ActiveTab.FindElementByXPath("//button[contains(@Class, 'sc-pNWxx sc-jrsJCI dryRrI kcLcLu')]", 0);
+
+            if (!HtmElementReklama.IsVoid)
+            {
+                swipeAndClick.ClickToElement(HtmElementCookies);
+            }
         }//Закрытие рекламы
 
         private void GoToYandex()
         {
             
-            Project.SendInfoToLog("Переходим на страницу яндекс");
+            Project.SendInfoToLog("Переходим на страницу яндекса", true);
             instance.ActiveTab.Navigate(new RandomGeneration(instance, Project).GetRandomYandexHost());
             instance.ActiveTab.WaitDownloading();
         }//Переход в яндекс

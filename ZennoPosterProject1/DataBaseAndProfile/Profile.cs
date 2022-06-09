@@ -2,10 +2,11 @@
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using System.Data.SQLite;
 using System;
+using System.Threading;
 
 namespace ZennoPosterDataBaseAndProfile
 {
-    class Profile
+     class Profile
     {
         readonly Instance instance;
         readonly IZennoPosterProjectModel project;
@@ -13,18 +14,17 @@ namespace ZennoPosterDataBaseAndProfile
         public Profile(Instance instance, IZennoPosterProjectModel project)
         {
             this.instance = instance;
-            this.project = project;
-            new DataBaseAndProfileValue(instance, project);
+            this.project = project;           
         }
 
         public void CheckAndCreateNewProfile()
         {           
             if(GetCountProfileInDB() < DataBaseAndProfileValue.CountFreeProfileInDB)
             {
-                project.SendInfoToLog("Количество профилей в базе данных меньше заданного значения, создаем профиль и сохраняем его");
+                project.SendInfoToLog("Количество свободных профилей в базе данных меньше "+ project.Variables["set_CountFreeProfileInDB"].Value +", создаем профиль и сохраняем его",true);
                 if(!project.Profile.UserAgent.ToLower().Contains("android"))
                 {
-                    project.SendInfoToLog("Юзерагент не подходит.");
+                    project.SendErrorToLog("Юзерагент не подходит.",true);
                     return;
                 }
                 else
@@ -36,7 +36,8 @@ namespace ZennoPosterDataBaseAndProfile
 
                     SaveProfileDataToDB(PathToSaveProfile);
 
-                    project.SendInfoToLog("Создали профиль");
+                    project.SendInfoToLog("Сохранили профиль : " + project.Profile.NickName + " в БД",true);
+                    Thread.Sleep(2000);
                 }
                 
                 
@@ -55,7 +56,7 @@ namespace ZennoPosterDataBaseAndProfile
 
             sqliteConnection.Close();
 
-            project.SendErrorToLog(CountProfile.ToString());
+            project.SendInfoToLog("Количество профилей в базе данный: " + CountProfile.ToString());
 
             return Convert.ToInt32(CountProfile);
         }//Получение количества профилей для работы из БД
@@ -66,13 +67,14 @@ namespace ZennoPosterDataBaseAndProfile
             SQLiteConnection sqliteConnection = dB.OpenConnectDb();
 
             string ProfileStringRequest = String.Format("INSERT INTO Profiles(PathToProfile, TimeToGetYandex, CountSession, CountSessionDay, TimeToNextGetYandex, Status) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}')",
-                PathTosave, DateTime.UtcNow.AddDays(3).ToString("dd-MM-yyyy HH-mm"), 0, 0, DateTime.UtcNow.ToString("dd-MM-yyyy HH-mm"), "Free");
+                PathTosave, DateTime.UtcNow.AddDays(3).ToString("dd-MM-yyyy HH-mm-ss"), 0, 0, DateTime.UtcNow.ToString("dd-MM-yyyy HH-mm-ss"), "Free");
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
             sQLiteCommand.ExecuteReader();
 
             sqliteConnection.Close();
+            project.SendErrorToLog("Юзерагент не подходит.", true);
         }//Сохранение профиля в БД
 
         public bool GetProfileFromDB()
@@ -80,7 +82,7 @@ namespace ZennoPosterDataBaseAndProfile
             DB dB = new DB(instance, project);
             SQLiteConnection sqliteConnection = dB.OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex < '{0}' ORDER BY CountSessionDay ASC LIMIT 1", DateTime.Now.ToString("dd-MM-yyyy HH-mm"));
+            string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' ORDER BY CountSessionDay ASC LIMIT 1", DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"));
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             try
             {
@@ -102,13 +104,14 @@ namespace ZennoPosterDataBaseAndProfile
             }
             catch(Exception e)
             {
-                project.SendErrorToLog("Ошибка при попытке получить профиль из БД");
-                project.SendErrorToLog(e.Message);
+                project.SendErrorToLog("Ошибка при попытке получить профиль из БД: " + e.Message, true);                
                 return false;
             }
 
             sqliteConnection.Close();
+            project.SendInfoToLog("Взяли профиль из БД", true);
             UpdateStatusProfile("Busy");
+
             return true;
         }//Получение данных профиля из БД
 
@@ -124,6 +127,7 @@ namespace ZennoPosterDataBaseAndProfile
             sQLiteCommand.ExecuteReader();
 
             sqliteConnection.Close();
+            project.SendErrorToLog("Изменили статус профиля на: " + Status, true);
         }//Изменение статуса профиля (Free или Busy) 
 
         public void UpdateStatusProfile(string Status, int CountSession, int CountSessionDay)
@@ -139,19 +143,20 @@ namespace ZennoPosterDataBaseAndProfile
             sQLiteCommand.ExecuteReader();
 
             sqliteConnection.Close();
+            project.SendErrorToLog("Изменили статус профиля на: " + Status + " Количество сессий на: " + CountSession + " Количество сессий в день на: " + CountSessionDay, true);
         }//Изменение статуса профиля (Free или Busy), кол-во сессий и кол-во сессий в день
 
         public void DownloadProfileInZennoposter()
         {
-            if(!GetProfileFromDB())
+            CheckAndCreateNewProfile();
+            if (!GetProfileFromDB())
             {
-                project.SendErrorToLog("В БД не нашелся нужный профиль");
+                project.SendErrorToLog("В БД не нашелся нужный профиль",true);
                 return;
             }
 
             project.Profile.Load(DataBaseAndProfileValue.PathToProfile);
-
-        }//Загрузка профиля в зенопостер        
-      
+            project.SendInfoToLog("Назначили профиль " + project.Profile.NickName + " в проект", true);
+        }//Загрузка профиля в зенопостер
     }
 }

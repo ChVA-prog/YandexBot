@@ -31,6 +31,8 @@ namespace ZennoPosterEmulation
         private static string SwipeFractionY { get; set; }
         private static string TouchLengthMs { get; set; }
         public static string LatencyKey { get; set; }
+        public static int ElementPosition { get; set; }
+        public static int InstanceHeight { get; set; }
 
         public EmulationValue(Instance _instance, IZennoPosterProjectModel _project)
         {

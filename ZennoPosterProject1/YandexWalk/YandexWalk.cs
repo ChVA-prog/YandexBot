@@ -21,6 +21,7 @@ namespace ZennoPosterYandexWalk
         
         public void GoYandexWalk()
         {
+            Project.SendInfoToLog("Запускаем бродилку по яндексу.", true);
             YandexWalkSettings yandexWalkSettings = new YandexWalkSettings(instance, Project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
             YandexNavigate yandexNavigate = new YandexNavigate(instance, Project);
