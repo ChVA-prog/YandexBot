@@ -36,6 +36,7 @@ namespace ZennoPosterProject1
                 project.SendErrorToLog("Вышли из GoYandexWalk по ошибке: " + ex.Message);
                 new AdditionalMethods(instance, project).ErrorExit();
             }
+            instance.CloseAllTabs();
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
             profile.UpdateStatusProfile("Free", DataBaseAndProfileValue.CountSession + 1, DataBaseAndProfileValue.CountSessionDay +1);
