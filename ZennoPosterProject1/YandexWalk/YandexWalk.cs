@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
 using System.Threading;
+using ZennoPosterProject1;
 
 namespace ZennoPosterYandexWalk
 {
@@ -25,11 +25,9 @@ namespace ZennoPosterYandexWalk
             YandexWalkSettings yandexWalkSettings = new YandexWalkSettings(instance, Project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
             YandexNavigate yandexNavigate = new YandexNavigate(instance, Project);
-            RandomGeneration randomGeneration = new RandomGeneration(instance, Project);
-            new YandexWalkValue(instance, Project);
                                                       
             int CounterPage = 1;
-            int CountPage = randomGeneration.GetRandomPageCountSearch();
+            int CountPage = new YandexWalkSettings(instance,Project).GetRandomPageCountSearch();
            
             yandexNavigate.GoToSearchQuery();
             Project.SendInfoToLog("Будем изучать " + CountPage + " страниц",true);
@@ -43,9 +41,23 @@ namespace ZennoPosterYandexWalk
 
                 Project.SendInfoToLog("Номер страницы " + CounterPage, true);
 
-                CountLearnCard = instance.ActiveTab.FindElementsByXPath(YandexWalkValue.HtmlElementSearchResultsCard).Count.CalcPercentLearnCard
-                    (YandexWalkValue.CountLearnCard.ParseRangeValueInt().ValueRandom);
+                int CounterAttemptGetSumCard = 0;
 
+                do
+                {
+                    if(CounterAttemptGetSumCard == 10)
+                    {
+                        Project.SendErrorToLog("Не удалось получить карточки поисковой выдачи");
+                        new AdditionalMethods(instance, Project).ErrorExit();
+                    }
+
+                    CountLearnCard = instance.ActiveTab.FindElementsByXPath(YandexWalkValue.HtmlElementSearchResultsCard).Count.CalcPercentLearnCard
+                                        (YandexWalkValue.CountLearnCard.ParseRangeValueInt().ValueRandom);
+                    Thread.Sleep(2000);
+                    CounterAttemptGetSumCard++;
+                }
+                while (CountLearnCard == 0);
+                
                 Project.SendInfoToLog("Будем изучать " + CountLearnCard + " карточек", true);
 
                 List<int> SearchCardList = yandexWalkSettings.CountLearnCard(CountLearnCard);
@@ -54,12 +66,11 @@ namespace ZennoPosterYandexWalk
 
                 Project.SendInfoToLog("Переходим на следующую страницу", true);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementNextPageButton, 0));
+                new AdditionalMethods(instance, Project).WaitDownloading();
 
                 CounterPage++;
             }
-            while (CountPage > CounterPage);
-                      
+            while (CountPage > CounterPage);                      
         } //Запуск бродилки по яндексу
-
     }
 }

@@ -56,9 +56,6 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Humaniator">
-      <HintPath>F:\Programs\ZennoPoster\RU\ZennoPoster Pro V7\7.7.0.0\Progs\ExternalAssemblies\Humaniator.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Extensions.Configuration, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Configuration.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
     </Reference>
@@ -137,6 +134,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdditionalMethods.cs" />
     <Compile Include="DataBaseAndProfile\DataBaseAndProfileValue.cs" />
     <Compile Include="DataBaseAndProfile\DB.cs" />
     <Compile Include="DataBaseAndProfile\Profile.cs" />
@@ -158,7 +156,6 @@
     <Compile Include="SiteWalk\SiteWalkSettings.cs" />
     <Compile Include="SiteWalk\SIteWalkValue.cs" />
     <Compile Include="YandexWalk\Extansion.cs" />
-    <Compile Include="YandexWalk\RandomGeneration.cs" />
     <Compile Include="YandexWalk\YandexNavigate.cs" />
     <Compile Include="YandexWalk\YandexWalk.cs" />
     <Compile Include="YandexWalk\YandexWalkSettings.cs" />

@@ -17,7 +17,6 @@ namespace ZennoPosterSiteWalk
             this.instance = instance;
             this.Project = project;           
         }
-
         public void SiteRandomWalk()
         {
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance,Project);
@@ -30,8 +29,6 @@ namespace ZennoPosterSiteWalk
                 swipeAndClick.SwipeToElement(he);
                 Thread.Sleep(random.Next(3000, 7000));
             }
-        }
-
-
+        }//Рандомное изучение сайта
     }
 }

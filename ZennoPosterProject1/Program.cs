@@ -18,7 +18,6 @@ using Global.ZennoExtensions;
 using ZennoLab.CommandCenter.TouchEvents;
 using ZennoLab.CommandCenter.FullEmulation;
 using ZennoLab.InterfacesLibrary.Enums;
-using Humaniation;
 using ZennoPosterSiteWalk;
 using ZennoPosterEmulation;
 using ZennoPosterDataBaseAndProfile;
@@ -46,10 +45,12 @@ namespace ZennoPosterProject1
 
 
             int executionResult = 0;
-            project.SendErrorToLog("Считываем входные настройки", true);
-            new InputSettings(instance,project).InitializationInputValue();
-            project.SendErrorToLog("Запускаем нагуливание кук.", true);
+            project.SendInfoToLog("Считываем входные настройки", true);
+            new InputSettings(instance, project).InitializationInputValue();
+
+            project.SendInfoToLog("Запускаем нагуливание кук.", true);
             new StartMethod(instance, project).FeedingCookies();
+            project.SendInfoToLog("Закончили.");
 
             return executionResult;
         }

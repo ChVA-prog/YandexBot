@@ -3,6 +3,7 @@ using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
 using System.Threading;
+using ZennoPosterProject1;
 
 namespace ZennoPosterYandexWalk
 {
@@ -16,14 +17,12 @@ namespace ZennoPosterYandexWalk
             this.instance = instance;
             this.Project = project;
         }
-        
+        Random random = new Random();
         public void GoToSearchQuery()
         { 
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
-            new YandexWalkSettings(instance, Project);
-            RandomGeneration randomGeneration = new RandomGeneration(instance, Project);
-
-            string RandomSearchQueries = randomGeneration.GetRandomSearchQueries();
+            
+            string RandomSearchQueries = new YandexWalkSettings(instance, Project).GetRandomSearchQueries();
 
             GoToYandex();
 
@@ -34,14 +33,16 @@ namespace ZennoPosterYandexWalk
 
             swipeAndClick.SetText(HtmlElementInputSearch, RandomSearchQueries);
 
-            if (HtmlElementInputSearch.GetAttribute("value") != RandomSearchQueries)
+            if (String.IsNullOrEmpty(HtmlElementInputSearch.GetAttribute("value")) || String.IsNullOrWhiteSpace(HtmlElementInputSearch.GetAttribute("value")))
             {
                 Project.SendErrorToLog("Поисковый запрос не ввелся в строку",true);
+                new AdditionalMethods(instance, Project).ErrorExit();
             }
+
             Project.SendInfoToLog("Кликаем по кнопке найти",true);
 
-            swipeAndClick.SwipeAndClickToElement(HtmlElementSearchButton);
-
+            swipeAndClick.ClickToElement(HtmlElementSearchButton);
+            new AdditionalMethods(instance,Project).WaitDownloading();
             CloseAdvertisement();
 
         }//Ввод поискового запроса и переход по нему
@@ -65,11 +66,10 @@ namespace ZennoPosterYandexWalk
         }//Закрытие рекламы
 
         private void GoToYandex()
-        {
-            
+        {           
             Project.SendInfoToLog("Переходим на страницу яндекса", true);
-            instance.ActiveTab.Navigate(new RandomGeneration(instance, Project).GetRandomYandexHost());
-            instance.ActiveTab.WaitDownloading();
+            instance.ActiveTab.Navigate(new YandexWalkSettings(instance,Project).GetRandomYandexHost());
+            new AdditionalMethods(instance, Project).WaitDownloading();
         }//Переход в яндекс
     }
 }

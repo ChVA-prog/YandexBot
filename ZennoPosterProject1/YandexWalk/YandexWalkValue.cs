@@ -6,7 +6,7 @@ namespace ZennoPosterYandexWalk
     class YandexWalkValue
     {
         readonly IZennoPosterProjectModel Project;
-        readonly Instance instance;
+
         public static string HtmlElementInputSearch { get; set; }
         public static string HtmlElementSearchButton { get; set; }
         public static string HtmlElementCheckingLoading { get; set; }
@@ -21,9 +21,8 @@ namespace ZennoPosterYandexWalk
         public static string CountGetCard { get; set; }
         public static string MyUrl { get; set; }
         
-        public YandexWalkValue(Instance _instance, IZennoPosterProjectModel _project)
+        public YandexWalkValue(IZennoPosterProjectModel _project)
         {
-            this.instance = _instance;
             this.Project = _project;
 
             HtmlElementInputSearch = Project.Variables["set_HtmlElementInputSearch"].Value;
@@ -41,5 +40,4 @@ namespace ZennoPosterYandexWalk
             MyUrl = Project.Variables["set_MyUrl"].Value;
         }      
     }
-    
 }

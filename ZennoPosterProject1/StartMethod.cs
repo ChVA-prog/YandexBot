@@ -5,6 +5,7 @@ using ZennoPosterEmulation;
 using ZennoPosterProxy;
 using ZennoPosterYandexWalk;
 using ZennoPosterSiteWalk;
+using System;
 
 
 namespace ZennoPosterProject1
@@ -23,15 +24,22 @@ namespace ZennoPosterProject1
         {
             Profile profile = new Profile(instance,project);
             ProxyDB proxyDB = new ProxyDB(instance, project);
-            YandexWalk yandexWalk = new YandexWalk(instance, project);
-
+           
             profile.DownloadProfileInZennoposter();
             proxyDB.SetProxyInInstance();
-            yandexWalk.GoYandexWalk();
+            try
+            {
+                new YandexWalk(instance, project).GoYandexWalk();
+            }
+            catch(Exception ex)
+            {
+                project.SendErrorToLog("Вышли из GoYandexWalk по ошибке: " + ex.Message);
+                new AdditionalMethods(instance, project).ErrorExit();
+            }
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
-            profile.UpdateStatusProfile("Free", DataBaseAndProfileValue.CountSession++, DataBaseAndProfileValue.CountSessionDay++);
+            profile.UpdateStatusProfile("Free", DataBaseAndProfileValue.CountSession + 1, DataBaseAndProfileValue.CountSessionDay +1);
 
-        }
+        }//Запуск нагуливания кукисов
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using ZennoLab.CommandCenter;
+﻿using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
-using ZennoPosterEmulation;
-using System.Threading;
 
 namespace ZennoPosterProxy
 {

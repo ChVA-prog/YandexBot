@@ -1,43 +1,39 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
-using ZennoLab.CommandCenter.TouchEvents;
-using ZennoLab.CommandCenter;
 
 namespace ZennoPosterEmulation
 {    
     public class EmulationValue
     {
-        readonly Instance instance;
         readonly IZennoPosterProjectModel Project;
 
-        private static string Acceleration { get; set; }
-        private static string LongTouchLengthMs { get; set; }
-        private static string MaxCurvature { get; set; }
-        private static string MaxCurvePeakShift { get; set; }
-        private static string MaxStep { get; set; }
-        private static string MaxSwipeShiftTowardsThumb { get; set; }
-        private static string MinCurvature { get; set; }
-        private static string MinCurvePeakShift { get; set; }
-        private static string MinStep { get; set; }
-        private static string MinSwipeShiftTowardsThumb { get; set; }
-        private static string PauseAfterTouchMs { get; set; }
-        private static string PauseBetweenStepsMs { get; set; }
-        private static string PauseBetweenSwipesMs { get; set; }
-        private static string RectangleBasePointPartH { get; set; }
-        private static string RectangleBasePointPartW { get; set; }
-        private static string RightThumbProbability { get; set; }
-        private static string SwipeDeviationX { get; set; }
-        private static string SwipeDeviationY { get; set; }
-        private static string SwipeFractionX { get; set; }
-        private static string SwipeFractionY { get; set; }
-        private static string TouchLengthMs { get; set; }
+        public static string Acceleration { get; set; }
+        public static string LongTouchLengthMs { get; set; }
+        public static string MaxCurvature { get; set; }
+        public static string MaxCurvePeakShift { get; set; }
+        public static string MaxStep { get; set; }
+        public static string MaxSwipeShiftTowardsThumb { get; set; }
+        public static string MinCurvature { get; set; }
+        public static string MinCurvePeakShift { get; set; }
+        public static string MinStep { get; set; }
+        public static string MinSwipeShiftTowardsThumb { get; set; }
+        public static string PauseAfterTouchMs { get; set; }
+        public static string PauseBetweenStepsMs { get; set; }
+        public static string PauseBetweenSwipesMs { get; set; }
+        public static string RectangleBasePointPartH { get; set; }
+        public static string RectangleBasePointPartW { get; set; }
+        public static string RightThumbProbability { get; set; }
+        public static string SwipeDeviationX { get; set; }
+        public static string SwipeDeviationY { get; set; }
+        public static string SwipeFractionX { get; set; }
+        public static string SwipeFractionY { get; set; }
+        public static string TouchLengthMs { get; set; }
         public static string LatencyKey { get; set; }
         public static int ElementPosition { get; set; }
         public static int InstanceHeight { get; set; }
 
-        public EmulationValue(Instance _instance, IZennoPosterProjectModel _project)
+        public EmulationValue(IZennoPosterProjectModel project)
         {
-            this.instance = _instance;
-            this.Project = _project;
+            this.Project = project;
 
             Acceleration = Project.Variables["set_Acceleration"].Value;
             LongTouchLengthMs = Project.Variables["set_LongTouchLengthMs"].Value;
@@ -62,34 +58,5 @@ namespace ZennoPosterEmulation
             TouchLengthMs = Project.Variables["set_TouchLengthMs"].Value;
             LatencyKey = Project.Variables["set_LatencyKey"].Value;
         }
-       
-        public TouchEmulationParameters CreateTouchParametrs()
-        {
-            TouchEmulationParameters touchEmulationParameters = new TouchEmulationParameters();
-
-            touchEmulationParameters.Acceleration = Extension.ParseRangeValueFloat(Acceleration).ValueRandom;
-            touchEmulationParameters.LongTouchLengthMs = Extension.ParseRangeValueInt(LongTouchLengthMs).ValueRandom;
-            touchEmulationParameters.MaxCurvature = Extension.ParseRangeValueFloat(MaxCurvature).ValueRandom;
-            touchEmulationParameters.MaxCurvePeakShift = Extension.ParseRangeValueFloat(MaxCurvePeakShift).ValueRandom;
-            touchEmulationParameters.MaxStep = Extension.ParseRangeValueFloat(MaxStep).ValueRandom;
-            touchEmulationParameters.MaxSwipeShiftTowardsThumb = Extension.ParseRangeValueFloat(MaxSwipeShiftTowardsThumb).ValueRandom;
-            touchEmulationParameters.MinCurvature = Extension.ParseRangeValueFloat(MinCurvature).ValueRandom;
-            touchEmulationParameters.MinCurvePeakShift = Extension.ParseRangeValueFloat(MinCurvePeakShift).ValueRandom;
-            touchEmulationParameters.MinStep = Extension.ParseRangeValueFloat(MinStep).ValueRandom;
-            touchEmulationParameters.MinSwipeShiftTowardsThumb = Extension.ParseRangeValueFloat(MinSwipeShiftTowardsThumb).ValueRandom;
-            touchEmulationParameters.PauseAfterTouchMs = Extension.ParseRangeValueInt(PauseAfterTouchMs).ValueRandom;
-            touchEmulationParameters.PauseBetweenStepsMs = Extension.ParseRangeValueInt(PauseBetweenStepsMs).ValueRandom;
-            touchEmulationParameters.PauseBetweenSwipesMs = Extension.ParseRangeValueInt(PauseBetweenSwipesMs).ValueRandom;
-            touchEmulationParameters.RectangleBasePointPartH = Extension.ParseRangeValueFloat(RectangleBasePointPartH).ValueRandom;
-            touchEmulationParameters.RectangleBasePointPartW = Extension.ParseRangeValueFloat(RectangleBasePointPartW).ValueRandom;
-            touchEmulationParameters.RightThumbProbability = Extension.ParseRangeValueFloat(RightThumbProbability).ValueRandom;
-            touchEmulationParameters.SwipeDeviationX = Extension.ParseRangeValueFloat(SwipeDeviationX).ValueRandom;
-            touchEmulationParameters.SwipeDeviationY = Extension.ParseRangeValueFloat(SwipeDeviationY).ValueRandom;
-            touchEmulationParameters.SwipeFractionX = Extension.ParseRangeValueFloat(SwipeFractionX).ValueRandom;
-            touchEmulationParameters.SwipeFractionY = Extension.ParseRangeValueFloat(SwipeFractionY).ValueRandom;
-            touchEmulationParameters.TouchLengthMs = Extension.ParseRangeValueInt(TouchLengthMs).ValueRandom;         
-
-            return touchEmulationParameters;
-        }//Генерация рандомных параметров эмуляции свайпа и тача
     }
 }

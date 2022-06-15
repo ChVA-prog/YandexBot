@@ -6,12 +6,11 @@ using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
 using System.Threading;
 using ZennoPosterSiteWalk;
+using ZennoPosterProject1;
 
 namespace ZennoPosterYandexWalk
 {
     
-
-
     class YandexWalkSettings
     {
         readonly IZennoPosterProjectModel Project;
@@ -62,7 +61,6 @@ namespace ZennoPosterYandexWalk
         public List<string> MyUrlList = new List<string>();
         public void ReadMyUrl()
         {
-
             MyUrlList = YandexWalkValue.MyUrl.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
         }//Получаем список моих URL
 
@@ -92,7 +90,10 @@ namespace ZennoPosterYandexWalk
 
             Project.SendInfoToLog("Переходим в карточку " + ClearCurenSite, true);
             swipeAndClick.SwipeAndClickToElement(LearnElement);
-            Project.SendInfoToLog("Изучаем сайт" + ClearCurenSite, true);
+
+            new AdditionalMethods(instance, Project).WaitDownloading();
+
+            Project.SendInfoToLog("Изучаем сайт: " + ClearCurenSite, true);
             siteWalk.SiteRandomWalk();
             Thread.Sleep(Random.Next(4000, 8000));
 
@@ -121,7 +122,6 @@ namespace ZennoPosterYandexWalk
 
                     swipeAndClick.SwipeToElement(LearnElement);
                 }
-
                 yandexWalkSettings.CloseUnnecessaryWindows();
                 Thread.Sleep(Random.Next(4000, 8000));
             }
@@ -143,12 +143,33 @@ namespace ZennoPosterYandexWalk
             return SearchCardList;
         } //Количество карточек с которыми будем работать
 
+        public string GetRandomSearchQueries()
+        {
+            string[] YandexSearchQueries = Project.Variables["set_SearchQueries"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            return YandexSearchQueries[Random.Next(0, YandexSearchQueries.Length)];
+        }//Получение рандомного поискового запроса
+
+        public int GetRandomPageCountSearch()
+        {
+            int CountPage = ZennoPosterEmulation.Extension.ParseRangeValueInt(YandexWalkValue.PageCountSearch).ValueRandom;
+
+            return CountPage;
+        }//Получение рандомного количества изучаемых страниц
+
+        public string GetRandomYandexHost()
+        {
+            string[] YandexHosts = Project.Variables["set_YandexHosts"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            return YandexHosts[Random.Next(0, YandexHosts.Length)];
+        }//Получение рандомного хоста яндекса
+
         public bool CheckMySiteInSearchList()
         {
 
 
             return true;
-        }
+        } //TODO
 
     }
 

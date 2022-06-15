@@ -23,6 +23,7 @@ namespace ZennoPosterSiteWalk
             SiteWalkSettings siteWalkSettings = new SiteWalkSettings(instance,project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             YandexWalkSettings yandexWalkSettings = new YandexWalkSettings(instance, project);
+
             siteWalkSettings.ShuffleListSitesForVisit();
            
             foreach (string url in SiteWalkSettings.SiteVisitUrl)
@@ -34,11 +35,10 @@ namespace ZennoPosterSiteWalk
                 
                 for (int i = 0; i < CountGetUrl; i++)
                 {
-                    HtmlElementCollection LinksInSite = instance.ActiveTab.FindElementsByXPath("//span[contains(@class, 'elementor-button-text')] ");
+                    HtmlElementCollection LinksInSite = instance.ActiveTab.FindElementsByXPath("//p");
                     HtmlElement LinkInSite = instance.ActiveTab.FindElementByXPath
-                        ("//span[contains(@class, 'elementor-button-text')]", random.Next(0, LinksInSite.Count));
+                        ("//p", random.Next(0, LinksInSite.Count));
 
-                    project.SendInfoToLog(Convert.ToString(LinksInSite.Count));
                     if (LinkInSite == null || LinkInSite.IsVoid)
                     {
                         break;
@@ -46,14 +46,8 @@ namespace ZennoPosterSiteWalk
                     swipeAndClick.SwipeToElement(LinkInSite);
                     Thread.Sleep(random.Next(2000, 5000));
                     yandexWalkSettings.CloseUnnecessaryWindows();
-                    
-
                 }
-
-               
             }
-
-
-        }
+        }//Переход на рандомный сайт из списка и его изучение //TODO
     }
 }

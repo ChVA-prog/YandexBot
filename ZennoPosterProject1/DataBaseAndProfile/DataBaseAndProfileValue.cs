@@ -6,7 +6,6 @@ namespace ZennoPosterDataBaseAndProfile
 {
     class DataBaseAndProfileValue
     {
-        readonly Instance instance;
         readonly IZennoPosterProjectModel Project;
 
         public static int CountFreeProfileInDB { set; get; }
@@ -17,9 +16,8 @@ namespace ZennoPosterDataBaseAndProfile
         public static string PathToProfile { get; set; }
 
 
-        public DataBaseAndProfileValue(Instance instance, IZennoPosterProjectModel project)
+        public DataBaseAndProfileValue(IZennoPosterProjectModel project)
         {
-            this.instance = instance;
             this.Project = project;
 
             CountFreeProfileInDB = Convert.ToInt32(Project.Variables["set_CountFreeProfileInDB"].Value);
