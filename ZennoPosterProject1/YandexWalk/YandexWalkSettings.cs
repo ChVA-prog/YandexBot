@@ -44,10 +44,17 @@ namespace ZennoPosterYandexWalk
         {
             try
             {                
-                foreach (string site in MyUrlList)
+                foreach (string site in YandexWalkValue.MyUrlList)
                 {
                     if (site.Contains(Convert.ToString(url)))
+                    {
                         return true;
+                    }
+                    if(url.ToLower().Contains("yandex") || url.ToLower().Contains("яндекс"))
+                    {
+                        Project.SendWarningToLog("Сайт яндекса, пропускаем его", true);
+                        return true;
+                    }
                 }
             }
             catch (Exception ex)
@@ -58,11 +65,6 @@ namespace ZennoPosterYandexWalk
             return false;
         }//Проверяем не содержит ли карточка для перехода мой URL
 
-        public List<string> MyUrlList = new List<string>();
-        public void ReadMyUrl()
-        {
-            MyUrlList = YandexWalkValue.MyUrl.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
-        }//Получаем список моих URL
 
         public bool GoSearchCard(HtmlElement LearnElement)
         {
@@ -81,7 +83,7 @@ namespace ZennoPosterYandexWalk
             }
             else
             {
-                Project.SendInfoToLog("Делаем проверку на наличие нашего сайта ", true);
+                Project.SendInfoToLog("Делаем проверку на запрещенные для перехода сайты", true);
                 if (yandexWalkSettings.CheckMyUrl(CurenSite))
                 {
                     return true;
@@ -132,7 +134,7 @@ namespace ZennoPosterYandexWalk
             List<int> SearchCardList = new List<int>();
             for (int i = 0; i < CountCard; i++)
             {
-                int rnd = Random.Next(0, 9);
+                int rnd = Random.Next(0, CountCard);
                 if (SearchCardList.Contains(rnd))
                 {
                     i--;
