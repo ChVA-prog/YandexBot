@@ -103,6 +103,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -155,6 +156,7 @@
     <Compile Include="SiteWalk\SiteWalk.cs" />
     <Compile Include="SiteWalk\SiteWalkSettings.cs" />
     <Compile Include="SiteWalk\SIteWalkValue.cs" />
+    <Compile Include="YandexRegistration\YandexRegistrationValue.cs" />
     <Compile Include="YandexWalk\Extansion.cs" />
     <Compile Include="YandexWalk\YandexNavigate.cs" />
     <Compile Include="YandexWalk\YandexWalk.cs" />
@@ -176,6 +178,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SmsHub.org\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="ValidateZennoPosterDllPath" BeforeTargets="BeforeBuild">
