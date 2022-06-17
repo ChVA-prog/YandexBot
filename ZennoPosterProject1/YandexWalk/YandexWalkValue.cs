@@ -1,5 +1,7 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
-using ZennoLab.CommandCenter;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace ZennoPosterYandexWalk
 {
@@ -19,8 +21,9 @@ namespace ZennoPosterYandexWalk
         public static string PageCountSearch { get; set; }
         public static string CountLearnCard { get; set; }
         public static string CountGetCard { get; set; }
-        public static string MyUrl { get; set; }
-        
+        public static List<string> MyUrlList { get; set; }
+
+
         public YandexWalkValue(IZennoPosterProjectModel _project)
         {
             this.Project = _project;
@@ -37,7 +40,7 @@ namespace ZennoPosterYandexWalk
             PageCountSearch = Project.Variables["set_PageCountSearch"].Value;
             CountLearnCard = Project.Variables["set_CountLearnCard"].Value;
             CountGetCard = Project.Variables["set_CountGetCard"].Value;
-            MyUrl = Project.Variables["set_MyUrl"].Value;
+            MyUrlList = Project.Variables["set_MyUrl"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
         }      
     }
 }

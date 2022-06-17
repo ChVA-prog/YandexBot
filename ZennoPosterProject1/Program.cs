@@ -43,11 +43,30 @@ namespace ZennoPosterProject1
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
             int executionResult = 0;
-            //То что не должно изчезнуть
+            project.SendInfoToLog("Это сборка из ветки FeedCookies", true);
+            project.SendInfoToLog("Считываем входные настройки", true);
+            new InputSettings(instance, project).InitializationInputValue();
 
-
+            project.SendInfoToLog("Запускаем нагуливание кук.", true);
+            new StartMethod(instance, project).FeedingCookies();
+            project.SendInfoToLog("Закончили.");
 
             return executionResult;
         }
     }
 }
+
+
+
+
+
+            /* 
+             * НАГУЛИВАНИЕ КУКИСОВ  
+             * 
+            project.SendInfoToLog("Считываем входные настройки", true);
+            new InputSettings(instance, project).InitializationInputValue();
+
+            project.SendInfoToLog("Запускаем нагуливание кук.", true);
+            new StartMethod(instance, project).FeedingCookies();
+            project.SendInfoToLog("Закончили.");
+            */
