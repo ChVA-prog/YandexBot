@@ -67,15 +67,15 @@ namespace ZennoPosterDataBaseAndProfile
 
             sQLiteCommand.ExecuteReader();
 
-            sqliteConnection.Close();            
+            sqliteConnection.Close();
         }//Сохранение профиля в БД
 
         public bool GetProfileFromDB()
         {
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' ORDER BY CountSessionDay ASC LIMIT 1",
-                DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"), DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"));
+            string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSessionDay < {2} ORDER BY CountSessionDay ASC LIMIT 1",
+                DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"), DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"), DataBaseAndProfileValue.CountSessionDayLimit);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -97,6 +97,7 @@ namespace ZennoPosterDataBaseAndProfile
             catch(Exception ex)
             {
                 project.SendErrorToLog("Ошибка при попытке получить профиль из БД: " + ex.Message, true);
+                sqliteConnection.Close();
                 new AdditionalMethods(instance, project).ErrorExit();
             }
 
@@ -125,7 +126,10 @@ namespace ZennoPosterDataBaseAndProfile
         public void UpdateStatusProfile(string Status, int CountSession, int CountSessionDay)
         {
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-
+            //if()
+            //{
+            //    CountSessionDay = 0;
+            //}
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', CountSession = '{2}', CountSessionDay = '{3}', TimeToNextGetYandex = '{4}' " +
                 "WHERE PathToProfile = '{0}'", DataBaseAndProfileValue.PathToProfile, Status, CountSession, CountSessionDay,DateTime.Now.AddHours(3).ToString("dd-MM-yyyy HH-mm"));
 
@@ -135,7 +139,7 @@ namespace ZennoPosterDataBaseAndProfile
 
             sqliteConnection.Close();
             project.SendErrorToLog("Изменили статус профиля на: " + Status + " Количество сессий на: " + CountSession
-                + Environment.NewLine + " Количество сессий в день на: " + CountSessionDay, true);
+                + " Количество сессий в день на: " + CountSessionDay, true);
         }//Изменение статуса профиля (Free или Busy), кол-во сессий и кол-во сессий в день
 
         public void DownloadProfileInZennoposter()
