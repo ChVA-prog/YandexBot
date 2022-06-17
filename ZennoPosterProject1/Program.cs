@@ -55,18 +55,3 @@ namespace ZennoPosterProject1
         }
     }
 }
-
-
-
-
-
-            /* 
-             * НАГУЛИВАНИЕ КУКИСОВ  
-             * 
-            project.SendInfoToLog("Считываем входные настройки", true);
-            new InputSettings(instance, project).InitializationInputValue();
-
-            project.SendInfoToLog("Запускаем нагуливание кук.", true);
-            new StartMethod(instance, project).FeedingCookies();
-            project.SendInfoToLog("Закончили.");
-            */
