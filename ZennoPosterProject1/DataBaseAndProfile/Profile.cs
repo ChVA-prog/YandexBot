@@ -119,7 +119,7 @@ namespace ZennoPosterDataBaseAndProfile
             sQLiteCommand.ExecuteReader();
 
             sqliteConnection.Close();
-            project.SendErrorToLog("Изменили статус профиля на: " + Status, true);
+            project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
         }//Изменение статуса профиля (Free или Busy) 
 
         public void UpdateStatusProfile(string Status, int CountSession, int CountSessionDay)
