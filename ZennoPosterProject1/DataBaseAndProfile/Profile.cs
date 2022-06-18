@@ -103,8 +103,7 @@ namespace ZennoPosterDataBaseAndProfile
 
             sqliteConnection.Close();
             project.SendInfoToLog("Взяли профиль из БД", true);
-            UpdateStatusProfile("Busy");
-
+            UpdateStatusProfile("Busy");            
             return true;
         }//Получение данных профиля из БД
 
@@ -138,7 +137,7 @@ namespace ZennoPosterDataBaseAndProfile
             sQLiteCommand.ExecuteReader();
 
             sqliteConnection.Close();
-            project.SendErrorToLog("Изменили статус профиля на: " + Status + " Количество сессий на: " + CountSession
+            project.SendInfoToLog("Изменили статус профиля на: " + Status + " Количество сессий на: " + CountSession
                 + " Количество сессий в день на: " + CountSessionDay, true);
         }//Изменение статуса профиля (Free или Busy), кол-во сессий и кол-во сессий в день
 
