@@ -29,7 +29,7 @@ namespace ZennoPosterProject1
             }
             catch(Exception ex)
             {
-                project.SendErrorToLog("Не сменили Ip после ошибки: " + ex.Message);
+                project.SendErrorToLog(ex.Message);
             }
 
             new Profile(instance,project).UpdateStatusProfile("Free");

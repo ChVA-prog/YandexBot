@@ -170,7 +170,7 @@ namespace ZennoPosterProxy
             }
             catch(Exception ex)
             {
-                project.SendErrorToLog("Не удалось сменить IP: " + ex.Message,true);
+                throw new Exception("Не удалось сменить IP: " + ex.Message);
             }
         }//Смена Ip
     }
