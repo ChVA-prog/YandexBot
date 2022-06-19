@@ -50,7 +50,7 @@ namespace ZennoPosterProject1
             project.SendInfoToLog("Запускаем нагуливание кук.", true);
             new StartMethod(instance, project).FeedingCookies();
             project.SendInfoToLog("Закончили.");
-            
+
             return executionResult;
         }
     }

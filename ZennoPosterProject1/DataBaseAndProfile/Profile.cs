@@ -82,20 +82,21 @@ namespace ZennoPosterDataBaseAndProfile
             try
             {
                 SQLiteDataReader reader = sQLiteCommand.ExecuteReader();
+
                 while (reader.Read())
                 {
                     DataBaseAndProfileValue.PathToProfile = reader.GetValue(0).ToString();
                     DataBaseAndProfileValue.CountSession = Convert.ToInt32(reader.GetValue(1).ToString());
                     DataBaseAndProfileValue.CountSessionDay = Convert.ToInt32(reader.GetValue(2).ToString());
-                    if(reader.GetDateTime(3) < DateTime.Now)
+
+                    if (!String.IsNullOrEmpty(reader.GetString(3)) && Convert.ToDateTime(reader.GetString(3)) < DateTime.Now.Date)
                     {
-                        UpdateCountSessionDay();
+                        UpdateCountSessionDay(sqliteConnection);
                     }
                 }
-                if(String.IsNullOrEmpty(DataBaseAndProfileValue.PathToProfile))
+                if (String.IsNullOrEmpty(DataBaseAndProfileValue.PathToProfile))
                 {
-                    sqliteConnection.Close();
-                    return false;
+                    throw new Exception("Строка с профилем пустая");
                 }
             }
             catch(Exception ex)
@@ -104,28 +105,35 @@ namespace ZennoPosterDataBaseAndProfile
                 sqliteConnection.Close();
                 new AdditionalMethods(instance, project).ErrorExit();
             }
-
+            UpdateStatusProfile("Busy", sqliteConnection);
             sqliteConnection.Close();
             project.SendInfoToLog("Взяли профиль из БД", true);
-            UpdateStatusProfile("Busy");            
+
             return true;
         }//Получение данных профиля из БД
-
+        
         public void UpdateStatusProfile(string Status)
         {
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}' WHERE PathToProfile = '{0}'",
-                DataBaseAndProfileValue.PathToProfile,Status);
+                DataBaseAndProfileValue.PathToProfile, Status);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
             sQLiteCommand.ExecuteReader();
-
             sqliteConnection.Close();
             project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
         }//Изменение статуса профиля (Free или Busy) 
+        public void UpdateStatusProfile(string Status, SQLiteConnection sqliteConnection)
+        {
+            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}' WHERE PathToProfile = '{0}'",
+                DataBaseAndProfileValue.PathToProfile, Status);
 
+            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+
+            sQLiteCommand.ExecuteReader();
+            project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
+        }//Изменение статуса профиля (Free или Busy) 
         public void UpdateStatusProfile(string Status, int CountSession, int CountSessionDay)
         {
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
@@ -134,7 +142,7 @@ namespace ZennoPosterDataBaseAndProfile
             //    CountSessionDay = 0;
             //}
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', CountSession = '{2}', CountSessionDay = '{3}', TimeToNextGetYandex = '{4}', DateLastEnterYandex = '{5}' " +
-                "WHERE PathToProfile = '{0}'", DataBaseAndProfileValue.PathToProfile, Status, CountSession, CountSessionDay,DateTime.Now.AddHours(3).ToString("dd-MM-yyyy HH-mm"), DateTime.Now);
+                "WHERE PathToProfile = '{0}'", DataBaseAndProfileValue.PathToProfile, Status, CountSession, CountSessionDay,DateTime.Now.AddHours(3).ToString("dd-MM-yyyy HH-mm"), DateTime.Now.ToString("dd.MM.yyyy"));
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -158,9 +166,8 @@ namespace ZennoPosterDataBaseAndProfile
             project.SendInfoToLog("Назначили профиль " + project.Profile.NickName + " в проект", true);
         }//Загрузка профиля в зенопостер
 
-        public void UpdateCountSessionDay()
+        public void UpdateCountSessionDay(SQLiteConnection sqliteConnection)
         {
-            SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
 
             string ProfileStringRequest = String.Format("UPDATE Profiles SET CountSessionDay = '0' WHERE PathToProfile = '{0}'",
                 DataBaseAndProfileValue.PathToProfile);
@@ -169,8 +176,7 @@ namespace ZennoPosterDataBaseAndProfile
 
             sQLiteCommand.ExecuteReader();
 
-            sqliteConnection.Close();
             project.SendInfoToLog("Обнулили количество дневных сессий", true);
-        }
+        }//Обнуление дневных сессий профиля
     }
 }
