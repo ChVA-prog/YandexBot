@@ -133,7 +133,7 @@ namespace ZennoPosterProxy
                 return true;
             }
         }//Проверка прокси
-
+        
         public void CheckIp()
         {
             string Proxy = ProxyValue.ProxyLine;
