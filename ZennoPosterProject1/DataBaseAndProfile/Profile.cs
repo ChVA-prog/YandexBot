@@ -168,7 +168,7 @@ namespace ZennoPosterDataBaseAndProfile
 
         public void UpdateCountSessionDay(SQLiteConnection sqliteConnection)
         {
-
+            DataBaseAndProfileValue.CountSessionDay = 0;
             string ProfileStringRequest = String.Format("UPDATE Profiles SET CountSessionDay = '0' WHERE PathToProfile = '{0}'",
                 DataBaseAndProfileValue.PathToProfile);
 
