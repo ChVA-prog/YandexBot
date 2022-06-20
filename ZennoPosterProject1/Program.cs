@@ -25,6 +25,10 @@ using System.Data.SQLite;
 using ZennoPosterProxy;
 using ZennoPosterYandexWalk;
 using System.Threading;
+using Newtonsoft.Json;
+using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
+using ZennoPosterYandexRegistration;
+
 
 namespace ZennoPosterProject1
 {
@@ -49,23 +53,7 @@ namespace ZennoPosterProject1
             new InputSettings(instance, project).InitializationInputValue();
 
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance,project);
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[@class='theader__login']", 0);  //войти
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[@class='passp-button passp-exp-register-button']", 0); //Создать id
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[@class='Textinput-Control']", 0); //Номер мобильного телефона
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[@class='Phone-controls']", 0); //Утвердить номер телефона
-            // HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[@class='Textinput-Box']", 0); //Поле ввода кода смс
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[@name='firstname']", 0); //Поле ввода имени
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[@name='lastname']", 0); //Поле ввода фамилии
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[@class='Button2-Text']", 0); //Поле ввода фамилии
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[@class='Checkbox-Tick']", 0); //чек бокс не получать рекламу
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[@class='EulaSignUp-controls']", 0); //Принять пользовательское соглашение
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[@class='avatar__image-wrapper']", 0); //Аватарка аккаунта
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[@class='user-profile__item-title']", 3); //Настройки
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'link__inner')]", 5); //Настройки аккаунта
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'personal-info-login__link')]", 0); //Создать логин
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'Button2-Text')]", 1); //Подтвердить логин
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@name, 'password')]", 0); //Указание пароля
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'PasswordSignUpInDaHouse-controls')]", 0); //Подтверждение пароля
+            StartMethod startMethod = new StartMethod(instance, project);
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'AdditionalPersonalInfo-birthday')]", 0); //изменить дату рождения
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@name, 'birthday-day')]", 0); //указать день рождения
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//select[contains(@name, 'month')]", 0); //окно выбора месяца рождения
@@ -78,9 +66,7 @@ namespace ZennoPosterProject1
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'AdditionalPersonalInfo-link')]", 0); //изменить публичный адрес
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'PublicId-suggestValue')]", random.Next(0,3)); //выбор никнейма
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'PublicId-formButtons')]", 0); //Подтвердить никнейм
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'Section Section_isHidden p-mails')]", 0); //Почта и телефоны
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 's-block__mt')]", 0); //Изменить список
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class,'UniversalTile UniversalTile_isTouch')]", 1); //Отключить вход по смс
+
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'PageNavigation-linkTitle')]", 0); //Возврат в аккаунт
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//a[contains(@class,'personal-info__add-avatar d-link')]", 0); //Добавить фото
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//a[contains(@class,'personal-info__add-avatar d-link')]", 0); //Ввод ссылки на фото
@@ -90,14 +76,20 @@ namespace ZennoPosterProject1
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class,'Addresses-link')]", 0); //Добавить домашний и рабочий адрес
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@class,'addressLine')]", 0); //Ввод адреса 
             //swipeAndClick.SetText(he, project.Profile.Country + "," + project.Profile.CurrentRegion + "," + "Киевская улица" + "," + "5k6");
-            HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'p-control-saveblock-button')]", 0); //Сохранить адрес
+            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'p-control-saveblock-button')]", 0); //Сохранить адрес
 
 
             //swipeAndClick.SetText(he, "");
+            // HtmlElement htmlElement = instance.ActiveTab.FindElementByXPath("//a[@class='home-link2 theader__link  home-link2_color_inherit']", 0);
+            //swipeAndClick.ClickToElement(htmlElement);
 
-            swipeAndClick.ClickToElement(he);
 
+            //string ApiGetResponce = "https://smshub.org/stubs/handler_api.php?api_key=101937U9065b39e17557f2ce72e71392e5eb7be&action=getNumbersStatus&country=0&operator=megafon";
 
+            //var resultHttpGet = ZennoPoster.HttpGet(ApiGetResponce, "", "UTF-8",
+            //    ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);         ПОЛУЧЕНИЕ СПИСКА НОМЕРОВ
+
+            startMethod.YandexRegistration();
 
             return executionResult;
         }

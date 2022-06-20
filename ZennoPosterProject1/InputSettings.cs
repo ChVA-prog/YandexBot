@@ -5,6 +5,8 @@ using ZennoPosterEmulation;
 using ZennoPosterProxy;
 using ZennoPosterYandexWalk;
 using ZennoPosterSiteWalk;
+using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
+using ZennoPosterYandexRegistration;
 
 namespace ZennoPosterProject1
 {
@@ -25,6 +27,8 @@ namespace ZennoPosterProject1
             new ProxyValue(instance, project);
             new YandexWalkValue(project);
             new SiteWalkValue(instance, project);
+            new SmshubValue(instance, project);
+            new YandexRegistrationValue(instance, project);
         }//Считывание входных настроек
     }
 }
