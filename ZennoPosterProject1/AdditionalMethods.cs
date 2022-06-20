@@ -37,9 +37,10 @@ namespace ZennoPosterProject1
         }//Завершение программы по ошибке с изменением статусов профиля и прокси
 
         public void WaitDownloading()
-        {         
+        {
+            Random random = new Random();
             instance.ActiveTab.WaitDownloading();
-            Thread.Sleep(6000);
+            Thread.Sleep(random.Next(10000,15000));
             instance.ActiveTab.WaitDownloading();
         }//Ожидание загрузки страницы
     }

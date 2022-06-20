@@ -65,7 +65,7 @@ namespace ZennoPosterYandexWalk
             }
         }//Закрытие рекламы
 
-        private void GoToYandex()
+        public void GoToYandex()
         {           
             Project.SendInfoToLog("Переходим на страницу яндекса", true);
             instance.ActiveTab.Navigate(new YandexWalkSettings(instance,Project).GetRandomYandexHost());

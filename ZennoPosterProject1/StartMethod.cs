@@ -6,6 +6,7 @@ using ZennoPosterProxy;
 using ZennoPosterYandexWalk;
 using ZennoPosterSiteWalk;
 using System;
+using ZennoPosterYandexRegistration;
 
 
 namespace ZennoPosterProject1
@@ -41,5 +42,28 @@ namespace ZennoPosterProject1
             profile.UpdateStatusProfile("Free", DataBaseAndProfileValue.CountSession + 1, DataBaseAndProfileValue.CountSessionDay +1);
 
         }//Запуск нагуливания кукисов
+        public void YandexRegistration()
+        {
+            DBMethods dBMethods = new DBMethods(instance,project);
+            ProxyDB proxyDB = new ProxyDB(instance, project);
+            Profile profile = new Profile(instance, project);
+
+            
+            dBMethods.DownloadProfileInZennoposter();
+            proxyDB.SetProxyInInstance();
+            try
+            {
+                new RegistrationAndSettingsAccount(instance, project).RegisterAccountAndSetPassword();
+            }
+            catch (Exception ex)
+            {
+                project.SendErrorToLog("Вышли из регистрации аккауннта по ошибке: " + ex.Message);
+                new AdditionalMethods(instance, project).ErrorExit();
+            }
+            proxyDB.ChangeIp();
+            proxyDB.ChangeStatusProxyInDB("Free");
+            dBMethods.UpdateStatusProfile("Free", "YES");
+
+        }
     }
 }
