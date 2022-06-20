@@ -129,13 +129,12 @@ namespace ZennoPosterProxy
             if (resultHttpGet.ToString().Length == 0 || (resultHttpGet.ToString().Substring(8, 3) == "502"))
             {              
                 CounterCheckProxy++;
-                if(CounterCheckProxy == 10)
+                if(CounterCheckProxy != 10)
                 {
-                    return false;
+                    project.SendWarningToLog("Прокси не прошел проверку на живучесть, ждем 5 секунд и проверяем еще раз", true);
+                    Thread.Sleep(5000);
+                    CheckProxy();
                 }
-                project.SendWarningToLog("Прокси не прошел проверку на живучесть, ждем 5 секунд и проверяем еще раз",true);
-                Thread.Sleep(5000);
-                CheckProxy();
                 return false;
             }
             else
