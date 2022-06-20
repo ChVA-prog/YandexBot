@@ -133,6 +133,7 @@ namespace ZennoPosterProxy
                 {
                     return false;
                 }
+                project.SendWarningToLog("Прокси не прошел проверку на живучесть, ждем 5 секунд и проверяем еще раз",true);
                 Thread.Sleep(5000);
                 CheckProxy();
                 return false;
