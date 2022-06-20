@@ -119,13 +119,22 @@ namespace ZennoPosterProxy
             }
         }//Назначить прокси из БД в инстанс
 
+
+        int CounterCheckProxy;
         public bool CheckProxy()
         {
             string Proxy = ProxyValue.ProxyLine;
             var resultHttpGet = ZennoPoster.HttpGet("http://www.google.com", Proxy, "UTF-8",
                 ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.HeaderOnly);
             if (resultHttpGet.ToString().Length == 0 || (resultHttpGet.ToString().Substring(8, 3) == "502"))
-            {
+            {              
+                CounterCheckProxy++;
+                if(CounterCheckProxy == 10)
+                {
+                    return false;
+                }
+                Thread.Sleep(5000);
+                CheckProxy();
                 return false;
             }
             else
