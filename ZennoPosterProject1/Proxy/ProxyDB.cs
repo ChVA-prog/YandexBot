@@ -80,10 +80,10 @@ namespace ZennoPosterProxy
                 if (String.IsNullOrEmpty(ProxyValue.ProxyLine))
                 {
                     sqliteConnection.Close();                   
-                    project.SendErrorToLog("Нету свободной прокси",true);
-                    new AdditionalMethods(instance, project).ErrorExit();
+                    throw new Exception("Нету свободной прокси");
                 }
             }
+           
             catch (Exception ex)
             {
                 project.SendErrorToLog("Ошибка при попытке получить прокси из БД: " + ex.Message,true);
@@ -133,7 +133,7 @@ namespace ZennoPosterProxy
                 return true;
             }
         }//Проверка прокси
-
+        
         public void CheckIp()
         {
             string Proxy = ProxyValue.ProxyLine;
@@ -166,11 +166,11 @@ namespace ZennoPosterProxy
                 WebRequest wrGETURL = WebRequest.Create(ProxyValue.ProxyChangeIpUrl);
                 string otvet = wrGETURL.GetResponse().ToString();
                 project.SendInfoToLog("Сделали запрос на смену IP", true);
-                Thread.Sleep(5000);
+                Thread.Sleep(10000);
             }
             catch(Exception ex)
             {
-                project.SendErrorToLog("Не удалось сменить IP: " + ex.Message,true);
+                throw new Exception("Не удалось сменить IP: " + ex.Message);
             }
         }//Смена Ip
     }

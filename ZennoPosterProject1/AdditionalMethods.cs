@@ -29,11 +29,11 @@ namespace ZennoPosterProject1
             }
             catch(Exception ex)
             {
-                project.SendErrorToLog("Не сменили Ip после ошибки: " + ex.Message);
+                project.SendErrorToLog(ex.Message);
             }
 
-            new Profile(instance,project).UpdateStatusProfile("Free", DataBaseAndProfileValue.CountSession++, DataBaseAndProfileValue.CountSessionDay++);
-            Environment.Exit(0);
+            new Profile(instance,project).UpdateStatusProfile("Free");
+            throw new Exception("Выходим по ошибке!");
         }//Завершение программы по ошибке с изменением статусов профиля и прокси
 
         public void WaitDownloading()

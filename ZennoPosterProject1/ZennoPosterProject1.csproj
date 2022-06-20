@@ -156,7 +156,6 @@
     <Compile Include="SiteWalk\SiteWalk.cs" />
     <Compile Include="SiteWalk\SiteWalkSettings.cs" />
     <Compile Include="SiteWalk\SIteWalkValue.cs" />
-    <Compile Include="YandexRegistration\YandexRegistrationValue.cs" />
     <Compile Include="YandexWalk\Extansion.cs" />
     <Compile Include="YandexWalk\YandexNavigate.cs" />
     <Compile Include="YandexWalk\YandexWalk.cs" />
