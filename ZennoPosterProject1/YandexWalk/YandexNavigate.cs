@@ -17,7 +17,7 @@ namespace ZennoPosterYandexWalk
             this.instance = instance;
             this.Project = project;
         }
-        Random random = new Random();
+
         public void GoToSearchQuery()
         { 
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);

@@ -46,10 +46,9 @@ namespace ZennoPosterProject1
         /// <returns>Код выполнения скрипта</returns>		
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
-            Random random = new Random();
-
             int executionResult = 0;
-
+            project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
+            project.SendInfoToLog("Считываем входные настройки", true);
             new InputSettings(instance, project).InitializationInputValue();
 
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance,project);
@@ -90,8 +89,31 @@ namespace ZennoPosterProject1
             //    ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);         ПОЛУЧЕНИЕ СПИСКА НОМЕРОВ
 
             startMethod.YandexRegistration();
+            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class,'Section Section_isHidden Addresses Addresses_v2')]", 0); //Адреса
+            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class,'Addresses-link')]", 0); //Добавить домашний и рабочий адрес
+            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@class,'addressLine')]", 0); //Ввод адреса 
+            //swipeAndClick.SetText(he, project.Profile.Country + "," + project.Profile.CurrentRegion + "," + "Киевская улица" + "," + "5k6");
+}
+            swipeAndClick.ClickToElement(he);
+
+
 
             return executionResult;
         }
     }
 }
+
+
+
+
+
+            /* 
+             * НАГУЛИВАНИЕ КУКИСОВ  
+             * 
+            project.SendInfoToLog("Считываем входные настройки", true);
+            new InputSettings(instance, project).InitializationInputValue();
+
+            project.SendInfoToLog("Запускаем нагуливание кук.", true);
+            new StartMethod(instance, project).FeedingCookies();
+            project.SendInfoToLog("Закончили.");
+            */

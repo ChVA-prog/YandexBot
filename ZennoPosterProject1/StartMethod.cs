@@ -34,8 +34,7 @@ namespace ZennoPosterProject1
             }
             catch(Exception ex)
             {
-                project.SendErrorToLog("Вышли из GoYandexWalk по ошибке: " + ex.Message);
-                new AdditionalMethods(instance, project).ErrorExit();
+                project.SendErrorToLog("Вышли из GoYandexWalk по ошибке: " + ex.Message,true);
             }
             instance.CloseAllTabs();
             proxyDB.ChangeIp();
