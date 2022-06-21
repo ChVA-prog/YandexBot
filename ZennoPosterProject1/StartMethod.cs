@@ -44,16 +44,16 @@ namespace ZennoPosterProject1
         }//Запуск нагуливания кукисов
         public void YandexRegistration()
         {
-            DBMethods dBMethods = new DBMethods(instance,project);
+            DBMethods dBMethods = new DBMethods(instance, project);
             ProxyDB proxyDB = new ProxyDB(instance, project);
-            Profile profile = new Profile(instance, project);
 
-            
             dBMethods.DownloadProfileInZennoposter();
             proxyDB.SetProxyInInstance();
             try
             {
                 new RegistrationAndSettingsAccount(instance, project).RegisterAccountAndSetPassword();
+                new RegistrationAndSettingsAccount(instance, project).SetLoginAndPasswordAndRemovePhoneNumber();
+                new RegistrationAndSettingsAccount(instance, project).DeletePhoneNumberFromAccount();
             }
             catch (Exception ex)
             {

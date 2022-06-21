@@ -37,7 +37,7 @@ namespace ZennoPosterProject1
     /// </summary>
     public class Program : IZennoExternalCode
     {
-        
+
         /// <summary>
         /// Метод для запуска выполнения скрипта
         /// </summary>
@@ -51,7 +51,7 @@ namespace ZennoPosterProject1
             project.SendInfoToLog("Считываем входные настройки", true);
             new InputSettings(instance, project).InitializationInputValue();
 
-            SwipeAndClick swipeAndClick = new SwipeAndClick(instance,project);
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             StartMethod startMethod = new StartMethod(instance, project);
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'AdditionalPersonalInfo-birthday')]", 0); //изменить дату рождения
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@name, 'birthday-day')]", 0); //указать день рождения
@@ -93,12 +93,11 @@ namespace ZennoPosterProject1
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class,'Addresses-link')]", 0); //Добавить домашний и рабочий адрес
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@class,'addressLine')]", 0); //Ввод адреса 
             //swipeAndClick.SetText(he, project.Profile.Country + "," + project.Profile.CurrentRegion + "," + "Киевская улица" + "," + "5k6");
-}
-            swipeAndClick.ClickToElement(he);
 
 
 
             return executionResult;
+        
         }
     }
 }

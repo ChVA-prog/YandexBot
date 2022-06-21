@@ -86,7 +86,7 @@ namespace ZennoPosterYandexRegistration
         {
             SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', YandexRegistration = '{2}', DateYandexRegistration = '{3}', YandexLogin = '{4}', YandexPassword = '{4}' " +
+            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', YandexRegistration = '{2}', DateYandexRegistration = '{3}', YandexLogin = '{4}', YandexPassword = '{5}' " +
                 "WHERE PathToProfile = '{0}'", ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile, Status, YandexRegistration, DateTime.Now.ToString("dd.MM.yyyy"), YandexRegistrationValue.YandexLogin, YandexRegistrationValue.YandexPassword);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);

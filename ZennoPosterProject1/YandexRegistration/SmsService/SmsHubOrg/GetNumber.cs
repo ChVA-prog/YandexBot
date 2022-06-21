@@ -91,7 +91,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
 
             if(resultHttpGet.Contains("STATUS_WAIT_CODE"))
             {
-                if(CounterGetNumber == 15)
+                if(CounterGetNumber == 30)
                 {
                   RefuseGetNumber();
 
@@ -110,7 +110,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
             {
                 SmshubValue.CodeActivation = resultHttpGet.Split(':')[1];
                 project.SendInfoToLog("Получили код: " + SmshubValue.CodeActivation, true);
-                EndUseNumber();
+                NeedMoreSms();
             }
         }
         public void RefuseGetNumber()
@@ -124,6 +124,12 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
             string EndUseNumber = String.Format("https://smshub.org/stubs/handler_api.php?api_key={0}&action=setStatus&status=6&id={1}", SmshubValue.ApiKeySmshub, SmshubValue.IdActivation);
             ZennoPoster.HttpGet(EndUseNumber, "", "UTF-8", ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);
             project.SendInfoToLog("Завершили работу с номером", true);
+        }
+        public void NeedMoreSms()
+        { 
+                string EndUseNumber = String.Format("https://smshub.org/stubs/handler_api.php?api_key={0}&action=setStatus&status=3&id={1}", SmshubValue.ApiKeySmshub, SmshubValue.IdActivation);
+                ZennoPoster.HttpGet(EndUseNumber, "", "UTF-8", ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);
+                project.SendInfoToLog("Подготовили номер к еще одной смс", true);
         }
     }
 }
