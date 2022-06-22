@@ -34,7 +34,7 @@ namespace ZennoPosterProject1
             }
             catch(Exception ex)
             {                
-                project.SendErrorToLog("Вышли из GoYandexWalk по ошибке: " + ex.Message,true);
+                project.SendErrorToLog("Вышли по ошибке: " + ex.Message,true);
             }
             instance.CloseAllTabs();
             profile.SaveProfile();            
