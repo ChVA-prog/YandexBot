@@ -161,7 +161,7 @@ namespace ZennoPosterDataBaseAndProfile
             }
 
             project.Profile.Load(DataBaseAndProfileValue.PathToProfile);
-            project.SendInfoToLog("Назначили профиль " + project.Profile.NickName + " в проект", true);
+            project.SendInfoToLog("Назначили профиль " + DataBaseAndProfileValue.PathToProfile + " в проект", true);
         }//Загрузка профиля в зенопостер
 
         public void UpdateCountSessionDay(SQLiteConnection sqliteConnection)
