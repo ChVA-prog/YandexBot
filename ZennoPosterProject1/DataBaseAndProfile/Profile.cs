@@ -34,9 +34,7 @@ namespace ZennoPosterDataBaseAndProfile
                 {                    
                     string PathToSaveProfile = DataBaseAndProfileValue.PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
                     project.Profile.Save(PathToSaveProfile, true, true, true, true, true, true, true, true, true, null);
-
                     SaveProfileDataToDB(PathToSaveProfile);
-
                     project.SendInfoToLog("Сохранили профиль : " + project.Profile.NickName + " в БД",true);
                     Thread.Sleep(2000);
                 }                             
@@ -60,8 +58,8 @@ namespace ZennoPosterDataBaseAndProfile
         {
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("INSERT INTO Profiles(PathToProfile, TimeToGetYandex, CountSession, CountSessionDay, TimeToNextGetYandex, Status) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}')",
-                PathTosave, DateTime.UtcNow.AddDays(3).ToString("dd-MM-yyyy HH-mm-ss"), 0, 0, DateTime.UtcNow.ToString("dd-MM-yyyy HH-mm-ss"), "Free");
+            string ProfileStringRequest = String.Format("INSERT INTO Profiles(PathToProfile, TimeToGetYandex, CountSession, CountSessionDay, TimeToNextGetYandex, Status, DateLastEnterYandex, YandexRegistration) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')",
+                PathTosave, DateTime.UtcNow.AddDays(3).ToString("dd-MM-yyyy HH-mm-ss"), 0, 0, DateTime.UtcNow.ToString("dd-MM-yyyy HH-mm-ss"), "Free", DateTime.MinValue.ToString("dd.MM.yyyy"), "NO");
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -89,7 +87,7 @@ namespace ZennoPosterDataBaseAndProfile
                     DataBaseAndProfileValue.CountSession = Convert.ToInt32(reader.GetValue(1).ToString());
                     DataBaseAndProfileValue.CountSessionDay = Convert.ToInt32(reader.GetValue(2).ToString());
 
-                    if (!String.IsNullOrEmpty(reader.GetString(3)) && Convert.ToDateTime(reader.GetString(3)) < DateTime.Now.Date)
+                    if (DataBaseAndProfileValue.CountSessionDay != 0 && (Convert.ToDateTime(reader.GetString(3)) < DateTime.Now.Date))
                     {
                         UpdateCountSessionDay(sqliteConnection);
                     }
@@ -178,5 +176,12 @@ namespace ZennoPosterDataBaseAndProfile
 
             project.SendInfoToLog("Обнулили количество дневных сессий", true);
         }//Обнуление дневных сессий профиля
+        public void SaveProfile()
+        {
+            string PathToSaveProfile = DataBaseAndProfileValue.PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
+            project.Profile.Save(PathToSaveProfile, true, true, true, true, true, true, true, true, true, null);
+            project.SendErrorToLog("Сохранили профиль", true);
+        }//Сохранение профиля
+
     }
 }
