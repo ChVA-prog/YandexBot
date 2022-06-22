@@ -96,6 +96,9 @@ namespace ZennoPosterProject1
 
 
 
+            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'Создать ID')]", 0);
+            //swipeAndClick.SwipeAndClickToElement(he);
+
             return executionResult;
         
         }

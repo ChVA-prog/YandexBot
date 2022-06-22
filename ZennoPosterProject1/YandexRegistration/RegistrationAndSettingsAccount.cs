@@ -62,6 +62,7 @@ namespace ZennoPosterYandexRegistration
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementSettings, 0));
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementAccountSettings);
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementAccountSettings, 0));
+            additionalMethods.WaitDownloading();
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementCreateLogin);
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementCreateLogin, 0));
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementSetLogin);
@@ -80,6 +81,7 @@ namespace ZennoPosterYandexRegistration
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementApprovedPassword, 0));
             YandexRegistrationValue.YandexPassword = project.Profile.Password;
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementMailAndPhone);
+            additionalMethods.WaitDownloading();
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementMailAndPhone, 0));
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementChangeMailAndPhoneList);
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementChangeMailAndPhoneList, 0));
@@ -92,13 +94,14 @@ namespace ZennoPosterYandexRegistration
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             GetNumber getNumber = new GetNumber(instance, project);
-
-            additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementSettings);
+            //div[contains(@class, 'MainPhonesTiles')]
+            additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementHumberSettings);
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementHumberSettings, 0)); // Настройки номера
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementWhyDeletePhoneNumber);
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementWhyDeletePhoneNumber, 0));  //как удалить
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementNextPageDeleteNumber);
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementNextPageDeleteNumber, 0)); // Далее
+            additionalMethods.WaitDownloading();
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementSecurityQuestionMenu);
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementSecurityQuestionMenu, 0)); //Выпадающее меню конктрольный вопрос
 
@@ -131,6 +134,7 @@ namespace ZennoPosterYandexRegistration
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementSendSmsForDeletePhoneNumber);
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementSendSmsForDeletePhoneNumber, 0)); // Отправить смс
             getNumber.GetSmsCode();
+            getNumber.EndUseNumber();
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementInputSmsCodeDeletePhoneNumber);
             swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementInputSmsCodeDeletePhoneNumber, 0), SmshubValue.CodeActivation); // Ввести смс код
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementInputPasswordForDeletePhoneNumber);
@@ -138,24 +142,23 @@ namespace ZennoPosterYandexRegistration
             additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementConfirmDeletePhoneNumber);
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementConfirmDeletePhoneNumber, 0)); // Подтвердить
 
-            additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementBackAccountSettings);
-            swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementBackAccountSettings, 0)); // Возврат на страницу с найтроками аккаунта
-
+            additionalMethods.WaitHtmlElement(YandexRegistrationValue.HtmlElementGoYandexFromAccountSettings);
+            swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementGoYandexFromAccountSettings, 0));
+            additionalMethods.WaitHtmlElement(YandexWalkValue.HtmlElementInputSearch);
+            swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementInputSearch, 0), "Вк");
+            swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchButton, 0));
+            additionalMethods.WaitHtmlElement(YandexWalkValue.HtmlElementSearchResultsCard);
+            swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchResultsCard, 0));
+            additionalMethods.WaitDownloading();
+            instance.AllTabs.First().Close();
+            additionalMethods.WaitDownloading();
+            instance.CloseAllTabs();
 
         }//Отвязка номера и установка контрольного вопроса
 
 
 
 
-        //swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexRegistrationValue.HtmlElementGoYandexFromAccountSettings, 0));
-        //additionalMethods.WaitHtmlElement(YandexWalkValue.HtmlElementInputSearch);
-        //swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementInputSearch, 0), "Вк");
-        //swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchButton, 0));
-        //additionalMethods.WaitHtmlElement(YandexWalkValue.HtmlElementSearchResultsCard);
-        //swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchResultsCard, 0));
-        //additionalMethods.WaitDownloading();
-        //instance.AllTabs.First().Close();
-        // additionalMethods.WaitDownloading();
-        //instance.CloseAllTabs();
+
     }
 }
