@@ -34,9 +34,7 @@ namespace ZennoPosterDataBaseAndProfile
                 {                    
                     string PathToSaveProfile = DataBaseAndProfileValue.PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
                     project.Profile.Save(PathToSaveProfile, true, true, true, true, true, true, true, true, true, null);
-
                     SaveProfileDataToDB(PathToSaveProfile);
-
                     project.SendInfoToLog("Сохранили профиль : " + project.Profile.NickName + " в БД",true);
                     Thread.Sleep(2000);
                 }                             
@@ -178,5 +176,12 @@ namespace ZennoPosterDataBaseAndProfile
 
             project.SendInfoToLog("Обнулили количество дневных сессий", true);
         }//Обнуление дневных сессий профиля
+        public void SaveProfile()
+        {
+            string PathToSaveProfile = DataBaseAndProfileValue.PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
+            project.Profile.Save(PathToSaveProfile, true, true, true, true, true, true, true, true, true, null);
+            project.SendErrorToLog("Сохранили профиль", true);
+        }//Сохранение профиля
+
     }
 }

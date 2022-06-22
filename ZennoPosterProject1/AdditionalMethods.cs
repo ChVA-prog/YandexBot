@@ -31,8 +31,6 @@ namespace ZennoPosterProject1
             {
                 project.SendErrorToLog(ex.Message);
             }
-
-            new Profile(instance,project).UpdateStatusProfile("Free");
             throw new Exception("Выходим по ошибке!");
         }//Завершение программы по ошибке с изменением статусов профиля и прокси
 

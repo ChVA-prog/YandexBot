@@ -25,17 +25,19 @@ namespace ZennoPosterProject1
             Profile profile = new Profile(instance,project);
             ProxyDB proxyDB = new ProxyDB(instance, project);
            
-            profile.DownloadProfileInZennoposter();
-            proxyDB.SetProxyInInstance();
+            
             try
             {
+                profile.DownloadProfileInZennoposter();
+                proxyDB.SetProxyInInstance();
                 new YandexWalk(instance, project).GoYandexWalk();
             }
             catch(Exception ex)
-            {
+            {                
                 project.SendErrorToLog("Вышли из GoYandexWalk по ошибке: " + ex.Message,true);
             }
             instance.CloseAllTabs();
+            profile.SaveProfile();            
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
             profile.UpdateStatusProfile("Free", DataBaseAndProfileValue.CountSession + 1, DataBaseAndProfileValue.CountSessionDay +1);
