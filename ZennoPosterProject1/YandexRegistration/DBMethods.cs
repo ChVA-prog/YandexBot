@@ -31,9 +31,14 @@ namespace ZennoPosterYandexRegistration
         public int GetCountProfileInDB()
         {
             SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
-            SQLiteCommand sQLiteCommand = new SQLiteCommand(sqliteConnection) { CommandText = "SELECT COUNT(*) FROM Profiles WHERE Status = 'Free' AND YandexRegistration = 'NO'" };
+            SQLiteCommand sQLiteCommand = new SQLiteCommand(sqliteConnection) { CommandText = String.Format("SELECT COUNT(*) FROM Profiles WHERE Status = 'Free' AND YandexRegistration = 'NO' AND TimeToGetYandex < '{0}'",DateTime.Now) };
 
             object CountProfile = sQLiteCommand.ExecuteScalar();
+
+            if (Convert.ToInt32(CountProfile) < 1)
+            {
+                throw new Exception("В базе данных нету подходящих профилей");
+            }
 
             sqliteConnection.Close();
 
@@ -79,7 +84,7 @@ namespace ZennoPosterYandexRegistration
                 new AdditionalMethods(instance, project).ErrorExit();
             }
             project.Profile.Load(ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile);
-            project.SendInfoToLog("Назначили профиль " + project.Profile.NickName + " в проект", true);
+            project.SendInfoToLog("Назначили профиль " + ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile + " в проект", true);
         }//Загрузка профиля в зенопостер
 
         public void UpdateStatusProfile(string Status, string YandexRegistration)

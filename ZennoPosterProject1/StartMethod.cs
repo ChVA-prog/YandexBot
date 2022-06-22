@@ -46,10 +46,21 @@ namespace ZennoPosterProject1
         }//Запуск нагуливания кукисов
         public void YandexRegistration()
         {
+            Profile profile = new Profile(instance, project);
             DBMethods dBMethods = new DBMethods(instance, project);
             ProxyDB proxyDB = new ProxyDB(instance, project);
 
-            dBMethods.DownloadProfileInZennoposter();
+            try
+            {
+                dBMethods.DownloadProfileInZennoposter();
+            }
+            catch (Exception ex)
+            {
+                
+                project.SendErrorToLog("Не получили профиль из базы данных. " + ex.Message,true);
+                throw new Exception(ex.Message);
+            }
+            
             proxyDB.SetProxyInInstance();
             try
             {
@@ -62,6 +73,7 @@ namespace ZennoPosterProject1
                 project.SendErrorToLog("Вышли из регистрации аккауннта по ошибке: " + ex.Message);
                 new AdditionalMethods(instance, project).ErrorExit();
             }
+            profile.SaveProfile();
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
             dBMethods.UpdateStatusProfile("Free", "YES");

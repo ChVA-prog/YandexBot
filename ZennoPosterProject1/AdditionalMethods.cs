@@ -72,7 +72,8 @@ namespace ZennoPosterProject1
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'CheckboxCaptcha-Checkbox')]", 0));
                 Thread.Sleep(20000);
             }
-            
+
+         
         }
     }
 }

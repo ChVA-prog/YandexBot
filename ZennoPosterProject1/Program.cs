@@ -37,7 +37,7 @@ namespace ZennoPosterProject1
     /// </summary>
     public class Program : IZennoExternalCode
     {
-
+        
         /// <summary>
         /// Метод для запуска выполнения скрипта
         /// </summary>
@@ -94,7 +94,7 @@ namespace ZennoPosterProject1
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@class,'addressLine')]", 0); //Ввод адреса 
             //swipeAndClick.SetText(he, project.Profile.Country + "," + project.Profile.CurrentRegion + "," + "Киевская улица" + "," + "5k6");
 
-
+            
 
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'Создать ID')]", 0);
             //swipeAndClick.SwipeAndClickToElement(he);
