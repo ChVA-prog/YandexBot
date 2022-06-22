@@ -161,7 +161,7 @@ namespace ZennoPosterDataBaseAndProfile
             }
 
             project.Profile.Load(DataBaseAndProfileValue.PathToProfile);
-            project.SendInfoToLog("Назначили профиль " + project.Profile.NickName + " в проект", true);
+            project.SendInfoToLog("Назначили профиль " + DataBaseAndProfileValue.PathToProfile + " в проект", true);
         }//Загрузка профиля в зенопостер
 
         public void UpdateCountSessionDay(SQLiteConnection sqliteConnection)
@@ -180,7 +180,7 @@ namespace ZennoPosterDataBaseAndProfile
         {
             string PathToSaveProfile = DataBaseAndProfileValue.PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
             project.Profile.Save(PathToSaveProfile, true, true, true, true, true, true, true, true, true, null);
-            project.SendErrorToLog("Сохранили профиль", true);
+            project.SendInfoToLog("Сохранили профиль" + PathToSaveProfile, true);
         }//Сохранение профиля
 
     }
