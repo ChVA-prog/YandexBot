@@ -180,7 +180,7 @@ namespace ZennoPosterDataBaseAndProfile
         {
             string PathToSaveProfile = DataBaseAndProfileValue.PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
             project.Profile.Save(PathToSaveProfile, true, true, true, true, true, true, true, true, true, null);
-            project.SendErrorToLog("Сохранили профиль", true);
+            project.SendInfoToLog("Сохранили профиль" + PathToSaveProfile, true);
         }//Сохранение профиля
 
     }
