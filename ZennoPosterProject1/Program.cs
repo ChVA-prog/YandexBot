@@ -47,11 +47,9 @@ namespace ZennoPosterProject1
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
             int executionResult = 0;
-            project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
+            project.SendInfoToLog("Это сборка из ветки YandexRegistration!", true);
             project.SendInfoToLog("Считываем входные настройки", true);
-            new InputSettings(instance, project).InitializationInputValue();
-
-            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
+            new InputSettings(instance, project).InitializationInputValue();           
             StartMethod startMethod = new StartMethod(instance, project);
 
             try
