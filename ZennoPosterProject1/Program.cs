@@ -1,6 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Net.Sockets;
+using System.Resources;
+using System.Text;
 using ZennoLab.CommandCenter;
+using ZennoLab.Emulation;
 using ZennoLab.InterfacesLibrary.ProjectModel;
+using ZennoLab.InterfacesLibrary.ProjectModel.Enums;
+using ZennoLab.InterfacesLibrary;
+using ZennoLab.InterfacesLibrary.ProjectModel.Collections;
+using ZennoLab.Macros;
+using Global.ZennoExtensions;
+using ZennoLab.CommandCenter.TouchEvents;
+using ZennoLab.CommandCenter.FullEmulation;
+using ZennoLab.InterfacesLibrary.Enums;
+using ZennoPosterSiteWalk;
+using ZennoPosterEmulation;
+using ZennoPosterDataBaseAndProfile;
+using System.Data.SQLite;
+using ZennoPosterProxy;
+using ZennoPosterYandexWalk;
+using System.Threading;
 
 
 namespace ZennoPosterProject1
