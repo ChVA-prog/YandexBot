@@ -1,10 +1,8 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.CommandCenter;
 using ZennoPosterDataBaseAndProfile;
-using ZennoPosterEmulation;
 using ZennoPosterProxy;
 using ZennoPosterYandexWalk;
-using ZennoPosterSiteWalk;
 using System;
 using ZennoPosterYandexRegistration;
 
@@ -26,17 +24,19 @@ namespace ZennoPosterProject1
             Profile profile = new Profile(instance,project);
             ProxyDB proxyDB = new ProxyDB(instance, project);
            
-            profile.DownloadProfileInZennoposter();
-            proxyDB.SetProxyInInstance();
+            
             try
             {
+                profile.DownloadProfileInZennoposter();
+                proxyDB.SetProxyInInstance();
                 new YandexWalk(instance, project).GoYandexWalk();
             }
             catch(Exception ex)
-            {
-                project.SendErrorToLog("Вышли из GoYandexWalk по ошибке: " + ex.Message,true);
+            {                
+                project.SendErrorToLog("Вышли по ошибке: " + ex.Message,true);
             }
             instance.CloseAllTabs();
+            profile.SaveProfile();            
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
             profile.UpdateStatusProfile("Free", DataBaseAndProfileValue.CountSession + 1, DataBaseAndProfileValue.CountSessionDay +1);
@@ -44,26 +44,48 @@ namespace ZennoPosterProject1
         }//Запуск нагуливания кукисов
         public void YandexRegistration()
         {
-            DBMethods dBMethods = new DBMethods(instance,project);
-            ProxyDB proxyDB = new ProxyDB(instance, project);
             Profile profile = new Profile(instance, project);
+            DBMethods dBMethods = new DBMethods(instance, project);
+            ProxyDB proxyDB = new ProxyDB(instance, project);
 
-            
-            dBMethods.DownloadProfileInZennoposter();
-            proxyDB.SetProxyInInstance();
             try
             {
-                new RegistrationAndSettingsAccount(instance, project).RegisterAccountAndSetPassword();
+                dBMethods.DownloadProfileInZennoposter();
+            }
+            catch (Exception ex)
+            {               
+                project.SendErrorToLog(ex.Message,true);
+                throw new Exception(ex.Message);
+            }//Загрузка профиля в проект.                      
+            try
+            {
+                proxyDB.SetProxyInInstance();
             }
             catch (Exception ex)
             {
-                project.SendErrorToLog("Вышли из регистрации аккауннта по ошибке: " + ex.Message);
-                new AdditionalMethods(instance, project).ErrorExit();
+                project.SendErrorToLog(ex.Message, true);
+                dBMethods.UpdateStatusProfile("Free");
+                throw new Exception(ex.Message);
+            }//Установка прокси в инстанс.
+            try
+            {
+                new RegistrationAndSettingsAccount(instance, project).RegisterAccountAndSetPassword();
+                new RegistrationAndSettingsAccount(instance, project).SetLoginAndPasswordAndRemovePhoneNumber();
+                new RegistrationAndSettingsAccount(instance, project).DeletePhoneNumberFromAccount();
             }
+            catch (Exception ex)
+            {
+                project.SendErrorToLog(ex.Message);
+                profile.SaveProfile();
+                proxyDB.ChangeIp();
+                proxyDB.ChangeStatusProxyInDB("Free");
+                dBMethods.UpdateStatusProfile("Free");
+                throw new Exception(ex.Message);
+            }//Регистрируем аккаунт, устанавливаем логин с паролем, отвязываем номер.
+            profile.SaveProfile();
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
             dBMethods.UpdateStatusProfile("Free", "YES");
-
-        }
+        }//Регистрация в яндексе и отвязка номера
     }
 }

@@ -18,11 +18,9 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
         public static string IdActivation { get; set; }
         public static string CodeActivation { get; set; }
 
-        readonly Instance instance;
         readonly IZennoPosterProjectModel project;
-        public SmshubValue(Instance instance, IZennoPosterProjectModel project)
+        public SmshubValue(IZennoPosterProjectModel project)
         {
-            this.instance = instance;
             this.project = project;
 
             ApiKeySmshub = project.Variables["set_ApiKeySmshub"].Value;

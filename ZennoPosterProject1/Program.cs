@@ -1,33 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net.Sockets;
-using System.Resources;
-using System.Text;
 using ZennoLab.CommandCenter;
-using ZennoLab.Emulation;
 using ZennoLab.InterfacesLibrary.ProjectModel;
-using ZennoLab.InterfacesLibrary.ProjectModel.Enums;
-using ZennoLab.InterfacesLibrary;
-using ZennoLab.InterfacesLibrary.ProjectModel.Collections;
-using ZennoLab.Macros;
-using Global.ZennoExtensions;
-using ZennoLab.CommandCenter.TouchEvents;
-using ZennoLab.CommandCenter.FullEmulation;
-using ZennoLab.InterfacesLibrary.Enums;
-using ZennoPosterSiteWalk;
-using ZennoPosterEmulation;
-using ZennoPosterDataBaseAndProfile;
-using System.Data.SQLite;
-using ZennoPosterProxy;
-using ZennoPosterYandexWalk;
-using System.Threading;
-using Newtonsoft.Json;
-using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
-using ZennoPosterYandexRegistration;
 
 
 namespace ZennoPosterProject1
@@ -52,18 +25,6 @@ namespace ZennoPosterProject1
 
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance,project);
             StartMethod startMethod = new StartMethod(instance, project);
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'AdditionalPersonalInfo-birthday')]", 0); //изменить дату рождения
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@name, 'birthday-day')]", 0); //указать день рождения
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//select[contains(@name, 'month')]", 0); //окно выбора месяца рождения
-            //СДЕЛАТЬ ВЫБОР МЕСЯЦА РОЖДЕНИЯ
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@name, 'birthday-year')]", 0); //указать год рождения
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'Мужской')]", 0); //Выбор мужского пола
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'Женский')]", 0); //Выбор женского пола
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@name, 'city')]", 0); //указать город 
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'p-control-saveblock-button')]", 0); //сохранить настройки
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'AdditionalPersonalInfo-link')]", 0); //изменить публичный адрес
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'PublicId-suggestValue')]", random.Next(0,3)); //выбор никнейма
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'PublicId-formButtons')]", 0); //Подтвердить никнейм
 
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'PageNavigation-linkTitle')]", 0); //Возврат в аккаунт
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//a[contains(@class,'personal-info__add-avatar d-link')]", 0); //Добавить фото

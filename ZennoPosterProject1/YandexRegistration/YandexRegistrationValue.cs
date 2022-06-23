@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ZennoLab.CommandCenter;
-using ZennoLab.InterfacesLibrary.ProjectModel;
-using ZennoPosterEmulation;
-using System.Threading;
-using ZennoPosterSiteWalk;
-using ZennoPosterProject1;
+﻿using ZennoLab.InterfacesLibrary.ProjectModel;
 
 namespace ZennoPosterYandexRegistration
 {
     class YandexRegistrationValue
     {
         readonly IZennoPosterProjectModel project;
-        readonly Instance instance;
 
         public static string HtmlElementEnterId { get; set; }
         public static string HtmlElementCreatId { get; set; }
@@ -39,12 +30,25 @@ namespace ZennoPosterYandexRegistration
         public static string HtmlElementGoYandexFromAccountSettings { get;set;}
         public static string YandexLogin { get; set; }
         public static string YandexPassword { get; set; }
+        public static string  HtmlElementHumberSettings { get; set; }
+        public static string  HtmlElementWhyDeletePhoneNumber { get; set; }
+        public static string  HtmlElementNextPageDeleteNumber { get; set; }
+        public static string  HtmlElementSecurityQuestionMenu { get; set; }
+        public static string  HtmlElementResponceSecurityQuestion { get; set; }
+        public static string  HtmlElementSaveSecurityQuestion { get; set; }
+        public static string  HtmlElementCheckNeedWritePassword { get; set; }
+        public static string  HtmlElementInputPasswordSecurityQuestion { get; set; }
+        public static string  HtmlElementConfirmPasswordSecurityQuestion { get; set; }
+        public static string  HtmlElementDeletePhoneNumber { get; set; }
+        public static string  HtmlElementSendSmsForDeletePhoneNumber { get; set; }
+        public static string  HtmlElementInputSmsCodeDeletePhoneNumber { get; set; }
+        public static string  HtmlElementInputPasswordForDeletePhoneNumber { get; set; }
+        public static string HtmlElementConfirmDeletePhoneNumber { get; set; }
+        public static string HtmlElementBackAccountSettings { get; set; }
 
-        public YandexRegistrationValue(Instance instance, IZennoPosterProjectModel project)
+        public YandexRegistrationValue(IZennoPosterProjectModel project)
         {
-            this.instance = instance;
             this.project = project;
-
 
             HtmlElementEnterId = project.Variables["set_HtmlElementEnterId"].Value;
             HtmlElementCreatId = project.Variables["set_HtmlElementCreatId"].Value;
@@ -68,6 +72,21 @@ namespace ZennoPosterYandexRegistration
             HtmlElementChangeMailAndPhoneList = project.Variables["set_HtmlElementChangeMailAndPhoneList"].Value;
             HtmlElementOffInputSms = project.Variables["set_HtmlElementOffInputSms"].Value;
             HtmlElementGoYandexFromAccountSettings = project.Variables["set_HtmlElementGoYandexFromAccountSettings"].Value;
+            HtmlElementHumberSettings = project.Variables["set_HtmlElementHumberSettings"].Value;
+            HtmlElementWhyDeletePhoneNumber = project.Variables["set_HtmlElementWhyDeletePhoneNumber"].Value;
+            HtmlElementNextPageDeleteNumber = project.Variables["set_HtmlElementNextPageDeleteNumber"].Value;
+            HtmlElementSecurityQuestionMenu = project.Variables["set_HtmlElementSecurityQuestionMenu"].Value;
+            HtmlElementResponceSecurityQuestion = project.Variables["set_HtmlElementResponceSecurityQuestion"].Value;
+            HtmlElementSaveSecurityQuestion = project.Variables["set_HtmlElementSaveSecurityQuestion"].Value;
+            HtmlElementCheckNeedWritePassword = project.Variables["set_HtmlElementCheckNeedWritePassword"].Value;
+            HtmlElementInputPasswordSecurityQuestion = project.Variables["set_HtmlElementInputPasswordSecurityQuestion"].Value;
+            HtmlElementConfirmPasswordSecurityQuestion = project.Variables["set_HtmlElementConfirmPasswordSecurityQuestion"].Value;
+            HtmlElementDeletePhoneNumber = project.Variables["set_HtmlElementDeletePhoneNumber"].Value;
+            HtmlElementSendSmsForDeletePhoneNumber = project.Variables["set_HtmlElementSendSmsForDeletePhoneNumber"].Value;
+            HtmlElementInputSmsCodeDeletePhoneNumber = project.Variables["set_HtmlElementInputSmsCodeDeletePhoneNumber"].Value;
+            HtmlElementInputPasswordForDeletePhoneNumber = project.Variables["set_HtmlElementInputPasswordForDeletePhoneNumber"].Value;
+            HtmlElementConfirmDeletePhoneNumber = project.Variables["set_HtmlElementConfirmDeletePhoneNumber"].Value;
+            HtmlElementBackAccountSettings = project.Variables["set_HtmlElementBackAccountSettings"].Value;
         } 
     }
 }
