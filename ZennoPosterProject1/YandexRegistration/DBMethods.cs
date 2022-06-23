@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
-using ZennoPosterEmulation;
-using System.Threading;
-using ZennoPosterSiteWalk;
-using ZennoPosterProject1;
-using ZennoPosterYandexWalk;
-using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
 using System.Data.SQLite;
 
 namespace ZennoPosterYandexRegistration
@@ -23,12 +15,7 @@ namespace ZennoPosterYandexRegistration
             this.project = project;
         }
 
-        public void GetProfileFromDb()
-        {
-
-        }
-
-        public int GetCountProfileInDB()
+        public void GetCountProfileInDB()
         {
             SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
             SQLiteCommand sQLiteCommand = new SQLiteCommand(sqliteConnection) { CommandText = String.Format("SELECT COUNT(*) FROM Profiles WHERE Status = 'Free' AND YandexRegistration = 'NO' AND TimeToGetYandex < '{0}'",DateTime.Now) };
@@ -37,16 +24,14 @@ namespace ZennoPosterYandexRegistration
 
             if (Convert.ToInt32(CountProfile) < 1)
             {
+                sqliteConnection.Close();
                 throw new Exception("В базе данных нету подходящих профилей");
             }
 
             sqliteConnection.Close();
-
             project.SendInfoToLog("Количество профилей в базе данных для регистрации: " + CountProfile.ToString());
-            return Convert.ToInt32(CountProfile);
         }//Получение количества профилей для работы из БД
-
-        public bool GetProfileFromDB()
+        public void GetProfileFromDB()
         {
             SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
 
@@ -65,28 +50,22 @@ namespace ZennoPosterYandexRegistration
                 
             }
             catch (Exception ex)
-            {
-                project.SendErrorToLog("Ошибка при попытке получить профиль из БД: " + ex.Message, true);
-                new AdditionalMethods(instance, project).ErrorExit();
+            {               
+                throw new Exception("Ошибка при попытке получить профиль из БД: " + ex.Message);
             }
 
             sqliteConnection.Close();
             project.SendInfoToLog("Взяли профиль из БД", true);
             new ZennoPosterDataBaseAndProfile.Profile(instance,project).UpdateStatusProfile("Busy");
-            return true;
         }//Получение данных профиля из БД
         public void DownloadProfileInZennoposter()
         {
             GetCountProfileInDB();
-            if (!GetProfileFromDB())
-            {
-                project.SendErrorToLog("В БД не нашелся нужный профиль", true);
-                new AdditionalMethods(instance, project).ErrorExit();
-            }
+            GetProfileFromDB();
+
             project.Profile.Load(ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile);
             project.SendInfoToLog("Назначили профиль " + ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile + " в проект", true);
         }//Загрузка профиля в зенопостер
-
         public void UpdateStatusProfile(string Status, string YandexRegistration)
         {
             SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
@@ -100,9 +79,18 @@ namespace ZennoPosterYandexRegistration
 
             sqliteConnection.Close();
             project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
-        }//Изменение статуса профиля (Free или Busy), кол-во сессий и кол-во сессий в день
+        }//Изменение статуса регистрации в яндексе
+        public void UpdateStatusProfile(string Status)
+        {
+            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
+            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}' WHERE PathToProfile = '{0}'",
+                ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile, Status);
 
+            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
-
+            sQLiteCommand.ExecuteReader();
+            sqliteConnection.Close();
+            project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
+        }//Изменение статуса профиля (Free или Busy) 
     }
 }

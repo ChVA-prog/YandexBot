@@ -47,11 +47,9 @@ namespace ZennoPosterProject1
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
             int executionResult = 0;
-            project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
+            project.SendInfoToLog("Это сборка из ветки YandexRegistration!", true);
             project.SendInfoToLog("Считываем входные настройки", true);
-            new InputSettings(instance, project).InitializationInputValue();
-
-            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
+            new InputSettings(instance, project).InitializationInputValue();           
             StartMethod startMethod = new StartMethod(instance, project);
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'AdditionalPersonalInfo-birthday')]", 0); //изменить дату рождения
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@name, 'birthday-day')]", 0); //указать день рождения
@@ -88,7 +86,18 @@ namespace ZennoPosterProject1
             //var resultHttpGet = ZennoPoster.HttpGet(ApiGetResponce, "", "UTF-8",
             //    ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);         ПОЛУЧЕНИЕ СПИСКА НОМЕРОВ
 
-            startMethod.YandexRegistration();
+
+
+
+            try
+            {
+                startMethod.YandexRegistration();
+            }
+            catch (Exception ex)
+            {
+                project.SendErrorToLog("Не удалось выполнить регистрацию в яндексе: " + ex.Message);
+            }
+            
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class,'Section Section_isHidden Addresses Addresses_v2')]", 0); //Адреса
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class,'Addresses-link')]", 0); //Добавить домашний и рабочий адрес
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@class,'addressLine')]", 0); //Ввод адреса 

@@ -1,10 +1,8 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.CommandCenter;
 using ZennoPosterDataBaseAndProfile;
-using ZennoPosterEmulation;
 using ZennoPosterProxy;
 using ZennoPosterYandexWalk;
-using ZennoPosterSiteWalk;
 using System;
 using ZennoPosterYandexRegistration;
 
@@ -55,13 +53,20 @@ namespace ZennoPosterProject1
                 dBMethods.DownloadProfileInZennoposter();
             }
             catch (Exception ex)
-            {
-                
-                project.SendErrorToLog("Не получили профиль из базы данных. " + ex.Message,true);
+            {               
+                project.SendErrorToLog(ex.Message,true);
                 throw new Exception(ex.Message);
+            }//Загрузка профиля в проект.                      
+            try
+            {
+                proxyDB.SetProxyInInstance();
             }
-            
-            proxyDB.SetProxyInInstance();
+            catch (Exception ex)
+            {
+                project.SendErrorToLog(ex.Message, true);
+                dBMethods.UpdateStatusProfile("Free");
+                throw new Exception(ex.Message);
+            }//Установка прокси в инстанс.
             try
             {
                 new RegistrationAndSettingsAccount(instance, project).RegisterAccountAndSetPassword();
@@ -70,14 +75,17 @@ namespace ZennoPosterProject1
             }
             catch (Exception ex)
             {
-                project.SendErrorToLog("Вышли из регистрации аккауннта по ошибке: " + ex.Message);
-                new AdditionalMethods(instance, project).ErrorExit();
-            }
+                project.SendErrorToLog(ex.Message);
+                profile.SaveProfile();
+                proxyDB.ChangeIp();
+                proxyDB.ChangeStatusProxyInDB("Free");
+                dBMethods.UpdateStatusProfile("Free");
+                throw new Exception(ex.Message);
+            }//Регистрируем аккаунт, устанавливаем логин с паролем, отвязываем номер.
             profile.SaveProfile();
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
             dBMethods.UpdateStatusProfile("Free", "YES");
-
         }
     }
 }

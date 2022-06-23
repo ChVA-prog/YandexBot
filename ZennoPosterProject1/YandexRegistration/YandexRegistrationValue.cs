@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ZennoLab.CommandCenter;
-using ZennoLab.InterfacesLibrary.ProjectModel;
-using ZennoPosterEmulation;
-using System.Threading;
-using ZennoPosterSiteWalk;
-using ZennoPosterProject1;
+﻿using ZennoLab.InterfacesLibrary.ProjectModel;
 
 namespace ZennoPosterYandexRegistration
 {
     class YandexRegistrationValue
     {
         readonly IZennoPosterProjectModel project;
-        readonly Instance instance;
 
         public static string HtmlElementEnterId { get; set; }
         public static string HtmlElementCreatId { get; set; }
@@ -55,15 +46,9 @@ namespace ZennoPosterYandexRegistration
         public static string HtmlElementConfirmDeletePhoneNumber { get; set; }
         public static string HtmlElementBackAccountSettings { get; set; }
 
-
-
-
-
-        public YandexRegistrationValue(Instance instance, IZennoPosterProjectModel project)
+        public YandexRegistrationValue(IZennoPosterProjectModel project)
         {
-            this.instance = instance;
             this.project = project;
-
 
             HtmlElementEnterId = project.Variables["set_HtmlElementEnterId"].Value;
             HtmlElementCreatId = project.Variables["set_HtmlElementCreatId"].Value;
