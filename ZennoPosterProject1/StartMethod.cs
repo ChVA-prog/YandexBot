@@ -86,6 +86,6 @@ namespace ZennoPosterProject1
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
             dBMethods.UpdateStatusProfile("Free", "YES");
-        }
+        }//Регистрация в яндексе и отвязка номера
     }
 }
