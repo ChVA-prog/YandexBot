@@ -53,6 +53,18 @@ namespace ZennoPosterProject1
 
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             StartMethod startMethod = new StartMethod(instance, project);
+
+            try
+            {
+                startMethod.YandexRegistration();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+            return executionResult;
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'AdditionalPersonalInfo-birthday')]", 0); //изменить дату рождения
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@name, 'birthday-day')]", 0); //указать день рождения
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//select[contains(@name, 'month')]", 0); //окно выбора месяца рождения
@@ -88,34 +100,18 @@ namespace ZennoPosterProject1
             //var resultHttpGet = ZennoPoster.HttpGet(ApiGetResponce, "", "UTF-8",
             //    ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);         ПОЛУЧЕНИЕ СПИСКА НОМЕРОВ
 
-            startMethod.YandexRegistration();
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class,'Section Section_isHidden Addresses Addresses_v2')]", 0); //Адреса
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class,'Addresses-link')]", 0); //Добавить домашний и рабочий адрес
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//input[contains(@class,'addressLine')]", 0); //Ввод адреса 
             //swipeAndClick.SetText(he, project.Profile.Country + "," + project.Profile.CurrentRegion + "," + "Киевская улица" + "," + "5k6");
 
-            
+
 
             //HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'Создать ID')]", 0);
             //swipeAndClick.SwipeAndClickToElement(he);
 
-            return executionResult;
-        
+
+
         }
     }
 }
-
-
-
-
-
-            /* 
-             * НАГУЛИВАНИЕ КУКИСОВ  
-             * 
-            project.SendInfoToLog("Считываем входные настройки", true);
-            new InputSettings(instance, project).InitializationInputValue();
-
-            project.SendInfoToLog("Запускаем нагуливание кук.", true);
-            new StartMethod(instance, project).FeedingCookies();
-            project.SendInfoToLog("Закончили.");
-            */
