@@ -38,13 +38,15 @@ namespace ZennoPosterDataBaseAndProfile
         private int GetCountProfileInDB()
         {
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-            SQLiteCommand sQLiteCommand = new SQLiteCommand(sqliteConnection) {CommandText = "SELECT COUNT(*) FROM Profiles WHERE Status = 'Free' OR Status = 'Busy'" };
+            SQLiteCommand sQLiteCommand = new SQLiteCommand(sqliteConnection)
+            {CommandText = "SELECT COUNT(*) FROM Profiles WHERE Status = 'Free' OR Status = 'Busy'"};
            
             object CountProfile = sQLiteCommand.ExecuteScalar();
 
             sqliteConnection.Close();
 
             project.SendInfoToLog("Количество профилей в базе данный: " + CountProfile.ToString(),true);
+           
             return Convert.ToInt32(CountProfile);
         }//Получение количества профилей для работы из БД
         private void SaveProfileDataToDB(string PathTosave)
@@ -86,7 +88,7 @@ namespace ZennoPosterDataBaseAndProfile
                 }
                 if (String.IsNullOrEmpty(DataBaseAndProfileValue.PathToProfile))
                 {
-                    throw new Exception("Строка с профилем полученная из БД пустая");
+                    throw new Exception("В БД нету подходящих профилей");
                 }
             }
             catch(Exception ex)
