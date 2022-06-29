@@ -27,8 +27,6 @@ namespace ZennoPosterProject1
             new ProxyValue(instance, project);
             new YandexWalkValue(project);
             new SiteWalkValue(instance, project);
-            new SmshubValue(project);
-            new YandexRegistrationValue(project);
         }//Считывание входных настроек
     }
 }
