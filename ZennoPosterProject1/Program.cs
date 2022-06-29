@@ -20,21 +20,21 @@ namespace ZennoPosterProject1
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
             int executionResult = 0;
-            project.SendInfoToLog("Это сборка из ветки YandexRegistration!", true);
+            project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
             project.SendInfoToLog("Считываем входные настройки", true);
-            new InputSettings(instance, project).InitializationInputValue();           
+            new InputSettings(instance, project).InitializationInputValue();
+
             StartMethod startMethod = new StartMethod(instance, project);
 
             try
             {
-                startMethod.YandexRegistration();
+                startMethod.FeedingCookies();
             }
             catch (Exception ex)
             {
-
-                project.SendErrorToLog("Не смогли зарегестрировать аккаунт: " + ex.Message);
+                project.SendErrorToLog("Не смогли нагулять куки: " + ex.Message);
             }
-            
+
             return executionResult;           
         }
     }

@@ -4,6 +4,7 @@ using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
 using System.Threading;
 using ZennoPosterProject1;
+using System;
 
 namespace ZennoPosterYandexWalk
 {
@@ -27,10 +28,18 @@ namespace ZennoPosterYandexWalk
             YandexNavigate yandexNavigate = new YandexNavigate(instance, Project);
                                                       
             int CounterPage = 1;
-            int CountPage = new YandexWalkSettings(instance,Project).GetRandomPageCountSearch();
-           
-            yandexNavigate.GoToSearchQuery();
-            Project.SendInfoToLog("Будем изучать " + CountPage + " страниц",true);
+            int CountLearnPage = new YandexWalkSettings(instance,Project).GetRandomPageCountSearch();
+
+            try
+            {
+              yandexNavigate.GoToSearchQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ошибка при переходе в яндекс и вводе запроса: " + ex.Message);
+            }
+            
+            Project.SendInfoToLog("Будем изучать " + CountLearnPage + " страниц",true);
 
             do
             {
@@ -47,8 +56,7 @@ namespace ZennoPosterYandexWalk
                 {
                     if(CounterAttemptGetSumCard == 10)
                     {
-                        Project.SendErrorToLog("Не удалось получить карточки поисковой выдачи");
-                        new AdditionalMethods(instance, Project).ErrorExit();
+                        throw new Exception("Не удалось получить карточки поисковой выдачи");
                     }
 
                     CountLearnCard = instance.ActiveTab.FindElementsByXPath(YandexWalkValue.HtmlElementSearchResultsCard).Count.CalcPercentLearnCard
@@ -70,7 +78,7 @@ namespace ZennoPosterYandexWalk
 
                 CounterPage++;
             }
-            while (CountPage > CounterPage);                      
+            while (CountLearnPage == CounterPage);                      
         } //Запуск бродилки по яндексу
     }
 }

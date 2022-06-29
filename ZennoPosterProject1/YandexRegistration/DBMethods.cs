@@ -56,7 +56,7 @@ namespace ZennoPosterYandexRegistration
 
             sqliteConnection.Close();
             project.SendInfoToLog("Взяли профиль из БД", true);
-            new ZennoPosterDataBaseAndProfile.Profile(instance,project).UpdateStatusProfile("Busy");
+            new ZennoPosterDataBaseAndProfile.Profile(project).UpdateStatusProfile("Busy");
         }//Получение данных профиля из БД
         public void DownloadProfileInZennoposter()
         {

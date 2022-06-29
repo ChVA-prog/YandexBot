@@ -1,5 +1,6 @@
 ﻿using System;
 using ZennoLab.CommandCenter.TouchEvents;
+using ZennoLab.InterfacesLibrary.ProjectModel;
 
 
 namespace ZennoPosterEmulation
@@ -16,12 +17,16 @@ namespace ZennoPosterEmulation
         public float ValueMax { get; set; }
         public float ValueRandom {get{return(float) new Random().NextDouble() * (ValueMax - ValueMin) + ValueMin;}}
     }//Генерация рандомного числа с остатком из заданного диапазона
-    public class CreateTouchAndSwipeParametr
+
+
+    public class CreateTouchAndSwipeParametr : EmulationValue
     {
+        public CreateTouchAndSwipeParametr(IZennoPosterProjectModel project) : base(project) { }
+
         public TouchEmulationParameters CreateTouchParametrs()
         {
             TouchEmulationParameters touchEmulationParameters = new TouchEmulationParameters();
-
+            
             touchEmulationParameters.Acceleration = Extension.ParseRangeValueFloat(EmulationValue.Acceleration).ValueRandom;
             touchEmulationParameters.LongTouchLengthMs = Extension.ParseRangeValueInt(EmulationValue.LongTouchLengthMs).ValueRandom;
             touchEmulationParameters.MaxCurvature = Extension.ParseRangeValueFloat(EmulationValue.MaxCurvature).ValueRandom;

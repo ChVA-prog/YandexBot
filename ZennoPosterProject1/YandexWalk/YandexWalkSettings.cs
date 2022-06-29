@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
 using System.Threading;
-using ZennoPosterSiteWalk;
-using ZennoPosterProject1;
 
 namespace ZennoPosterYandexWalk
-{
-    
+{   
     class YandexWalkSettings
     {
         readonly IZennoPosterProjectModel Project;
@@ -22,24 +18,7 @@ namespace ZennoPosterYandexWalk
         {
             this.instance = _instance;
             this.Project = _project;
-        }
-                     
-        public void CloseUnnecessaryWindows()
-        {
-            if (instance.AllTabs.Length > 1)
-            {
-                instance.ActiveTab.Close();
-                Project.SendErrorToLog("Закрыли лишнюю вкладку.", true);
-            }
-            else
-            {
-                if (!instance.ActiveTab.URL.Contains("/search/") || instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchResultsCard, 0).IsVoid)
-                {
-                    instance.ActiveTab.MainDocument.EvaluateScript("javascript:history.back()");
-                }
-            }
-        }//Закрываем лишнюю вкладку
-
+        }                            
         public bool CheckMyUrl(string url)
         {
             try
@@ -63,48 +42,10 @@ namespace ZennoPosterYandexWalk
                 return false;
             }
             return false;
-        }//Проверяем не содержит ли карточка для перехода мой URL
-
-
-        public bool GoSearchCard(HtmlElement LearnElement)
-        {
-            SiteWalk siteWalk = new SiteWalk(instance, Project);
-            YandexWalkSettings yandexWalkSettings = new YandexWalkSettings(instance, Project);
-            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
-
-            HtmlElement GetSearchCard = LearnElement.FindChildByXPath(YandexWalkValue.HtmlElementUrlSearchCard, 0);
-
-            string CurenSite = GetSearchCard.InnerHtml;
-            string ClearCurenSite = CurenSite.GetUrlToDomain();
-
-            if (String.IsNullOrEmpty(ClearCurenSite) || String.IsNullOrWhiteSpace(ClearCurenSite))
-            {
-                return true;
-            }
-            else
-            {
-                Project.SendInfoToLog("Делаем проверку на запрещенные для перехода сайты", true);
-                if (yandexWalkSettings.CheckMyUrl(CurenSite))
-                {
-                    return true;
-                }
-            }
-
-            Project.SendInfoToLog("Переходим в карточку " + ClearCurenSite, true);
-            swipeAndClick.SwipeAndClickToElement(LearnElement);
-
-            new AdditionalMethods(instance, Project).WaitDownloading();
-
-            Project.SendInfoToLog("Изучаем сайт: " + ClearCurenSite, true);
-            siteWalk.SiteRandomWalk();
-            Thread.Sleep(Random.Next(4000, 8000));
-
-            return false;
-        }//Переходим в карточку
-
+        }//Проверяем не содержит ли карточка для перехода мой URL      
         public void GoOrLearnCard(List<int> SearchCardList)
         {
-            YandexWalkSettings yandexWalkSettings = new YandexWalkSettings(instance, Project);
+            YandexNavigate yandexNavigate = new YandexNavigate(instance, Project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
 
             foreach (int i in SearchCardList)
@@ -113,7 +54,7 @@ namespace ZennoPosterYandexWalk
 
                 if (Random.Next(0, 100) < YandexWalkValue.CountGetCard.ParseRangeValueInt().ValueRandom)
                 {
-                    if (yandexWalkSettings.GoSearchCard(LearnElement))
+                    if (yandexNavigate.GoSearchCard(LearnElement))
                     {
                         continue;
                     }
@@ -124,11 +65,10 @@ namespace ZennoPosterYandexWalk
 
                     swipeAndClick.SwipeToElement(LearnElement);
                 }
-                yandexWalkSettings.CloseUnnecessaryWindows();
-                Thread.Sleep(Random.Next(4000, 8000));
+                yandexNavigate.CloseUnnecessaryWindows();
+                Thread.Sleep(Random.Next(2000, 4000));
             }
         }//Решаем переходим в карточку или просто изучаем
-
         public List<int> CountLearnCard(int CountCard)
         {           
             List<int> SearchCardList = new List<int>();
@@ -144,35 +84,29 @@ namespace ZennoPosterYandexWalk
             }
             return SearchCardList;
         } //Количество карточек с которыми будем работать
-
         public string GetRandomSearchQueries()
         {
             string[] YandexSearchQueries = Project.Variables["set_SearchQueries"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             return YandexSearchQueries[Random.Next(0, YandexSearchQueries.Length)];
         }//Получение рандомного поискового запроса
-
         public int GetRandomPageCountSearch()
         {
             int CountPage = ZennoPosterEmulation.Extension.ParseRangeValueInt(YandexWalkValue.PageCountSearch).ValueRandom;
 
             return CountPage;
         }//Получение рандомного количества изучаемых страниц
-
         public string GetRandomYandexHost()
         {
             string[] YandexHosts = Project.Variables["set_YandexHosts"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             return YandexHosts[Random.Next(0, YandexHosts.Length)];
         }//Получение рандомного хоста яндекса
-
         public bool CheckMySiteInSearchList()
         {
 
 
             return true;
         } //TODO
-
     }
-
 }

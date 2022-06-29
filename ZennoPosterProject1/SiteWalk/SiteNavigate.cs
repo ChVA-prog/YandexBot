@@ -22,7 +22,7 @@ namespace ZennoPosterSiteWalk
             Random random = new Random();
             SiteWalkSettings siteWalkSettings = new SiteWalkSettings(instance,project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
-            YandexWalkSettings yandexWalkSettings = new YandexWalkSettings(instance, project);
+            YandexNavigate yandexNavigate = new YandexNavigate(instance, project);
 
             siteWalkSettings.ShuffleListSitesForVisit();
            
@@ -45,7 +45,7 @@ namespace ZennoPosterSiteWalk
                     }
                     swipeAndClick.SwipeToElement(LinkInSite);
                     Thread.Sleep(random.Next(2000, 5000));
-                    yandexWalkSettings.CloseUnnecessaryWindows();
+                    yandexNavigate.CloseUnnecessaryWindows();
                 }
             }
         }//Переход на рандомный сайт из списка и его изучение //TODO

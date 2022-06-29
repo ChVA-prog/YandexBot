@@ -8,7 +8,6 @@ namespace ZennoPosterYandexWalk
         {
             return (int)Math.Round((double)(Count * Percent) / 100, MidpointRounding.AwayFromZero);
         }//Высчитываем рандомный процент из заданного диапазона
-
         public static string GetUrlToDomain(this string url)
         {
             try
@@ -23,6 +22,6 @@ namespace ZennoPosterYandexWalk
             {
                 return "pustayastroka.loh";
             }
-        }//Вытаскиваем домен из ссылки в карточке поисковой выдачи
+        }//Вытаскиваем домен из ссылки
     }
 }
