@@ -23,7 +23,6 @@ namespace ZennoPosterYandexWalk
         public static string CountGetCard { get; set; }
         public static List<string> MyUrlList { get; set; }
 
-
         public YandexWalkValue(IZennoPosterProjectModel _project)
         {
             this.Project = _project;

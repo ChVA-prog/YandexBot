@@ -7,25 +7,19 @@ using System.Threading;
 
 namespace ZennoPosterEmulation
 {
-    class SwipeAndClick
+    class SwipeAndClick : EmulationValue
     {
-
         readonly Instance instance;
-        readonly IZennoPosterProjectModel Project;
-        public SwipeAndClick(Instance _instance, IZennoPosterProjectModel _project)
+        readonly IZennoPosterProjectModel project;
+        public SwipeAndClick(Instance instance, IZennoPosterProjectModel project) : base(project)
         {
-            this.instance = _instance;
-            this.Project = _project;
+            this.instance = instance;
+            this.project = project;
         }
+
         public void SwipeToElement(HtmlElement HtmlElem)
         {
-            CreateTouchAndSwipeParametr emulation = new CreateTouchAndSwipeParametr();       
-
-            if (HtmlElem.IsVoid)
-            {
-                Project.SendErrorToLog("HTML элемент для свайпа не найден", true);
-                return;
-            }
+            CreateTouchAndSwipeParametr emulation = new CreateTouchAndSwipeParametr(project);       
 
             instance.ActiveTab.Touch.SetTouchEmulationParameters(emulation.CreateTouchParametrs());
 
@@ -35,7 +29,7 @@ namespace ZennoPosterEmulation
                 Thread.Sleep(3000);
                 if(CounterAttemptSwipe == 10)
                 {
-                    Project.SendWarningToLog("Сделали 10 попыток найти элемент, пропускаем его");
+                    project.SendWarningToLog("Сделали 10 попыток найти HtmlElement, пропускаем его",true);
                     break;
                 }
 
@@ -43,7 +37,7 @@ namespace ZennoPosterEmulation
 
                 if(String.IsNullOrEmpty(HtmlElem.GetAttribute("topInTab")))
                 {
-                    Project.SendWarningToLog("Не получили атрибут topInTab элемента, пробуем еще раз.");
+                    project.SendWarningToLog("Не получили атрибут topInTab элемента, пробуем еще раз.",true);
                     CounterAttemptSwipe++;
                     continue;
                 }
@@ -53,24 +47,21 @@ namespace ZennoPosterEmulation
                 CounterAttemptSwipe++;
             }
             while (EmulationValue.ElementPosition > EmulationValue.InstanceHeight || EmulationValue.ElementPosition < 0);
-
             
         }//Свайп до элемента
-
         public void ClickToElement(HtmlElement HtmlElem)
         {
-            CreateTouchAndSwipeParametr emulation = new CreateTouchAndSwipeParametr();
+            CreateTouchAndSwipeParametr emulation = new CreateTouchAndSwipeParametr(project);
 
             if (HtmlElem.IsVoid)
             {
-                Project.SendErrorToLog("HTML элемент для клика не найден");
+                project.SendErrorToLog("HTML элемент для клика не найден",true);
                 return;
             }
 
             instance.ActiveTab.Touch.SetTouchEmulationParameters(emulation.CreateTouchParametrs());
             instance.ActiveTab.Touch.Touch(HtmlElem);
         }//Клик по элементу
-
         public void SwipeAndClickToElement(HtmlElement HtmlElem)
         {                    
             SwipeToElement(HtmlElem);                          
@@ -80,7 +71,7 @@ namespace ZennoPosterEmulation
         int LatencyKeySetText { get { return EmulationValue.LatencyKey.ParseRangeValueInt().ValueRandom; } }
         public void SetText(HtmlElement HtmlElem, string text)
         {
-            ClickToElement(HtmlElem);
+            SwipeAndClickToElement(HtmlElem);
 
             char[] InputText = text.ToCharArray();
 

@@ -21,6 +21,6 @@ namespace ZennoPosterEmulation
             rangeValueFloat.ValueMax = float.Parse(ArrayValue[1]);
 
             return rangeValueFloat;
-        }//Получение рандомного числа без остатка из заданного диапазона
+        }//Получение рандомного числа с остатком из заданного диапазона
     }
 }

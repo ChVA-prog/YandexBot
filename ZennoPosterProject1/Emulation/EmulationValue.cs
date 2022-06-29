@@ -6,30 +6,30 @@ namespace ZennoPosterEmulation
     {
         readonly IZennoPosterProjectModel Project;
 
-        public static string Acceleration { get; set; }
-        public static string LongTouchLengthMs { get; set; }
-        public static string MaxCurvature { get; set; }
-        public static string MaxCurvePeakShift { get; set; }
-        public static string MaxStep { get; set; }
-        public static string MaxSwipeShiftTowardsThumb { get; set; }
-        public static string MinCurvature { get; set; }
-        public static string MinCurvePeakShift { get; set; }
-        public static string MinStep { get; set; }
-        public static string MinSwipeShiftTowardsThumb { get; set; }
-        public static string PauseAfterTouchMs { get; set; }
-        public static string PauseBetweenStepsMs { get; set; }
-        public static string PauseBetweenSwipesMs { get; set; }
-        public static string RectangleBasePointPartH { get; set; }
-        public static string RectangleBasePointPartW { get; set; }
-        public static string RightThumbProbability { get; set; }
-        public static string SwipeDeviationX { get; set; }
-        public static string SwipeDeviationY { get; set; }
-        public static string SwipeFractionX { get; set; }
-        public static string SwipeFractionY { get; set; }
-        public static string TouchLengthMs { get; set; }
-        public static string LatencyKey { get; set; }
-        public static int ElementPosition { get; set; }
-        public static int InstanceHeight { get; set; }
+        protected static string Acceleration { get; set; }
+        protected static string LongTouchLengthMs { get; set; }
+        protected static string MaxCurvature { get; set; }
+        protected static string MaxCurvePeakShift { get; set; }
+        protected static string MaxStep { get; set; }
+        protected static string MaxSwipeShiftTowardsThumb { get; set; }
+        protected static string MinCurvature { get; set; }
+        protected static string MinCurvePeakShift { get; set; }
+        protected static string MinStep { get; set; }
+        protected static string MinSwipeShiftTowardsThumb { get; set; }
+        protected static string PauseAfterTouchMs { get; set; }
+        protected static string PauseBetweenStepsMs { get; set; }
+        protected static string PauseBetweenSwipesMs { get; set; }
+        protected static string RectangleBasePointPartH { get; set; }
+        protected static string RectangleBasePointPartW { get; set; }
+        protected static string RightThumbProbability { get; set; }
+        protected static string SwipeDeviationX { get; set; }
+        protected static string SwipeDeviationY { get; set; }
+        protected static string SwipeFractionX { get; set; }
+        protected static string SwipeFractionY { get; set; }
+        protected static string TouchLengthMs { get; set; }
+        protected static string LatencyKey { get; set; }
+        protected static int ElementPosition { get; set; }
+        protected static int InstanceHeight { get; set; }
 
         public EmulationValue(IZennoPosterProjectModel project)
         {

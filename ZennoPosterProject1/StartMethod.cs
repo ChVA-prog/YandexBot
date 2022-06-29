@@ -21,30 +21,50 @@ namespace ZennoPosterProject1
 
         public void FeedingCookies()
         {
-            Profile profile = new Profile(instance,project);
+            Profile profile = new Profile(project);
             ProxyDB proxyDB = new ProxyDB(instance, project);
-           
-            
+
             try
             {
                 profile.DownloadProfileInZennoposter();
+            }
+            catch (Exception ex)
+            {
+                project.SendErrorToLog(ex.Message, true);
+                throw new Exception(ex.Message);
+            }//Загрузка профиля в проект.
+            try
+            {
                 proxyDB.SetProxyInInstance();
+            }
+            catch (Exception ex)
+            {                
+                project.SendErrorToLog(ex.Message, true);
+                profile.UpdateStatusProfile("Free");
+                throw new Exception(ex.Message);
+            }//Установка прокси в проект.
+            try
+            {                              
                 new YandexWalk(instance, project).GoYandexWalk();
             }
             catch(Exception ex)
-            {                
-                project.SendErrorToLog("Вышли по ошибке: " + ex.Message,true);
-            }
+            {
+                project.SendErrorToLog(ex.Message, true);
+                profile.SaveProfile();
+                profile.UpdateStatusProfile("Free");
+                proxyDB.ChangeIp();
+                proxyDB.ChangeStatusProxyInDB("Free");                
+                throw new Exception(ex.Message);
+            }//Запуск нагуливания кук
             instance.CloseAllTabs();
             profile.SaveProfile();            
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
             profile.UpdateStatusProfile("Free", DataBaseAndProfileValue.CountSession + 1, DataBaseAndProfileValue.CountSessionDay +1);
-
-        }//Запуск нагуливания кукисов
+        }//Нагуливание кук
         public void YandexRegistration()
         {
-            Profile profile = new Profile(instance, project);
+            Profile profile = new Profile(project);
             DBMethods dBMethods = new DBMethods(instance, project);
             ProxyDB proxyDB = new ProxyDB(instance, project);
 

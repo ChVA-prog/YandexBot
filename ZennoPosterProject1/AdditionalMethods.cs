@@ -51,7 +51,7 @@ namespace ZennoPosterProject1
             Random random = new Random();
             instance.ActiveTab.WaitDownloading();          
 
-             hep = instance.ActiveTab.FindElementByXPath(he, 0);
+            hep = instance.ActiveTab.FindElementByXPath(he, 0);
             while (hep.IsVoid)
             {
                 project.SendInfoToLog("Ждем появления HtmlElement", true);
