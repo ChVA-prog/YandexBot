@@ -66,7 +66,7 @@ namespace ZennoPosterDataBaseAndProfile
         {
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSessionDay < {2} ORDER BY CountSessionDay ASC LIMIT 1",
+            string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSessionDay < {2} AND CountSession < 4 ORDER BY CountSessionDay ASC LIMIT 1",
                 DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), DataBaseAndProfileValue.CountSessionDayLimit);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
