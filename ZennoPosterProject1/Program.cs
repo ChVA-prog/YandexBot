@@ -1,6 +1,7 @@
 ﻿using System;
 using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
+using ZennoPosterEmulation;
 
 
 namespace ZennoPosterProject1

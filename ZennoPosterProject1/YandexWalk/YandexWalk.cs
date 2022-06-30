@@ -28,8 +28,7 @@ namespace ZennoPosterYandexWalk
             YandexNavigate yandexNavigate = new YandexNavigate(instance, Project);
                                                       
             int CounterPage = 1;
-            int CountLearnPage = new YandexWalkSettings(instance,Project).GetRandomPageCountSearch();
-
+            int CountLearnPage = new YandexWalkSettings(instance,Project).GetRandomPageCountSearch();            
             try
             {
               yandexNavigate.GoToSearchQuery();
@@ -75,7 +74,7 @@ namespace ZennoPosterYandexWalk
                 Project.SendInfoToLog("Переходим на следующую страницу", true);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementNextPageButton, 0));
                 new AdditionalMethods(instance, Project).WaitDownloading();
-
+                new YandexNavigate(instance, Project).CloseYandexTrash();
                 CounterPage++;
             }
             while (CountLearnPage == CounterPage);                      

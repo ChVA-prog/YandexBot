@@ -43,24 +43,11 @@ namespace ZennoPosterYandexWalk
 
             swipeAndClick.ClickToElement(HtmlElementSearchButton);
             new AdditionalMethods(instance,Project).WaitDownloading();
-            CloseAdvertisement();
+            CloseYandexTrash();
         }//Ввод поискового запроса и переход по нему
-        private void CloseAdvertisement()
-        {
-            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);          
-            HtmlElement HtmElementReklama = instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementCloseAdvertisement, 0);
 
-            if (!HtmElementReklama.IsVoid)
-            {
-                swipeAndClick.ClickToElement(HtmElementReklama);
-            }
-            HtmlElement HtmElementCookies = instance.ActiveTab.FindElementByXPath("//button[contains(@Class, 'sc-pNWxx sc-jrsJCI dryRrI kcLcLu')]", 0);
 
-            if (!HtmElementReklama.IsVoid)
-            {
-                swipeAndClick.ClickToElement(HtmElementCookies);
-            }
-        }//Закрытие рекламы
+
         public void GoToYandex()
         {           
             Project.SendInfoToLog("Переходим на страницу яндекса", true);
@@ -111,12 +98,53 @@ namespace ZennoPosterYandexWalk
             swipeAndClick.SwipeAndClickToElement(LearnElement);
 
             new AdditionalMethods(instance, Project).WaitDownloading();
-
+            CloseYandexTrash();
             Project.SendInfoToLog("Изучаем сайт: " + ClearCurenSite, true);
             siteWalk.SiteRandomWalk();
             Thread.Sleep(random.Next(4000, 8000));
 
             return false;
         }//Переходим в карточку
+        public void CloseYandexTrash()
+        {
+            Random random = new Random();
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance,Project);
+            instance.ActiveTab.WaitDownloading();
+            Thread.Sleep(random.Next(2000, 5000));
+            instance.ActiveTab.WaitDownloading();
+
+            HtmlElement alisa = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Закрыть')]", 0); //Алиса
+            HtmlElement kinopoisk = instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Остаться')]", 0); //Кинопоиск
+            HtmlElement dzen = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'maba')]", 0); //Дзен
+            HtmlElement Yamerket = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Продолжить на сайте')]", 0); //Яндекс маркет
+            HtmlElement YandexBrowser = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Позже')] | //span[starts-with(text(),'Не сейчас')]", 0); //Яндекс браузер
+            HtmlElement Yamerket2 = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Скрыть')]", 0); //Яндекс маркет2
+           
+
+            if (!alisa.IsVoid)
+            {
+                swipeAndClick.SwipeAndClickToElement(alisa);
+            }
+            if (!kinopoisk.IsVoid)
+            {
+                swipeAndClick.SwipeAndClickToElement(kinopoisk);
+            }
+            if (!dzen.IsVoid)
+            {
+                swipeAndClick.SwipeAndClickToElement(dzen);
+            }
+            if (!Yamerket.IsVoid)
+            {
+                swipeAndClick.SwipeAndClickToElement(Yamerket);
+            }
+            if (!YandexBrowser.IsVoid)
+            {
+                swipeAndClick.SwipeAndClickToElement(YandexBrowser);
+            }
+            if (!Yamerket2.IsVoid)
+            {
+                swipeAndClick.SwipeAndClickToElement(Yamerket2);
+            }
+        }
     }
 }

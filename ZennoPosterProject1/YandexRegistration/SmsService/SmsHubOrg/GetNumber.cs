@@ -108,7 +108,6 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
                 }
             }
         }//Получаем смс код
-
         private void RefuseGetNumber()
         {
             string RefuseGetNumber = String.Format("https://smshub.org/stubs/handler_api.php?api_key={0}&action=setStatus&status=8&id={1}", SmshubValue.ApiKeySmshub, SmshubValue.IdActivation);
