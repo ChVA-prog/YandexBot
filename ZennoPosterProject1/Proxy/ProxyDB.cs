@@ -86,9 +86,8 @@ namespace ZennoPosterProxy
            
             catch (Exception ex)
             {
-                project.SendErrorToLog("Ошибка при попытке получить прокси из БД: " + ex.Message,true);
                 sqliteConnection.Close();
-                new AdditionalMethods(instance, project).ErrorExit();
+                throw new Exception("Ошибка при попытке получить прокси из БД: " + ex.Message);               
             }
 
             sqliteConnection.Close();

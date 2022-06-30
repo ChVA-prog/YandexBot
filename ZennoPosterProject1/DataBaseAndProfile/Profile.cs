@@ -54,7 +54,7 @@ namespace ZennoPosterDataBaseAndProfile
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
 
             string ProfileStringRequest = String.Format("INSERT INTO Profiles(PathToProfile, TimeToGetYandex, CountSession, CountSessionDay, TimeToNextGetYandex, Status, DateLastEnterYandex, YandexRegistration) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')",
-                PathTosave, DateTime.UtcNow.AddDays(3).ToString("dd-MM-yyyy HH-mm-ss"), 0, 0, DateTime.UtcNow.ToString("dd-MM-yyyy HH-mm-ss"), "Free", DateTime.MinValue.ToString("dd.MM.yyyy"), "NO");
+                PathTosave, DateTime.UtcNow.AddDays(3).ToString("yyy-MM-dd HH-mm-ss"), 0, 0, DateTime.UtcNow.ToString("yyyy-MM-dd HH-mm-ss"), "Free", DateTime.MinValue.ToString("yyyy-MM-dd"), "NO");
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -67,7 +67,7 @@ namespace ZennoPosterDataBaseAndProfile
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
 
             string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSessionDay < {2} ORDER BY CountSessionDay ASC LIMIT 1",
-                DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"), DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"), DataBaseAndProfileValue.CountSessionDayLimit);
+                DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), DataBaseAndProfileValue.CountSessionDayLimit);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -127,7 +127,7 @@ namespace ZennoPosterDataBaseAndProfile
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
 
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', CountSession = '{2}', CountSessionDay = '{3}', TimeToNextGetYandex = '{4}', DateLastEnterYandex = '{5}' " +
-                "WHERE PathToProfile = '{0}'", DataBaseAndProfileValue.PathToProfile, Status, CountSession, CountSessionDay,DateTime.Now.AddHours(3).ToString("dd-MM-yyyy HH-mm"), DateTime.Now.ToString("dd.MM.yyyy"));
+                "WHERE PathToProfile = '{0}'", DataBaseAndProfileValue.PathToProfile, Status, CountSession, CountSessionDay,DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm"), DateTime.Now);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
