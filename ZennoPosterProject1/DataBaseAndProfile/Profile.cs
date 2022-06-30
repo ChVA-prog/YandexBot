@@ -155,7 +155,7 @@ namespace ZennoPosterDataBaseAndProfile
 
             sQLiteCommand.ExecuteReader();
 
-            project.SendInfoToLog("Обнулили количество дневных сессий", true);
+            project.SendWarningToLog("Обнулили количество дневных сессий", true);
         }//Обнуление дневных сессий профиля
         public void SaveProfile()
         {

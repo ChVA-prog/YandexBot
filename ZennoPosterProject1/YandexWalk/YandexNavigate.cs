@@ -72,7 +72,7 @@ namespace ZennoPosterYandexWalk
             if (instance.AllTabs.Length > 1)
             {
                 instance.ActiveTab.Close();
-                Project.SendErrorToLog("Закрыли лишнюю вкладку.", true);
+                Project.SendInfoToLog("Закрыли лишнюю вкладку.", true);
             }
             else
             {
