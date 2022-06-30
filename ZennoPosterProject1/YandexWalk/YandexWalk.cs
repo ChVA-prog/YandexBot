@@ -77,7 +77,7 @@ namespace ZennoPosterYandexWalk
                 new YandexNavigate(instance, Project).CloseYandexTrash();
                 CounterPage++;
             }
-            while (CountLearnPage == CounterPage);                      
+            while (CountLearnPage > CounterPage);                      
         } //Запуск бродилки по яндексу
     }
 }
