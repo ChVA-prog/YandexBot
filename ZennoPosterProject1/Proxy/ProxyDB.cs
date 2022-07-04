@@ -101,8 +101,8 @@ namespace ZennoPosterProxy
             GetProxyFromDB();
             if (CheckProxy())
             {
-                instance.SetProxy(ProxyValue.ProxyLine, false, true, true, true);
-
+                instance.ClearProxy();
+                instance.SetProxy(ProxyValue.ProxyLine, false, true, true, true);               
                 project.SendInfoToLog("Назначили прокси: " + ProxyValue.ProxyLine.Split('@')[1], true);
 
                 CheckIp();
