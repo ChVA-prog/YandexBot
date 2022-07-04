@@ -7,13 +7,13 @@ namespace ZennoPosterDataBaseAndProfile
     {
         readonly IZennoPosterProjectModel Project;
 
-        public static int CountFreeProfileInDB { set; get; }
-        public static string PathToDB { set; get; }
-        public static string PathToFolderProfile { get; set; }
-        public static int CountSession { get; set; }
-        public static int CountSessionDay { get; set; }
-        public static string PathToProfile { get; set; }
-        public static int CountSessionDayLimit { get; set; }
+        protected int CountFreeProfileInDB { set; get; }
+        protected string PathToDB { set; get; }
+        protected string PathToFolderProfile { get; set; }
+        protected int CountSession { get; set; }
+        protected int CountSessionDay { get; set; }
+        protected string PathToProfile { get; set; }
+        protected int CountSessionDayLimit { get; set; }
 
         public DataBaseAndProfileValue(IZennoPosterProjectModel project)
         {

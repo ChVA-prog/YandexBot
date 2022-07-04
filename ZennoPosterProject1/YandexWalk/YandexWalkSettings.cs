@@ -13,17 +13,21 @@ namespace ZennoPosterYandexWalk
         readonly Instance instance;
 
         Random Random = new Random();
+        
 
         public YandexWalkSettings(Instance _instance, IZennoPosterProjectModel _project)
         {
             this.instance = _instance;
             this.Project = _project;
-        }                            
+
+        }
+        
         public bool CheckMyUrl(string url)
         {
+            YandexWalkValue yandexWalkValue = new YandexWalkValue(Project);
             try
             {                
-                foreach (string site in YandexWalkValue.MyUrlList)
+                foreach (string site in yandexWalkValue.MyUrlList)
                 {
                     if (site.Contains(Convert.ToString(url)))
                     {
@@ -47,12 +51,13 @@ namespace ZennoPosterYandexWalk
         {
             YandexNavigate yandexNavigate = new YandexNavigate(instance, Project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
+            YandexWalkValue yandexWalkValue = new YandexWalkValue(Project);
 
             foreach (int i in SearchCardList)
             {
                 HtmlElement LearnElement = instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchResultsCard, i);
 
-                if (Random.Next(0, 100) < YandexWalkValue.CountGetCard.ParseRangeValueInt().ValueRandom)
+                if (Random.Next(0, 100) < yandexWalkValue.CountGetCard.ParseRangeValueInt().ValueRandom)
                 {
                     if (yandexNavigate.GoSearchCard(LearnElement))
                     {
@@ -92,7 +97,8 @@ namespace ZennoPosterYandexWalk
         }//Получение рандомного поискового запроса
         public int GetRandomPageCountSearch()
         {
-            int CountPage = ZennoPosterEmulation.Extension.ParseRangeValueInt(YandexWalkValue.PageCountSearch).ValueRandom;
+            YandexWalkValue yandexWalkValue = new YandexWalkValue(Project);
+            int CountPage = ZennoPosterEmulation.Extension.ParseRangeValueInt(yandexWalkValue.PageCountSearch).ValueRandom;
 
             return CountPage;
         }//Получение рандомного количества изучаемых страниц

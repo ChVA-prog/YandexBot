@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace ZennoPosterSiteWalk
 {
-    class SiteWalkSettings
+    class SiteWalkSettings : SiteWalkValue
     {
         readonly IZennoPosterProjectModel Project;
         readonly Instance instance;
 
-        public SiteWalkSettings(Instance instance, IZennoPosterProjectModel project)
+        public SiteWalkSettings(Instance instance, IZennoPosterProjectModel project) : base (instance,project)
         {
             this.instance = instance;
             this.Project = project;
@@ -22,7 +22,7 @@ namespace ZennoPosterSiteWalk
        
         public void ReadSiteVisitUrl()
         {
-            SiteVisitUrl = SiteWalkValue.UrlListToVisit.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();           
+            SiteVisitUrl = UrlListToVisit.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();           
         }//Получение списка сайтов для посещения
 
         public void ShuffleListSitesForVisit()

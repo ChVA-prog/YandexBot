@@ -7,12 +7,12 @@ using ZennoPosterYandexWalk;
 
 namespace ZennoPosterSiteWalk
 {
-    class SiteNavigate
+    class SiteNavigate : SiteWalkValue
     {
         readonly IZennoPosterProjectModel project;
         readonly Instance instance;
 
-        public SiteNavigate(Instance instance, IZennoPosterProjectModel project)
+        public SiteNavigate(Instance instance, IZennoPosterProjectModel project) : base (instance,project)
         {
             this.instance = instance;
             this.project = project;
@@ -28,7 +28,7 @@ namespace ZennoPosterSiteWalk
            
             foreach (string url in SiteWalkSettings.SiteVisitUrl)
             {
-                int CountGetUrl = SiteWalkValue.CountSitesToVisit.ParseRangeValueInt().ValueRandom;
+                int CountGetUrl = CountSitesToVisit.ParseRangeValueInt().ValueRandom;
 
                 instance.ActiveTab.Navigate(url);
                 instance.ActiveTab.WaitDownloading();

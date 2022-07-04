@@ -8,9 +8,9 @@ namespace ZennoPosterProxy
         readonly Instance instance;
         readonly IZennoPosterProjectModel Project;
 
-        public static string ProxyList { get; set; }
-        public static string ProxyLine { get; set; }       
-        public static string ProxyChangeIpUrl { get; set; }
+        protected string ProxyList { get; set; }
+        protected string ProxyLine { get; set; }
+        protected string ProxyChangeIpUrl { get; set; }
         public ProxyValue(Instance instance, IZennoPosterProjectModel project)
         {           
             this.instance = instance;

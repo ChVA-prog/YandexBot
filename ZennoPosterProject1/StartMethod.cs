@@ -9,11 +9,11 @@ using ZennoPosterYandexRegistration;
 
 namespace ZennoPosterProject1
 {
-    class StartMethod
+    class StartMethod : DataBaseAndProfileValue
     {
         readonly IZennoPosterProjectModel project;
         readonly Instance instance;
-        public StartMethod(Instance instance, IZennoPosterProjectModel project)
+        public StartMethod(Instance instance, IZennoPosterProjectModel project) : base (project)
         {
             this.instance = instance;
             this.project = project;
@@ -60,7 +60,7 @@ namespace ZennoPosterProject1
             profile.SaveProfile();            
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
-            profile.UpdateStatusProfile("Free", DataBaseAndProfileValue.CountSession + 1, DataBaseAndProfileValue.CountSessionDay +1);
+            profile.UpdateStatusProfile("Free", CountSession + 1, CountSessionDay +1);
         }//Нагуливание кук
         public void YandexRegistration()
         {

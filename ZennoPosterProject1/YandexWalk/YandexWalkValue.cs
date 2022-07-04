@@ -9,8 +9,8 @@ namespace ZennoPosterYandexWalk
     {
         readonly IZennoPosterProjectModel Project;
 
-        public static string HtmlElementInputSearch { get; set; }
-        public static string HtmlElementSearchButton { get; set; }
+        public static string HtmlElementInputSearchIn { get; set; }
+        public static string HtmlElementSearchButtonIn { get; set; }
         public static string HtmlElementCheckingLoading { get; set; }
         public static string HtmlElementNextPageButton { get; set; }
         public static string HtmlElementSearchResultsCard { get; set; }
@@ -18,17 +18,17 @@ namespace ZennoPosterYandexWalk
         public static string HtmlElementDescriptionSerchCard { get; set; }
         public static string HtmlElementPageNumber { get; set; }
         public static string HtmlElementCloseAdvertisement { get; set; }
-        public static string PageCountSearch { get; set; }
-        public static string CountLearnCard { get; set; }
-        public static string CountGetCard { get; set; }
-        public static List<string> MyUrlList { get; set; }
+        public string PageCountSearch { get; set; }
+        public string CountLearnCard { get; set; }
+        public string CountGetCard { get; set; }
+        public List<string> MyUrlList { get; set; }
 
         public YandexWalkValue(IZennoPosterProjectModel _project)
         {
             this.Project = _project;
 
-            HtmlElementInputSearch = Project.Variables["set_HtmlElementInputSearch"].Value;
-            HtmlElementSearchButton = Project.Variables["set_HtmlElementSearchButton"].Value;
+            HtmlElementInputSearchIn = Project.Variables["set_HtmlElementInputSearch"].Value;
+            HtmlElementSearchButtonIn = Project.Variables["set_HtmlElementSearchButton"].Value;
             HtmlElementCheckingLoading = Project.Variables["set_HtmlElementCheckingLoading"].Value;
             HtmlElementNextPageButton = Project.Variables["set_HtmlElementNextPageButton"].Value;
             HtmlElementSearchResultsCard = Project.Variables["set_HtmlElementSearchResultsCard"].Value;

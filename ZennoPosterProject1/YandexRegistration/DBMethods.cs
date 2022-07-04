@@ -5,11 +5,11 @@ using System.Data.SQLite;
 
 namespace ZennoPosterYandexRegistration
 {
-    class DBMethods
+    class DBMethods : YandexRegistrationValue
     {
         readonly IZennoPosterProjectModel project;
         readonly Instance instance;
-        public DBMethods(Instance instance, IZennoPosterProjectModel project)
+        public DBMethods(Instance instance, IZennoPosterProjectModel project) : base(project)
         {
             this.instance = instance;
             this.project = project;
@@ -17,7 +17,7 @@ namespace ZennoPosterYandexRegistration
 
         public void GetCountProfileInDB()
         {
-            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
+            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB(project).OpenConnectDb();
             SQLiteCommand sQLiteCommand = new SQLiteCommand(sqliteConnection) { CommandText = String.Format("SELECT COUNT(*) FROM Profiles WHERE Status = 'Free' AND YandexRegistration = 'NO' AND TimeToGetYandex < '{0}'",DateTime.Now) };
 
             object CountProfile = sQLiteCommand.ExecuteScalar();
@@ -33,7 +33,7 @@ namespace ZennoPosterYandexRegistration
         }//Получение количества профилей для работы из БД
         public void GetProfileFromDB()
         {
-            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
+            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB(project).OpenConnectDb();
 
             string ProfileStringRequest = String.Format("SELECT PathToProfile FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex < '{0}' AND YandexRegistration = 'NO' ORDER BY Status ASC LIMIT 1",
                 DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"));
@@ -45,7 +45,7 @@ namespace ZennoPosterYandexRegistration
                 SQLiteDataReader reader = sQLiteCommand.ExecuteReader();
                 while (reader.Read())
                 {
-                    ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile = reader.GetValue(0).ToString();
+                    PathToProfile = reader.GetValue(0).ToString();
                 }
                 
             }
@@ -63,15 +63,15 @@ namespace ZennoPosterYandexRegistration
             GetCountProfileInDB();
             GetProfileFromDB();
 
-            project.Profile.Load(ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile);
-            project.SendInfoToLog("Назначили профиль " + ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile + " в проект", true);
+            project.Profile.Load(PathToProfile);
+            project.SendInfoToLog("Назначили профиль " + PathToProfile + " в проект", true);
         }//Загрузка профиля в зенопостер
         public void UpdateStatusProfile(string Status, string YandexRegistration)
         {
-            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
+            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB(project).OpenConnectDb();
 
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', YandexRegistration = '{2}', DateYandexRegistration = '{3}', YandexLogin = '{4}', YandexPassword = '{5}', TimeToGetSettingAccount = '{6}' " +
-                "WHERE PathToProfile = '{0}'", ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile, Status, YandexRegistration, DateTime.Now.ToString("dd.MM.yyyy"), YandexRegistrationValue.YandexLogin, YandexRegistrationValue.YandexPassword, DateTime.Now.AddDays(3).ToString("dd.MM.yyyy"));
+                "WHERE PathToProfile = '{0}'", PathToProfile, Status, YandexRegistration, DateTime.Now.ToString("dd.MM.yyyy"), YandexLogin, YandexPassword, DateTime.Now.AddDays(3).ToString("dd.MM.yyyy"));
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -82,9 +82,9 @@ namespace ZennoPosterYandexRegistration
         }//Изменение статуса регистрации в яндексе
         public void UpdateStatusProfile(string Status)
         {
-            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB().OpenConnectDb();
+            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB(project).OpenConnectDb();
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}' WHERE PathToProfile = '{0}'",
-                ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue.PathToProfile, Status);
+                PathToProfile, Status);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 

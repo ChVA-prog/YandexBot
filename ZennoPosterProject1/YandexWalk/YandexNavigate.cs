@@ -8,12 +8,12 @@ using ZennoPosterSiteWalk;
 
 namespace ZennoPosterYandexWalk
 {
-    class YandexNavigate
+    class YandexNavigate : YandexWalkValue
     {
         readonly Instance instance;
         readonly IZennoPosterProjectModel Project;
 
-        public YandexNavigate(Instance instance, IZennoPosterProjectModel project)
+        public YandexNavigate(Instance instance, IZennoPosterProjectModel project) : base(project)
         {
             this.instance = instance;
             this.Project = project;
@@ -26,8 +26,8 @@ namespace ZennoPosterYandexWalk
 
             GoToYandex();
 
-            HtmlElement HtmlElementInputSearch = instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementInputSearch, 0);
-            HtmlElement HtmlElementSearchButton = instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchButton, 0);
+            HtmlElement HtmlElementInputSearch = instance.ActiveTab.FindElementByXPath(HtmlElementInputSearchIn, 0);
+            HtmlElement HtmlElementSearchButton = instance.ActiveTab.FindElementByXPath(HtmlElementSearchButtonIn, 0);
 
             Project.SendInfoToLog("Вводим поисковый запрос в строку",true);
             swipeAndClick.SetText(HtmlElementInputSearch, RandomSearchQueries);
@@ -63,7 +63,7 @@ namespace ZennoPosterYandexWalk
             }
             else
             {
-                if (!instance.ActiveTab.URL.Contains("/search/") || instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchResultsCard, 0).IsVoid)
+                if (!instance.ActiveTab.URL.Contains("/search/") || instance.ActiveTab.FindElementByXPath(HtmlElementSearchResultsCard, 0).IsVoid)
                 {
                     instance.ActiveTab.MainDocument.EvaluateScript("javascript:history.back()");
                 }
@@ -76,7 +76,7 @@ namespace ZennoPosterYandexWalk
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
             Random random = new Random();
 
-            HtmlElement GetSearchCard = LearnElement.FindChildByXPath(YandexWalkValue.HtmlElementUrlSearchCard, 0);
+            HtmlElement GetSearchCard = LearnElement.FindChildByXPath(HtmlElementUrlSearchCard, 0);
 
             string CurenSite = GetSearchCard.InnerHtml;
             string ClearCurenSite = CurenSite.GetUrlToDomain();

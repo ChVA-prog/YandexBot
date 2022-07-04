@@ -59,7 +59,7 @@ namespace ZennoPosterYandexWalk
                     }
 
                     CountLearnCard = instance.ActiveTab.FindElementsByXPath(YandexWalkValue.HtmlElementSearchResultsCard).Count.CalcPercentLearnCard
-                                        (YandexWalkValue.CountLearnCard.ParseRangeValueInt().ValueRandom);
+                                        (new YandexWalkValue(Project).CountLearnCard.ParseRangeValueInt().ValueRandom);
                     Thread.Sleep(2000);
                     CounterAttemptGetSumCard++;
                 }

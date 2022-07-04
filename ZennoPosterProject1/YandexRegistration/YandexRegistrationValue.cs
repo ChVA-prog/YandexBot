@@ -2,51 +2,51 @@
 
 namespace ZennoPosterYandexRegistration
 {
-    class YandexRegistrationValue
+    class YandexRegistrationValue : ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue
     {
         readonly IZennoPosterProjectModel project;
 
-        public static string HtmlElementEnterId { get; set; }
-        public static string HtmlElementCreatId { get; set; }
-        public static string HtmlElementSetPhoneNumber { get; set; }
-        public static string HtmlElementConfirmPhoneNumber { get; set; }
-        public static string HtmlElementInputCodeActivation { get; set; }
-        public static string HtmlElementInputFirstName { get; set; }
-        public static string HtmlElementInputLastName { get; set; }
-        public static string HtmlElementConfirmFirstNameAndLastName { get; set; }
-        public static string HtmlElementCheckBox { get; set; }
-        public static string HtmlElementConfirmUserAgreement { get; set; }
-        public static string HtmlElementAccountMenu { get; set; }
-        public static string HtmlElementSettings { get; set; }
-        public static string HtmlElementAccountSettings { get; set; }
-        public static string HtmlElementCreateLogin { get; set; }
-        public static string HtmlElementSetLogin { get; set; }
-        public static string HtmlElementApprovedLogin { get; set; }
-        public static string HtmlElementSetPassword { get; set; }
-        public static string HtmlElementApprovedPassword { get; set; }
-        public static string HtmlElementMailAndPhone { get; set; }
-        public static string HtmlElementChangeMailAndPhoneList { get; set; }
-        public static string HtmlElementOffInputSms { get; set; }
-        public static string HtmlElementGoYandexFromAccountSettings { get;set;}
-        public static string YandexLogin { get; set; }
-        public static string YandexPassword { get; set; }
-        public static string  HtmlElementHumberSettings { get; set; }
-        public static string  HtmlElementWhyDeletePhoneNumber { get; set; }
-        public static string  HtmlElementNextPageDeleteNumber { get; set; }
-        public static string  HtmlElementSecurityQuestionMenu { get; set; }
-        public static string  HtmlElementResponceSecurityQuestion { get; set; }
-        public static string  HtmlElementSaveSecurityQuestion { get; set; }
-        public static string  HtmlElementCheckNeedWritePassword { get; set; }
-        public static string  HtmlElementInputPasswordSecurityQuestion { get; set; }
-        public static string  HtmlElementConfirmPasswordSecurityQuestion { get; set; }
-        public static string  HtmlElementDeletePhoneNumber { get; set; }
-        public static string  HtmlElementSendSmsForDeletePhoneNumber { get; set; }
-        public static string  HtmlElementInputSmsCodeDeletePhoneNumber { get; set; }
-        public static string  HtmlElementInputPasswordForDeletePhoneNumber { get; set; }
-        public static string HtmlElementConfirmDeletePhoneNumber { get; set; }
-        public static string HtmlElementBackAccountSettings { get; set; }
+        protected string HtmlElementEnterId { get; set; }
+        protected string HtmlElementCreatId { get; set; }
+        protected string HtmlElementSetPhoneNumber { get; set; }
+        protected string HtmlElementConfirmPhoneNumber { get; set; }
+        protected string HtmlElementInputCodeActivation { get; set; }
+        protected string HtmlElementInputFirstName { get; set; }
+        protected string HtmlElementInputLastName { get; set; }
+        protected string HtmlElementConfirmFirstNameAndLastName { get; set; }
+        protected string HtmlElementCheckBox { get; set; }
+        protected string HtmlElementConfirmUserAgreement { get; set; }
+        protected string HtmlElementAccountMenu { get; set; }
+        protected string HtmlElementSettings { get; set; }
+        protected string HtmlElementAccountSettings { get; set; }
+        protected string HtmlElementCreateLogin { get; set; }
+        protected string HtmlElementSetLogin { get; set; }
+        protected string HtmlElementApprovedLogin { get; set; }
+        protected string HtmlElementSetPassword { get; set; }
+        protected string HtmlElementApprovedPassword { get; set; }
+        protected string HtmlElementMailAndPhone { get; set; }
+        protected string HtmlElementChangeMailAndPhoneList { get; set; }
+        protected string HtmlElementOffInputSms { get; set; }
+        protected string HtmlElementGoYandexFromAccountSettings { get;set;}
+        protected string YandexLogin { get; set; }
+        protected string YandexPassword { get; set; }
+        protected string  HtmlElementHumberSettings { get; set; }
+        protected string  HtmlElementWhyDeletePhoneNumber { get; set; }
+        protected string  HtmlElementNextPageDeleteNumber { get; set; }
+        protected string  HtmlElementSecurityQuestionMenu { get; set; }
+        protected string  HtmlElementResponceSecurityQuestion { get; set; }
+        protected string  HtmlElementSaveSecurityQuestion { get; set; }
+        protected string  HtmlElementCheckNeedWritePassword { get; set; }
+        protected string  HtmlElementInputPasswordSecurityQuestion { get; set; }
+        protected string  HtmlElementConfirmPasswordSecurityQuestion { get; set; }
+        protected string  HtmlElementDeletePhoneNumber { get; set; }
+        protected string  HtmlElementSendSmsForDeletePhoneNumber { get; set; }
+        protected string  HtmlElementInputSmsCodeDeletePhoneNumber { get; set; }
+        protected string  HtmlElementInputPasswordForDeletePhoneNumber { get; set; }
+        protected string HtmlElementConfirmDeletePhoneNumber { get; set; }
+        protected string HtmlElementBackAccountSettings { get; set; }
 
-        public YandexRegistrationValue(IZennoPosterProjectModel project)
+        public YandexRegistrationValue(IZennoPosterProjectModel project) : base (project)
         {
             this.project = project;
 

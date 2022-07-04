@@ -10,11 +10,11 @@ using ZennoPosterProject1;
 
 namespace ZennoPosterProxy
 {
-    class ProxyDB
+    class ProxyDB : ProxyValue
     {
         readonly Instance instance;
         readonly IZennoPosterProjectModel project;
-        public ProxyDB(Instance instance, IZennoPosterProjectModel project)
+        public ProxyDB(Instance instance, IZennoPosterProjectModel project) : base(instance,project)
         {           
             this.instance = instance;
             this.project = project;
@@ -33,7 +33,7 @@ namespace ZennoPosterProxy
                 {
                     foreach (var proxy in ProxySettings.MyProxyList)
                     {
-                        SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
+                        SQLiteConnection sqliteConnection = new DB(project).OpenConnectDb();
 
                         string ProfileStringRequest = String.Format("INSERT INTO Proxy (ProxyLine, Status, ProxyChangeIpUrl) VALUES('{0}', 'Free', '{1}')", proxy.Split('|')[0], proxy.Split('|')[1]);
 
@@ -50,9 +50,9 @@ namespace ZennoPosterProxy
 
         public void ChangeStatusProxyInDB(string Status)
         {           
-            SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
+            SQLiteConnection sqliteConnection = new DB(project).OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyValue.ProxyLine, Status);
+            string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyLine, Status);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -63,7 +63,7 @@ namespace ZennoPosterProxy
 
         public void GetProxyFromDB()
         {
-            SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
+            SQLiteConnection sqliteConnection = new DB(project).OpenConnectDb();
 
             string ProfileStringRequest = "SELECT ProxyLine, ProxyChangeIpUrl FROM Proxy WHERE Status = 'Free' ORDER BY ProxyLine ASC LIMIT 1";
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
@@ -73,11 +73,11 @@ namespace ZennoPosterProxy
 
                 while (reader.Read())
                 {
-                    ProxyValue.ProxyLine = reader.GetValue(0).ToString();
-                    ProxyValue.ProxyChangeIpUrl = reader.GetValue(1).ToString();
+                    ProxyLine = reader.GetValue(0).ToString();
+                    ProxyChangeIpUrl = reader.GetValue(1).ToString();
                 }
 
-                if (String.IsNullOrEmpty(ProxyValue.ProxyLine))
+                if (String.IsNullOrEmpty(ProxyLine))
                 {
                     sqliteConnection.Close();                   
                     throw new Exception("Нету свободной прокси");
@@ -91,7 +91,7 @@ namespace ZennoPosterProxy
             }
 
             sqliteConnection.Close();
-            project.SendInfoToLog("Взяли прокси из базы данных: " + ProxyValue.ProxyLine, true);
+            project.SendInfoToLog("Взяли прокси из базы данных: " + ProxyLine, true);
             ChangeStatusProxyInDB("Busy");
         }//Взять прокси из БД
 
@@ -102,8 +102,8 @@ namespace ZennoPosterProxy
             if (CheckProxy())
             {
                 instance.ClearProxy();
-                instance.SetProxy(ProxyValue.ProxyLine, false, true, true, true);               
-                project.SendInfoToLog("Назначили прокси: " + ProxyValue.ProxyLine.Split('@')[1], true);
+                instance.SetProxy(ProxyLine, false, true, true, true);               
+                project.SendInfoToLog("Назначили прокси: " + ProxyLine.Split('@')[1], true);
 
                 CheckIp();
             }
@@ -111,9 +111,9 @@ namespace ZennoPosterProxy
             {
                 ChangeStatusProxyInDB("DEATH");
 
-                project.SendErrorToLog("Прокси " + ProxyValue.ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой",true);
+                project.SendErrorToLog("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой",true);
 
-                ProxyValue.ProxyLine = null;
+                ProxyLine = null;
                 SetProxyInInstance();
             }
         }//Назначить прокси из БД в инстанс
@@ -122,7 +122,7 @@ namespace ZennoPosterProxy
         int CounterCheckProxy;
         public bool CheckProxy()
         {
-            string Proxy = ProxyValue.ProxyLine;
+            string Proxy = ProxyLine;
             var resultHttpGet = ZennoPoster.HttpGet("http://www.google.com", Proxy, "UTF-8",
                 ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.HeaderOnly);
             if (resultHttpGet.ToString().Length == 0 || (resultHttpGet.ToString().Substring(8, 3) == "502"))
@@ -144,7 +144,7 @@ namespace ZennoPosterProxy
         
         public void CheckIp()
         {
-            string Proxy = ProxyValue.ProxyLine;
+            string Proxy = ProxyLine;
             string ipv6 = "https://ipv6-internet.yandex.net/api/v0/ip";
             string ipv4 = "https://ipv4-internet.yandex.net/api/v0/ip";
 
@@ -171,7 +171,7 @@ namespace ZennoPosterProxy
         {
             try
             {
-                WebRequest wrGETURL = WebRequest.Create(ProxyValue.ProxyChangeIpUrl);
+                WebRequest wrGETURL = WebRequest.Create(ProxyChangeIpUrl);
                 string otvet = wrGETURL.GetResponse().ToString();
                 project.SendInfoToLog("Сделали запрос на смену IP", true);
                 Thread.Sleep(10000);
