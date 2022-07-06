@@ -2,7 +2,7 @@
 
 namespace ZennoPosterYandexRegistration
 {
-    class YandexRegistrationValue : ZennoPosterDataBaseAndProfile.DataBaseAndProfileValue
+    class YandexRegistrationValue
     {
         readonly IZennoPosterProjectModel project;
 
@@ -45,8 +45,9 @@ namespace ZennoPosterYandexRegistration
         protected string  HtmlElementInputPasswordForDeletePhoneNumber { get; set; }
         protected string HtmlElementConfirmDeletePhoneNumber { get; set; }
         protected string HtmlElementBackAccountSettings { get; set; }
+        protected string HtmlElementSearchResultsCard { get; set; }
 
-        public YandexRegistrationValue(IZennoPosterProjectModel project) : base (project)
+        public YandexRegistrationValue(IZennoPosterProjectModel project)
         {
             this.project = project;
 
@@ -87,6 +88,7 @@ namespace ZennoPosterYandexRegistration
             HtmlElementInputPasswordForDeletePhoneNumber = project.Variables["set_HtmlElementInputPasswordForDeletePhoneNumber"].Value;
             HtmlElementConfirmDeletePhoneNumber = project.Variables["set_HtmlElementConfirmDeletePhoneNumber"].Value;
             HtmlElementBackAccountSettings = project.Variables["set_HtmlElementBackAccountSettings"].Value;
+            HtmlElementSearchResultsCard = project.Variables["set_HtmlElementSearchResultsCard"].Value;
         } 
     }
 }

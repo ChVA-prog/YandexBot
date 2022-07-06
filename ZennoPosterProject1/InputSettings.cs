@@ -5,8 +5,6 @@ using ZennoPosterEmulation;
 using ZennoPosterProxy;
 using ZennoPosterYandexWalk;
 using ZennoPosterSiteWalk;
-using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
-using ZennoPosterYandexRegistration;
 
 namespace ZennoPosterProject1
 {

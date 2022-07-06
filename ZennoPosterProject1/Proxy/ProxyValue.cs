@@ -9,14 +9,13 @@ namespace ZennoPosterProxy
         readonly IZennoPosterProjectModel Project;
 
         protected string ProxyList { get; set; }
-        protected string ProxyLine { get; set; }
-        protected string ProxyChangeIpUrl { get; set; }
+
         public ProxyValue(Instance instance, IZennoPosterProjectModel project)
         {           
             this.instance = instance;
             this.Project = project;
 
-            ProxyList = Project.Variables["set_Proxy"].Value;          
+            ProxyList = Project.Variables["set_Proxy"].Value;
         }
     }    
 }

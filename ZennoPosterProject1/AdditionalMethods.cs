@@ -18,23 +18,6 @@ namespace ZennoPosterProject1
             this.project = project;
         }
 
-        public void ErrorExit()
-        {
-            ProxyDB proxyDB = new ProxyDB(instance, project);
-
-            try
-            {
-                proxyDB.ChangeIp();
-                
-                proxyDB.ChangeStatusProxyInDB("Free");
-            }
-            catch(Exception ex)
-            {
-                project.SendErrorToLog(ex.Message);
-            }
-            throw new Exception("Выходим по ошибке!");
-        }//Завершение программы по ошибке с изменением статусов профиля и прокси
-
         public void WaitDownloading()
         {
             Random random = new Random();

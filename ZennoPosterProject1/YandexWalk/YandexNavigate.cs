@@ -115,7 +115,7 @@ namespace ZennoPosterYandexWalk
 
             HtmlElement alisa = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Закрыть')]", 0); //Алиса
             HtmlElement kinopoisk = instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Остаться')]", 0); //Кинопоиск
-            HtmlElement dzen = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'maba')]", 0); //Дзен
+            HtmlElement dzen = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'В приложении удобнее')]", 0); //Дзен
             HtmlElement Yamerket = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Продолжить на сайте')]", 0); //Яндекс маркет
             HtmlElement YandexBrowser = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Позже')] | //span[starts-with(text(),'Не сейчас')]", 0); //Яндекс браузер
             HtmlElement Yamerket2 = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Скрыть')]", 0); //Яндекс маркет2
@@ -131,7 +131,9 @@ namespace ZennoPosterYandexWalk
             }
             if (!dzen.IsVoid)
             {
-                swipeAndClick.SwipeAndClickToElement(dzen);
+                var top = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerHeight"));
+                var left = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerWidth"));                
+                instance.ActiveTab.Touch.Touch(left - random.Next(10, 20), (top - top) + random.Next(5, 20));  // Выбор контрольного вопроса
             }
             if (!Yamerket.IsVoid)
             {

@@ -5,23 +5,23 @@ using System;
 
 namespace ZennoPosterYandexWalk
 {
-    class YandexWalkValue
+    public class YandexWalkValue
     {
         readonly IZennoPosterProjectModel Project;
 
         public static string HtmlElementInputSearchIn { get; set; }
         public static string HtmlElementSearchButtonIn { get; set; }
-        public static string HtmlElementCheckingLoading { get; set; }
-        public static string HtmlElementNextPageButton { get; set; }
-        public static string HtmlElementSearchResultsCard { get; set; }
-        public static string HtmlElementUrlSearchCard { get; set; }
-        public static string HtmlElementDescriptionSerchCard { get; set; }
-        public static string HtmlElementPageNumber { get; set; }
-        public static string HtmlElementCloseAdvertisement { get; set; }
-        public string PageCountSearch { get; set; }
-        public string CountLearnCard { get; set; }
-        public string CountGetCard { get; set; }
-        public List<string> MyUrlList { get; set; }
+        protected string HtmlElementCheckingLoading { get; set; }
+        protected string HtmlElementNextPageButton { get; set; }
+        protected string HtmlElementSearchResultsCard { get; set; }
+        protected string HtmlElementUrlSearchCard { get; set; }
+        protected string HtmlElementDescriptionSerchCard { get; set; }
+        protected string HtmlElementPageNumber { get; set; }
+        protected string HtmlElementCloseAdvertisement { get; set; }
+        protected string PageCountSearch { get; set; }
+        protected string CountLearnCardIn { get; set; }
+        protected string CountGetCard { get; set; }
+        protected List<string> MyUrlList { get; set; }
 
         public YandexWalkValue(IZennoPosterProjectModel _project)
         {
@@ -37,9 +37,9 @@ namespace ZennoPosterYandexWalk
             HtmlElementPageNumber = Project.Variables["set_HtmlElementPageNumber"].Value;
             HtmlElementCloseAdvertisement = Project.Variables["set_HtmlElementCloseAdvertisement"].Value;
             PageCountSearch = Project.Variables["set_PageCountSearch"].Value;
-            CountLearnCard = Project.Variables["set_CountLearnCard"].Value;
+            CountLearnCardIn = Project.Variables["set_CountLearnCard"].Value;
             CountGetCard = Project.Variables["set_CountGetCard"].Value;
             MyUrlList = Project.Variables["set_MyUrl"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
-        }      
+        }
     }
 }

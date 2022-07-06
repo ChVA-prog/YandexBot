@@ -3,6 +3,7 @@ using ZennoLab.CommandCenter;
 using System;
 using ZennoPosterEmulation;
 using System.Threading;
+using ZennoPosterProject1;
 
 
 namespace ZennoPosterSiteWalk
@@ -23,11 +24,12 @@ namespace ZennoPosterSiteWalk
             Random random = new Random();
             HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath("//p");
 
-            for (int i = 0; i <= random.Next(0, hec.Count); i++)
+            int CounElementToLearn = random.Next(0, hec.Count);
+            for (int i = 0; i <= CounElementToLearn; i++)
             {
                 HtmlElement he = instance.ActiveTab.FindElementByXPath("//p",i);
                 swipeAndClick.SwipeToElement(he);
-                Thread.Sleep(random.Next(3000, 7000));
+                Thread.Sleep(random.Next(3000, 5000));
             }
         }//Рандомное изучение сайта
     }

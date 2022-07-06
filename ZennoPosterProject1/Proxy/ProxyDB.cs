@@ -12,6 +12,9 @@ namespace ZennoPosterProxy
 {
     class ProxyDB : ProxyValue
     {
+        private string ProxyLine { get; set; }
+        private string ProxyChangeIpUrl { get; set; }
+
         readonly Instance instance;
         readonly IZennoPosterProjectModel project;
         public ProxyDB(Instance instance, IZennoPosterProjectModel project) : base(instance,project)

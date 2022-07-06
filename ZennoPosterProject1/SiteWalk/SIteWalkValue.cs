@@ -21,5 +21,4 @@ namespace ZennoPosterSiteWalk
             CountSitesToVisit = Project.Variables["set_CountSitesToVisit"].Value;
         }
     }
-
 }

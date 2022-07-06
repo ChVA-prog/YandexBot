@@ -157,7 +157,7 @@ namespace ZennoPosterYandexRegistration
                 additionalMethods.WaitHtmlElement(YandexWalkValue.HtmlElementInputSearchIn);
                 swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementInputSearchIn, 0), "Вк");
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchButtonIn, 0));
-                additionalMethods.WaitHtmlElement(YandexWalkValue.HtmlElementSearchResultsCard);
+                additionalMethods.WaitHtmlElement(HtmlElementSearchResultsCard);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'OrganicTitleContentSpan organic__title')]", 0));
                 additionalMethods.WaitDownloading();
                 instance.AllTabs.First().Close();

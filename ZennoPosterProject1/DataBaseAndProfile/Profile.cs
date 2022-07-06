@@ -7,6 +7,10 @@ namespace ZennoPosterDataBaseAndProfile
 {
      class Profile : DataBaseAndProfileValue
     {
+        private int CountSession { get; set; }
+        private int CountSessionDay { get; set; }
+        private string PathToProfile { get; set; }
+
         readonly IZennoPosterProjectModel project;
 
         public Profile(IZennoPosterProjectModel project) : base(project)
@@ -15,7 +19,7 @@ namespace ZennoPosterDataBaseAndProfile
         }
 
         private void CheckAndCreateNewProfile()
-        {           
+        {
             if(GetCountProfileInDB() < CountFreeProfileInDB)
             {
                 project.SendInfoToLog("Количество свободных профилей в базе данных меньше "+ project.Variables["set_CountFreeProfileInDB"].Value
@@ -103,8 +107,8 @@ namespace ZennoPosterDataBaseAndProfile
         public void UpdateStatusProfile(string Status)
         {
             SQLiteConnection sqliteConnection = new DB(project).OpenConnectDb();
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}' WHERE PathToProfile = '{0}'",
-                PathToProfile, Status);
+            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', TimeToNextGetYandex = '{2}' WHERE PathToProfile = '{0}'",
+                PathToProfile, Status, DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm-ss"));
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -122,8 +126,11 @@ namespace ZennoPosterDataBaseAndProfile
             sQLiteCommand.ExecuteReader();
             project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
         }//Изменение статуса профиля (Free или Busy) 
-        public void UpdateStatusProfile(string Status, int CountSession, int CountSessionDay)
+        public void UpdateStatusProfile(string Status, int Session, int SessionDay)
         {
+            CountSession = CountSession + Session;
+            CountSessionDay = CountSessionDay + SessionDay;
+
             SQLiteConnection sqliteConnection = new DB(project).OpenConnectDb();
 
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', CountSession = '{2}', CountSessionDay = '{3}', TimeToNextGetYandex = '{4}', DateLastEnterYandex = '{5}' " +

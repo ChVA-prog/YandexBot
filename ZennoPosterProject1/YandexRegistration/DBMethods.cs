@@ -7,6 +7,7 @@ namespace ZennoPosterYandexRegistration
 {
     class DBMethods : YandexRegistrationValue
     {
+        private string PathToProfile { get; set; }
         readonly IZennoPosterProjectModel project;
         readonly Instance instance;
         public DBMethods(Instance instance, IZennoPosterProjectModel project) : base(project)

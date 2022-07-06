@@ -7,15 +7,15 @@ using System.Threading;
 
 namespace ZennoPosterYandexWalk
 {   
-    class YandexWalkSettings
+    class YandexWalkSettings : YandexWalkValue
     {
         readonly IZennoPosterProjectModel Project;
         readonly Instance instance;
 
         Random Random = new Random();
-        
 
-        public YandexWalkSettings(Instance _instance, IZennoPosterProjectModel _project)
+
+        public YandexWalkSettings(Instance _instance, IZennoPosterProjectModel _project) : base(_project)
         {
             this.instance = _instance;
             this.Project = _project;
@@ -23,21 +23,20 @@ namespace ZennoPosterYandexWalk
         }
         
         public bool CheckMyUrl(string url)
-        {
-            YandexWalkValue yandexWalkValue = new YandexWalkValue(Project);
+        {           
             try
             {                
-                foreach (string site in yandexWalkValue.MyUrlList)
+                foreach (string site in MyUrlList)
                 {
                     if (site.Contains(Convert.ToString(url)))
                     {
                         return true;
                     }
-                    if(url.ToLower().Contains("yandex") || url.ToLower().Contains("яндекс"))
-                    {
-                        Project.SendWarningToLog("Сайт яндекса, пропускаем его", true);
-                        return true;
-                    }
+                    //if(url.ToLower().Contains("yandex") || url.ToLower().Contains("яндекс"))
+                    //{
+                    //    Project.SendWarningToLog("Сайт яндекса, пропускаем его", true);
+                    //    return true;
+                    //}
                 }
             }
             catch (Exception ex)
@@ -47,17 +46,16 @@ namespace ZennoPosterYandexWalk
             }
             return false;
         }//Проверяем не содержит ли карточка для перехода мой URL      
-        public void GoOrLearnCard(List<int> SearchCardList)
+        public void GoOrLearnCard(List<int> SearchCardList, string NextPageHtmlElementSearchResultsCard)
         {
             YandexNavigate yandexNavigate = new YandexNavigate(instance, Project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
-            YandexWalkValue yandexWalkValue = new YandexWalkValue(Project);
 
             foreach (int i in SearchCardList)
             {
-                HtmlElement LearnElement = instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchResultsCard, i);
+                HtmlElement LearnElement = instance.ActiveTab.FindElementByXPath(NextPageHtmlElementSearchResultsCard, i);
 
-                if (Random.Next(0, 100) < yandexWalkValue.CountGetCard.ParseRangeValueInt().ValueRandom)
+                if (Random.Next(0, 100) < CountGetCard.ParseRangeValueInt().ValueRandom)
                 {
                     if (yandexNavigate.GoSearchCard(LearnElement))
                     {
@@ -98,7 +96,7 @@ namespace ZennoPosterYandexWalk
         public int GetRandomPageCountSearch()
         {
             YandexWalkValue yandexWalkValue = new YandexWalkValue(Project);
-            int CountPage = ZennoPosterEmulation.Extension.ParseRangeValueInt(yandexWalkValue.PageCountSearch).ValueRandom;
+            int CountPage = ZennoPosterEmulation.Extension.ParseRangeValueInt(PageCountSearch).ValueRandom;
 
             return CountPage;
         }//Получение рандомного количества изучаемых страниц

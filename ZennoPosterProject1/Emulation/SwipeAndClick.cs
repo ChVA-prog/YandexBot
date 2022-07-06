@@ -9,6 +9,9 @@ namespace ZennoPosterEmulation
 {
     class SwipeAndClick : EmulationValue
     {
+        private static int ElementPosition { get; set; }
+        private static int InstanceHeight { get; set; }
+
         readonly Instance instance;
         readonly IZennoPosterProjectModel project;
         public SwipeAndClick(Instance instance, IZennoPosterProjectModel project) : base(project)
@@ -42,11 +45,11 @@ namespace ZennoPosterEmulation
                     continue;
                 }
 
-                EmulationValue.ElementPosition = Convert.ToInt32(HtmlElem.GetAttribute("topInTab"));
-                EmulationValue.InstanceHeight = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerHeight"));
+                ElementPosition = Convert.ToInt32(HtmlElem.GetAttribute("topInTab"));
+                InstanceHeight = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerHeight"));
                 CounterAttemptSwipe++;
             }
-            while (EmulationValue.ElementPosition > EmulationValue.InstanceHeight || EmulationValue.ElementPosition < 0);
+            while (ElementPosition > InstanceHeight || ElementPosition < 0);
             
         }//Свайп до элемента
         public void ClickToElement(HtmlElement HtmlElem)
