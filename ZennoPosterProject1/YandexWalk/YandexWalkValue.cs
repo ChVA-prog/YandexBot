@@ -15,9 +15,7 @@ namespace ZennoPosterYandexWalk
         protected string HtmlElementNextPageButton { get; set; }
         protected string HtmlElementSearchResultsCard { get; set; }
         protected string HtmlElementUrlSearchCard { get; set; }
-        protected string HtmlElementDescriptionSerchCard { get; set; }
         protected string HtmlElementPageNumber { get; set; }
-        protected string HtmlElementCloseAdvertisement { get; set; }
         protected string PageCountSearch { get; set; }
         protected string CountLearnCardIn { get; set; }
         protected string CountGetCard { get; set; }
@@ -33,9 +31,7 @@ namespace ZennoPosterYandexWalk
             HtmlElementNextPageButton = Project.Variables["set_HtmlElementNextPageButton"].Value;
             HtmlElementSearchResultsCard = Project.Variables["set_HtmlElementSearchResultsCard"].Value;
             HtmlElementUrlSearchCard = Project.Variables["set_HtmlElementUrlSearchCard"].Value;
-            HtmlElementDescriptionSerchCard = Project.Variables["set_HtmlElementDescriptionSerchCard"].Value;
             HtmlElementPageNumber = Project.Variables["set_HtmlElementPageNumber"].Value;
-            HtmlElementCloseAdvertisement = Project.Variables["set_HtmlElementCloseAdvertisement"].Value;
             PageCountSearch = Project.Variables["set_PageCountSearch"].Value;
             CountLearnCardIn = Project.Variables["set_CountLearnCard"].Value;
             CountGetCard = Project.Variables["set_CountGetCard"].Value;

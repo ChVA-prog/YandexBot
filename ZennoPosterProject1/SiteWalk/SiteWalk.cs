@@ -22,10 +22,18 @@ namespace ZennoPosterSiteWalk
         {
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance,Project);
             Random random = new Random();
-            HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath("//p");
+            string HtmlElement = "//p";
+
+            HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath(HtmlElement);
 
             int CountElement = hec.Count;
 
+            if (CountElement == 0)
+            {
+                HtmlElement = "//a";
+                hec = instance.ActiveTab.FindElementsByXPath(HtmlElement);
+                CountElement = hec.Count;
+            }
 
             while (CountElement > 30)
             {
@@ -35,7 +43,7 @@ namespace ZennoPosterSiteWalk
             int CounElementToLearn = random.Next(0, CountElement);
             for (int i = 0; i <= CounElementToLearn; i++)
             {
-                HtmlElement he = instance.ActiveTab.FindElementByXPath("//p",i);
+                HtmlElement he = instance.ActiveTab.FindElementByXPath(HtmlElement, i);
                 swipeAndClick.SwipeToElement(he);
                 Thread.Sleep(random.Next(3000, 5000));
             }

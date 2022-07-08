@@ -30,7 +30,6 @@ namespace ZennoPosterProject1
         public HtmlElement hep { get; set; }
         public void WaitHtmlElement(string he)
         {
-            
             Random random = new Random();
             instance.ActiveTab.WaitDownloading();          
 
@@ -42,21 +41,6 @@ namespace ZennoPosterProject1
                 hep = instance.ActiveTab.FindElementByXPath(he, 0);
             }
             Thread.Sleep(random.Next(2000, 4000));
-        }
-        public void CheckIamNotRobot()
-        {
-            
-            Thread.Sleep(5000);
-            HtmlElement he = instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'CheckboxCaptcha-Inner')]", 0);
-            if (!he.IsVoid)
-            {
-                SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
-
-                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//div[contains(@class, 'CheckboxCaptcha-Checkbox')]", 0));
-                Thread.Sleep(20000);
-            }
-
-         
-        }
+        }       
     }
 }
