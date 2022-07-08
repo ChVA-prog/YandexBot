@@ -145,7 +145,6 @@
     <Compile Include="Emulation\Extension.cs" />
     <Compile Include="Emulation\GenerationEmulationValue.cs" />
     <Compile Include="InputSettings.cs" />
-    <Compile Include="NitkaDogWalk\SiteNavigateMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emulation\SwipeAndClick.cs" />
