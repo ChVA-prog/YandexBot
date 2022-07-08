@@ -24,7 +24,15 @@ namespace ZennoPosterSiteWalk
             Random random = new Random();
             HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath("//p");
 
-            int CounElementToLearn = random.Next(0, hec.Count);
+            int CountElement = hec.Count;
+
+
+            while (CountElement > 30)
+            {
+                CountElement = CountElement / 2;
+            }
+            
+            int CounElementToLearn = random.Next(0, CountElement);
             for (int i = 0; i <= CounElementToLearn; i++)
             {
                 HtmlElement he = instance.ActiveTab.FindElementByXPath("//p",i);
