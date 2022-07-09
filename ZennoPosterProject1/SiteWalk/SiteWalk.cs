@@ -3,7 +3,6 @@ using ZennoLab.CommandCenter;
 using System;
 using ZennoPosterEmulation;
 using System.Threading;
-using ZennoPosterProject1;
 
 
 namespace ZennoPosterSiteWalk
@@ -12,6 +11,8 @@ namespace ZennoPosterSiteWalk
     {
         readonly IZennoPosterProjectModel Project;
         readonly Instance instance;
+        private string HtmlElement { get; set; }
+        private int CountElementToSite { get; set; }
 
         public SiteWalk(Instance instance, IZennoPosterProjectModel project)
         {
@@ -22,29 +23,29 @@ namespace ZennoPosterSiteWalk
         {
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance,Project);
             Random random = new Random();
-            string HtmlElement = "//p";
+            HtmlElement = "//p";
 
-            HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath(HtmlElement);
+            HtmlElementCollection SiteHtmlElement = instance.ActiveTab.FindElementsByXPath(HtmlElement);
 
-            int CountElement = hec.Count;
+            CountElementToSite = SiteHtmlElement.Count;
 
-            if (CountElement == 0)
+            if (CountElementToSite == 0)
             {
                 HtmlElement = "//a";
-                hec = instance.ActiveTab.FindElementsByXPath(HtmlElement);
-                CountElement = hec.Count;
+                SiteHtmlElement = instance.ActiveTab.FindElementsByXPath(HtmlElement);
+                CountElementToSite = SiteHtmlElement.Count;
             }
 
-            while (CountElement > 30)
+            while (CountElementToSite > 30)
             {
-                CountElement = CountElement / 2;
+                CountElementToSite = CountElementToSite / 2;
             }
             
-            int CounElementToLearn = random.Next(0, CountElement);
+            int CounElementToLearn = random.Next(0, CountElementToSite);
             for (int i = 0; i <= CounElementToLearn; i++)
             {
                 HtmlElement he = instance.ActiveTab.FindElementByXPath(HtmlElement, i);
-                swipeAndClick.SwipeToElement(he);
+                swipeAndClick.SwipeAndClickToElement(he);
                 Thread.Sleep(random.Next(3000, 5000));
             }
         }//Рандомное изучение сайта

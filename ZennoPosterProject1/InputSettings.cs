@@ -1,8 +1,7 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.CommandCenter;
-using ZennoPosterDataBaseAndProfile;
+using DataBaseProfileAndProxy;
 using ZennoPosterEmulation;
-using ZennoPosterProxy;
 using ZennoPosterYandexWalk;
 using ZennoPosterSiteWalk;
 
@@ -20,11 +19,9 @@ namespace ZennoPosterProject1
 
         public void InitializationInputValue()
         {
-            new DataBaseAndProfileValue(project);
+            new DataBaseProfileAndProxyValue(project);
             new EmulationValue(project);
-            new ProxyValue(instance, project);
             new YandexWalkValue(project);
-            new SiteWalkValue(instance, project);
         }//Считывание входных настроек
     }
 }

@@ -26,7 +26,7 @@ namespace ZennoPosterEmulation
         protected static string SwipeFractionX { get; set; }
         protected static string SwipeFractionY { get; set; }
         protected static string TouchLengthMs { get; set; }
-        protected static string LatencyKey { get; set; }
+        public static string LatencyKey { get; set; }
 
         public EmulationValue(IZennoPosterProjectModel project)
         {

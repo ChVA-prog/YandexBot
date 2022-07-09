@@ -20,7 +20,6 @@ namespace ZennoPosterYandexWalk
         protected string CountLearnCardIn { get; set; }
         protected string CountGetCard { get; set; }
         protected List<string> MyUrlList { get; set; }
-
         public YandexWalkValue(IZennoPosterProjectModel _project)
         {
             this.Project = _project;

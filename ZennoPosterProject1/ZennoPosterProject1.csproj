@@ -139,9 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionalMethods.cs" />
-    <Compile Include="DataBaseAndProfile\DataBaseAndProfileValue.cs" />
-    <Compile Include="DataBaseAndProfile\DB.cs" />
-    <Compile Include="DataBaseAndProfile\Profile.cs" />
+    <Compile Include="DataBaseProfileAndProxy\DataBaseProfileAndProxyValue.cs" />
+    <Compile Include="DataBaseProfileAndProxy\DB.cs" />
+    <Compile Include="DataBaseProfileAndProxy\ProfileDB.cs" />
     <Compile Include="Emulation\Extension.cs" />
     <Compile Include="Emulation\GenerationEmulationValue.cs" />
     <Compile Include="InputSettings.cs" />
@@ -149,15 +149,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emulation\SwipeAndClick.cs" />
     <Compile Include="Emulation\EmulationValue.cs" />
-    <Compile Include="Proxy\ProxyDB.cs" />
-    <Compile Include="Proxy\ProxySettings.cs" />
-    <Compile Include="Proxy\ProxyValue.cs" />
+    <Compile Include="DataBaseProfileAndProxy\ProxyDB.cs" />
     <Compile Include="StartMethod.cs" />
     <Compile Include="SiteWalk\Extension.cs" />
-    <Compile Include="SiteWalk\SiteNavigate.cs" />
     <Compile Include="SiteWalk\SiteWalk.cs" />
-    <Compile Include="SiteWalk\SiteWalkSettings.cs" />
-    <Compile Include="SiteWalk\SIteWalkValue.cs" />
     <Compile Include="YandexWalk\Extansion.cs" />
     <Compile Include="YandexWalk\YandexNavigate.cs" />
     <Compile Include="YandexWalk\YandexWalk.cs" />

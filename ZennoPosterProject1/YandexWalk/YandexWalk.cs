@@ -30,7 +30,7 @@ namespace ZennoPosterYandexWalk
             YandexNavigate yandexNavigate = new YandexNavigate(instance, Project);
 
             int CounterPage = 1;
-            int CountLearnPage = new YandexWalkSettings(instance,Project).GetRandomPageCountSearch();            
+            int CountLearnPage = yandexWalkSettings.GetRandomPageCountSearch();
             try
             {
               yandexNavigate.GoToSearchQuery();
@@ -56,7 +56,6 @@ namespace ZennoPosterYandexWalk
                 Project.SendInfoToLog("Номер страницы " + CounterPage, true);
 
                 int CounterAttemptGetSumCard = 0;
-
                 do
                 {
                     if(CounterAttemptGetSumCard == 10)
@@ -74,13 +73,12 @@ namespace ZennoPosterYandexWalk
                 Project.SendInfoToLog("Будем изучать " + CountLearnCardInPage + " карточек", true);
 
                 List<int> SearchCardList = yandexWalkSettings.CountLearnCard(CountLearnCardInPage);
-
                 yandexWalkSettings.GoOrLearnCard(SearchCardList, NextPageHtmlElementSearchResultsCard);
 
                 Project.SendInfoToLog("Переходим на следующую страницу", true);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementNextPageButton, 0));
                 new AdditionalMethods(instance, Project).WaitDownloading();
-                new YandexNavigate(instance, Project).CloseYandexTrash();
+                yandexNavigate.CloseYandexTrash();
                 CounterPage++;
             }
             while (CountLearnPage > CounterPage);                      

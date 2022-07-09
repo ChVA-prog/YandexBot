@@ -1,7 +1,6 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.CommandCenter;
-using ZennoPosterDataBaseAndProfile;
-using ZennoPosterProxy;
+using DataBaseProfileAndProxy;
 using ZennoPosterYandexWalk;
 using System;
 
@@ -17,10 +16,9 @@ namespace ZennoPosterProject1
             this.instance = instance;
             this.project = project;
         }
-
         public void FeedingCookies()
         {
-            Profile profile = new Profile(project);
+            ProfileDB profile = new ProfileDB(project);
             ProxyDB proxyDB = new ProxyDB(instance, project);
 
             try

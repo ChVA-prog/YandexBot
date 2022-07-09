@@ -1,15 +1,11 @@
 ﻿using System.Data.SQLite;
-using ZennoLab.InterfacesLibrary.ProjectModel;
 
-namespace ZennoPosterDataBaseAndProfile
+namespace DataBaseProfileAndProxy
 {
-    class DB : DataBaseAndProfileValue
+    class DB
     {
-        readonly IZennoPosterProjectModel project;
-        public DB(IZennoPosterProjectModel project) : base(project)
-        {
+        public static string PathToDB { set; get; }
 
-        }
         public SQLiteConnection OpenConnectDb() 
         {
             string Connection = @"Data Source=" + PathToDB + "; Pooling=true; FailIfMissing=false; Version=3";

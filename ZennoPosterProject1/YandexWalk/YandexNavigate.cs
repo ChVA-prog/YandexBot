@@ -18,7 +18,12 @@ namespace ZennoPosterYandexWalk
             this.instance = instance;
             this.Project = project;
         }
-
+        public void GoToYandex()
+        {
+            Project.SendInfoToLog("Переходим на страницу яндекса", true);
+            instance.ActiveTab.Navigate(new YandexWalkSettings(instance, Project).GetRandomYandexHost());
+            new AdditionalMethods(instance, Project).WaitDownloading();
+        }//Переход в яндекс
         public void GoToSearchQuery()
         { 
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);           
@@ -40,35 +45,10 @@ namespace ZennoPosterYandexWalk
             Project.SendInfoToLog("Кликаем по кнопке найти",true);
 
             //Сделать проверку нажатия кнопки найти 
-
-            swipeAndClick.ClickToElement(HtmlElementSearchButton);
+            swipeAndClick.SwipeAndClickToElement(HtmlElementSearchButton);
             new AdditionalMethods(instance,Project).WaitDownloading();
             CloseYandexTrash();
         }//Ввод поискового запроса и переход по нему
-
-
-
-        public void GoToYandex()
-        {           
-            Project.SendInfoToLog("Переходим на страницу яндекса", true);
-            instance.ActiveTab.Navigate(new YandexWalkSettings(instance,Project).GetRandomYandexHost());
-            new AdditionalMethods(instance, Project).WaitDownloading();
-        }//Переход в яндекс
-        public void CloseUnnecessaryWindows()
-        {
-            if (instance.AllTabs.Length > 1)
-            {
-                instance.ActiveTab.Close();
-                Project.SendInfoToLog("Закрыли лишнюю вкладку.", true);
-            }
-            else
-            {
-                if (!instance.ActiveTab.URL.Contains("/search/") || instance.ActiveTab.FindElementByXPath(HtmlElementSearchResultsCard, 0).IsVoid)
-                {
-                    instance.ActiveTab.MainDocument.EvaluateScript("javascript:history.back()");
-                }
-            }
-        }//Закрываем лишнюю вкладку
         public bool GoSearchCard(HtmlElement LearnElement)
         {
             SiteWalk siteWalk = new SiteWalk(instance, Project);
@@ -76,9 +56,7 @@ namespace ZennoPosterYandexWalk
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
             Random random = new Random();
 
-            HtmlElement GetSearchCard = LearnElement.FindChildByXPath(HtmlElementUrlSearchCard, 0);
-
-            string CurenSite = GetSearchCard.InnerHtml;
+            string CurenSite = LearnElement.FindChildByXPath(HtmlElementUrlSearchCard, 0).InnerHtml;
             string ClearCurenSite = CurenSite.GetUrlToDomain();
 
             if (String.IsNullOrEmpty(ClearCurenSite) || String.IsNullOrWhiteSpace(ClearCurenSite))
@@ -105,6 +83,21 @@ namespace ZennoPosterYandexWalk
 
             return false;
         }//Переходим в карточку
+        public void CloseUnnecessaryWindows()
+        {
+            if (instance.AllTabs.Length > 1)
+            {
+                instance.ActiveTab.Close();
+                Project.SendInfoToLog("Закрыли лишнюю вкладку.", true);
+            }
+            else
+            {
+                if (!instance.ActiveTab.URL.Contains("/search/") || instance.ActiveTab.FindElementByXPath(HtmlElementSearchResultsCard, 0).IsVoid)
+                {
+                    instance.ActiveTab.MainDocument.EvaluateScript("javascript:history.back()");
+                }
+            }
+        }//Закрываем лишнюю вкладку        
         public void CloseYandexTrash()
         {
             Random random = new Random();
@@ -129,14 +122,14 @@ namespace ZennoPosterYandexWalk
 
             if (!IAmNotRobot.IsVoid)
             {
-                swipeAndClick.ClickToElement(instance.ActiveTab.FindElementByXPath("//div[contains(@class,'CheckboxCaptcha')]", 0));
+                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//div[contains(@class,'CheckboxCaptcha')]", 0));
             }    
             
             if (!InpuCaptcha.IsVoid)
             {              
                 string recognition = ZennoPoster.CaptchaRecognition("RuCaptcha.dll", Captcha.DrawToBitmap(false), "");
                 swipeAndClick.SetText(InputTextCaptcha, recognition.Split('-')[0]);
-                swipeAndClick.ClickToElement(SendCaptcha);
+                swipeAndClick.SwipeAndClickToElement(SendCaptcha);
             }
 
             if (!alisa.IsVoid)
@@ -165,6 +158,6 @@ namespace ZennoPosterYandexWalk
             {
                 swipeAndClick.SwipeAndClickToElement(Yamerket2);
             }
-        }
+        }//Закрываем яндексовский мусор
     }
 }
