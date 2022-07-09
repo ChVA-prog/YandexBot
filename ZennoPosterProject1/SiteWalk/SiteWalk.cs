@@ -29,7 +29,7 @@ namespace ZennoPosterSiteWalk
 
             CountElementToSite = SiteHtmlElement.Count;
 
-            if (CountElementToSite == 0)
+            if (CountElementToSite <= 5)
             {
                 HtmlElement = "//a";
                 SiteHtmlElement = instance.ActiveTab.FindElementsByXPath(HtmlElement);
@@ -45,7 +45,7 @@ namespace ZennoPosterSiteWalk
             for (int i = 0; i <= CounElementToLearn; i++)
             {
                 HtmlElement he = instance.ActiveTab.FindElementByXPath(HtmlElement, i);
-                swipeAndClick.SwipeAndClickToElement(he);
+                swipeAndClick.SwipeToElement(he);
                 Thread.Sleep(random.Next(3000, 5000));
             }
         }//Рандомное изучение сайта

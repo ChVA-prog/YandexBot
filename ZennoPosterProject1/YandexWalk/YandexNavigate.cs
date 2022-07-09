@@ -23,17 +23,15 @@ namespace ZennoPosterYandexWalk
             Project.SendInfoToLog("Переходим на страницу яндекса", true);
             instance.ActiveTab.Navigate(new YandexWalkSettings(instance, Project).GetRandomYandexHost());
             new AdditionalMethods(instance, Project).WaitDownloading();
+            CloseYandexTrash();
         }//Переход в яндекс
         public void GoToSearchQuery()
         { 
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);           
             string RandomSearchQueries = new YandexWalkSettings(instance, Project).GetRandomSearchQueries();
-
-            GoToYandex();
-
+            GoToYandex();           
             HtmlElement HtmlElementInputSearch = instance.ActiveTab.FindElementByXPath(HtmlElementInputSearchIn, 0);
             HtmlElement HtmlElementSearchButton = instance.ActiveTab.FindElementByXPath(HtmlElementSearchButtonIn, 0);
-
             Project.SendInfoToLog("Вводим поисковый запрос в строку",true);
             swipeAndClick.SetText(HtmlElementInputSearch, RandomSearchQueries);
 
@@ -113,25 +111,23 @@ namespace ZennoPosterYandexWalk
             HtmlElement YandexBrowser = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Позже')] | //span[starts-with(text(),'Не сейчас')]", 0); //Яндекс браузер
             HtmlElement Yamerket2 = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Скрыть')]", 0); //Яндекс маркет2
             //КАПЧА
-            HtmlElement IAmNotRobot = instance.ActiveTab.FindElementByXPath("//span[contains(text(),'похожи на автоматические')]", 0);
-            HtmlElement InpuCaptcha = instance.ActiveTab.FindElementByXPath("//label[contains(text(),'Введите текст с картинки')]", 0);
-            HtmlElement InputTextCaptcha = instance.ActiveTab.FindElementByXPath("//input[contains(@class,'Textinput-Control')]", 0);
+            HtmlElement IAmNotRobot = instance.ActiveTab.FindElementByXPath("//span[contains(text(),'похожи на автоматические')]", 0);          
+            HtmlElement InputTextCaptcha = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'Textinput-Box')]", 0);           
+            HtmlElement SendCaptcha = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'Button2-Text')]", 3);
             HtmlElement Captcha = instance.ActiveTab.FindElementByXPath("//img[contains(@class,'AdvancedCaptcha')]", 0);
-            HtmlElement SendCaptcha = instance.ActiveTab.FindElementByXPath("//span[contains(text(),'Отправить')]", 0);
-
 
             if (!IAmNotRobot.IsVoid)
-            {
+            {                
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//div[contains(@class,'CheckboxCaptcha')]", 0));
-            }    
-            
-            if (!InpuCaptcha.IsVoid)
-            {              
-                string recognition = ZennoPoster.CaptchaRecognition("RuCaptcha.dll", Captcha.DrawToBitmap(false), "");
-                swipeAndClick.SetText(InputTextCaptcha, recognition.Split('-')[0]);
-                swipeAndClick.SwipeAndClickToElement(SendCaptcha);
+                Thread.Sleep(random.Next(3000, 6000));
+                HtmlElement InpuCaptcha = instance.ActiveTab.FindElementByXPath("//label[contains(text(),'Введите текст с картинки')]", 0);               
+                if (!InpuCaptcha.IsVoid)
+                {
+                    string recognition = ZennoPoster.CaptchaRecognition("RuCaptcha.dll", Captcha.DrawToBitmap(false), "");
+                    swipeAndClick.SetText(InputTextCaptcha, recognition.Split('-')[0]);
+                    swipeAndClick.SwipeAndClickToElement(SendCaptcha);
+                }
             }
-
             if (!alisa.IsVoid)
             {
                 swipeAndClick.SwipeAndClickToElement(alisa);
