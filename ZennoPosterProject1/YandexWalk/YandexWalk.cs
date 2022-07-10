@@ -14,7 +14,7 @@ namespace ZennoPosterYandexWalk
 
         readonly Instance instance;
         readonly IZennoPosterProjectModel Project;
-        public int CountLearnCardInPage { get; set; }
+        private int CountLearnCardInPage { get; set; }
 
         public YandexWalk(Instance _instance, IZennoPosterProjectModel _project) : base(_project)
         {

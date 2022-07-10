@@ -113,9 +113,8 @@ namespace ZennoPosterYandexWalk
             //КАПЧА
             HtmlElement IAmNotRobot = instance.ActiveTab.FindElementByXPath("//span[contains(text(),'похожи на автоматические')]", 0);          
             HtmlElement InputTextCaptcha = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'Textinput-Box')]", 0);           
-            HtmlElement SendCaptcha = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'Button2-Text')]", 3);
-            HtmlElement Captcha = instance.ActiveTab.FindElementByXPath("//img[contains(@class,'AdvancedCaptcha')]", 0);
-
+            HtmlElement SendCaptcha = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Отправить')]", 0);
+            
             if (!IAmNotRobot.IsVoid)
             {                
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//div[contains(@class,'CheckboxCaptcha')]", 0));
@@ -123,9 +122,11 @@ namespace ZennoPosterYandexWalk
                 HtmlElement InpuCaptcha = instance.ActiveTab.FindElementByXPath("//label[contains(text(),'Введите текст с картинки')]", 0);               
                 if (!InpuCaptcha.IsVoid)
                 {
-                    string recognition = ZennoPoster.CaptchaRecognition("RuCaptcha.dll", Captcha.DrawToBitmap(false), "");
+                    HtmlElement Captcha = instance.ActiveTab.FindElementByXPath("//img[contains(@class,'AdvancedCaptcha')]", 0);
+                    string recognition = ZennoPoster.CaptchaRecognition("RuCaptcha.dll", Captcha.DrawToBitmap(true), "");
                     swipeAndClick.SetText(InputTextCaptcha, recognition.Split('-')[0]);
                     swipeAndClick.SwipeAndClickToElement(SendCaptcha);
+                    Thread.Sleep(random.Next(2000, 5000));
                 }
             }
             if (!alisa.IsVoid)
