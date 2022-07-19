@@ -67,6 +67,7 @@ namespace ZennoPosterProject1
 
             LogManager.Configuration.AddRule(LogLevel.Trace, LogLevel.Fatal, target, name);
             LogManager.ReconfigExistingLoggers();
+            Program.logger.Debug("Настроили файл конфиг для NLog");
         }
 
 

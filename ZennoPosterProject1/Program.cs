@@ -30,7 +30,9 @@ namespace ZennoPosterProject1
             project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
             project.SendInfoToLog("Считываем входные настройки", true);
             new InputSettings(instance, project).InitializationInputValue();
-
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance,project);
+            HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'button2__text')]", 0);
+            swipeAndClick.SwipeAndClickToElement(he);
             StartMethod startMethod = new StartMethod(instance, project);
 
             try

@@ -1,4 +1,5 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
+using ZennoPosterProject1;
 
 namespace ZennoPosterEmulation
 {    
@@ -31,7 +32,7 @@ namespace ZennoPosterEmulation
         public EmulationValue(IZennoPosterProjectModel project)
         {
             this.Project = project;
-
+            Program.logger.Debug("Считываем входные значения параметров эмуляции тача и свайпа.");
             Acceleration = Project.Variables["set_Acceleration"].Value;
             LongTouchLengthMs = Project.Variables["set_LongTouchLengthMs"].Value;
             MaxCurvature = Project.Variables["set_MaxCurvature"].Value;
@@ -54,6 +55,7 @@ namespace ZennoPosterEmulation
             SwipeFractionY = Project.Variables["set_SwipeFractionY"].Value;
             TouchLengthMs = Project.Variables["set_TouchLengthMs"].Value;
             LatencyKey = Project.Variables["set_LatencyKey"].Value;
+            Program.logger.Debug("Закончили считывать входные значения параметров эмуляции тача и свайпа.");
         }
     }
 }

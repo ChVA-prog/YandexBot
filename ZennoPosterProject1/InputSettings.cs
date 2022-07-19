@@ -19,9 +19,6 @@ namespace ZennoPosterProject1
 
         public void InitializationInputValue()
         {
-            Program.logger.Info("Infomessage");
-            Program.logger.Debug("Debugmessage");
-            Program.logger.Error("Errormessage");
             new DataBaseProfileAndProxyValue(project);
             new EmulationValue(project);
             new YandexWalkValue(project);
