@@ -2,7 +2,7 @@
 using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
-
+using System.IO;
 
 namespace ZennoPosterProject1
 {
@@ -11,8 +11,6 @@ namespace ZennoPosterProject1
     /// </summary>
     public class Program : IZennoExternalCode
     {
-        
-        /// <summary>
         /// Метод для запуска выполнения скрипта
         /// </summary>
         /// <param name="instance">Объект инстанса выделеный для данного скрипта</param>
@@ -20,8 +18,11 @@ namespace ZennoPosterProject1
         /// <returns>Код выполнения скрипта</returns>		
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
-            int executionResult = 0;
-            
+             int executionResult = 0;
+
+
+
+
             //project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
             //project.SendInfoToLog("Считываем входные настройки", true);
             //new InputSettings(instance, project).InitializationInputValue();
