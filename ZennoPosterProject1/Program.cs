@@ -2,8 +2,7 @@
 using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
-using NLog;
-using NLog.Config;
+
 
 namespace ZennoPosterProject1
 {
@@ -12,9 +11,7 @@ namespace ZennoPosterProject1
     /// </summary>
     public class Program : IZennoExternalCode
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-
-
+        
         /// <summary>
         /// Метод для запуска выполнения скрипта
         /// </summary>
@@ -24,15 +21,7 @@ namespace ZennoPosterProject1
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
             int executionResult = 0;
-
-            logger.Trace("trace message");
-            logger.Debug("debug message");
-            logger.Info("info message");
-            logger.Warn("warn message");
-            logger.Error("error message");
-            logger.Fatal("fatal message");
-
-
+            
             //project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
             //project.SendInfoToLog("Считываем входные настройки", true);
             //new InputSettings(instance, project).InitializationInputValue();
