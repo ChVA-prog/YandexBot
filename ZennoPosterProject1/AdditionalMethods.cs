@@ -60,7 +60,7 @@ namespace ZennoPosterProject1
 
             var target = new FileTarget();
             target.Layout = "${time} | ${threadid} | ${callsite} | ${level} | ${message} ";
-            target.FileName = $"{path}/{name}.txt";
+            target.FileName = $"{path}/{name}.csv";
             target.KeepFileOpen = false;
             target.Encoding = Encoding.UTF8;
             target.Name = name;

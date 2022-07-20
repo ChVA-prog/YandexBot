@@ -1,4 +1,6 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
+using ZennoPosterProject1;
 
 namespace DataBaseProfileAndProxy
 {
@@ -8,12 +10,23 @@ namespace DataBaseProfileAndProxy
 
         public SQLiteConnection OpenConnectDb() 
         {
-            string Connection = @"Data Source=" + PathToDB + "; Pooling=true; FailIfMissing=false; Version=3";
+            try
+            {
+                Program.logger.Debug("Открываем соединение с БД");
 
-            SQLiteConnection sqliteConnection = new SQLiteConnection(Connection);
-            sqliteConnection.Open();
+                string Connection = @"Data Source=" + PathToDB + "; Pooling=true; FailIfMissing=false; Version=3";
 
-            return sqliteConnection;
+                SQLiteConnection sqliteConnection = new SQLiteConnection(Connection);
+                sqliteConnection.Open();
+
+                Program.logger.Debug("Соединение с БД успешно открыто.");
+                return sqliteConnection;
+            }
+            catch (Exception ex)
+            {
+                Program.logger.Error("Не удалось открыть соединение с БД. " + ex.Message);
+                throw new Exception("Не удалось открыть соединение с БД. " + ex.Message);
+            }
         }//Подключение к БД     
     }
 }

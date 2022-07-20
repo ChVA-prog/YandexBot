@@ -2,6 +2,7 @@
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using System.Linq;
 using System.Collections.Generic;
+using ZennoPosterProject1;
 
 namespace DataBaseProfileAndProxy
 {
@@ -21,12 +22,14 @@ namespace DataBaseProfileAndProxy
         {
             this.Project = project;
 
+            Program.logger.Debug("Считываем входные настройки БД, прокси и профилей.");
             CountFreeProfileInDB = Convert.ToInt32(Project.Variables["set_CountFreeProfileInDB"].Value);
             DB.PathToDB = Project.Variables["set_PathToDB"].Value;
             PathToFolderProfile = Project.Variables["set_PathToFolderProfile"].Value;
             CountSessionLimit = Convert.ToInt32(Project.Variables["set_CountSessionDayLimit"].Value);
             ProxyListInput = Project.Variables["set_Proxy"].Value;
             MyProxyList = ProxyListInput.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+            Program.logger.Debug("Считывание входных настроек БД, прокси и профилей успешно завершено.");
         }
      }
 }
