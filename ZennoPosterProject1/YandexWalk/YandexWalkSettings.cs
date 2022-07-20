@@ -35,7 +35,7 @@ namespace ZennoPosterYandexWalk
                 {
                     Program.logger.Debug("Будем переходить в поисковую карточку под номером: " + SearchCardList[i]);
                     Project.SendInfoToLog("Будем переходить в карточку.");
-                    if (yandexNavigate.GoSearchCard(LearnElement))
+                    if (!yandexNavigate.GoSearchCard(LearnElement))
                     {
                         yandexNavigate.CloseUnnecessaryWindows();
                         continue;

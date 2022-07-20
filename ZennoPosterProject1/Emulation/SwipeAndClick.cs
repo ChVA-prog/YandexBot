@@ -73,7 +73,7 @@ namespace ZennoPosterEmulation
                 if(CounterAttemptSwipe == 10)
                 {
                     project.SendWarningToLog("Сделали 10 попыток найти HtmlElement для свайпа, пропускаем его",true);
-                    throw new Exception("HtmlElement для свайпа не найден");                    
+                    break;                    
                 }
 
                 instance.ActiveTab.Touch.SwipeIntoView(HtmlElem);

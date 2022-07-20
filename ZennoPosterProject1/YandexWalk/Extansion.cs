@@ -1,6 +1,7 @@
 ﻿using System;
 using ZennoPosterProject1;
 
+
 namespace ZennoPosterYandexWalk
 {
     static class Extansion

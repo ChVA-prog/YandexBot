@@ -9,9 +9,10 @@ using System.Text;
 using System.Runtime.InteropServices;
 
 namespace ZennoPosterProject1
-{
+{ 
     public class AdditionalMethods       
     {
+        public static object LockList = new object();
         readonly IZennoPosterProjectModel project;
         readonly Instance instance;
 
@@ -48,27 +49,30 @@ namespace ZennoPosterProject1
         }
         public void NLogCofig()
         {
-            var name = DateTime.Now.ToString("dd.MM.yyyy");
-            var path = project.Directory + "/Logs";
-
-
-            if (LogManager.Configuration == null)
+            lock (LockList)
             {
-                LogManager.Configuration = new LoggingConfiguration();
+                var name = DateTime.Now.ToString("dd.MM.yyyy");
+                var path = project.Directory + "/Logs";
+
+
+                if (LogManager.Configuration == null)
+                {
+                    LogManager.Configuration = new LoggingConfiguration();
+                }
+
+                if (LogManager.Configuration.FindRuleByName(name) != null || LogManager.Configuration.FindTargetByName(name) != null) ;
+
+                var target = new FileTarget();
+                target.Layout = "${time} | ${threadid} | ${callsite} | ${level} | ${message} ";
+                target.FileName = $"{path}/{name}.csv";
+                target.KeepFileOpen = false;
+                target.Encoding = Encoding.UTF8;
+                target.Name = name;
+
+                LogManager.Configuration.AddRule(LogLevel.Trace, LogLevel.Fatal, target, name);
+                LogManager.ReconfigExistingLoggers();
+                Program.logger.Debug("Настроили файл конфиг для NLog");
             }
-
-            if (LogManager.Configuration.FindRuleByName(name) != null || LogManager.Configuration.FindTargetByName(name) != null);
-
-            var target = new FileTarget();
-            target.Layout = "${time} | ${threadid} | ${callsite} | ${level} | ${message} ";
-            target.FileName = $"{path}/{name}.csv";
-            target.KeepFileOpen = false;
-            target.Encoding = Encoding.UTF8;
-            target.Name = name;
-
-            LogManager.Configuration.AddRule(LogLevel.Trace, LogLevel.Fatal, target, name);
-            LogManager.ReconfigExistingLoggers();
-            Program.logger.Debug("Настроили файл конфиг для NLog");
         }
     }
     public class WaitUser

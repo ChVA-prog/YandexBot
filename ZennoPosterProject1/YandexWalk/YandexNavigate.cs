@@ -129,7 +129,7 @@ namespace ZennoPosterYandexWalk
             //КАПЧА
             HtmlElement IAmNotRobot = instance.ActiveTab.FindElementByXPath("//span[contains(text(),'похожи на автоматические')]", 0);          
             HtmlElement InputTextCaptcha = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'Textinput-Box')]", 0);           
-            HtmlElement SendCaptcha = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Отправить')]", 0);
+            HtmlElement SendCaptcha = instance.ActiveTab.FindElementByXPath("//span[contains(text(),'Отправить')]", 0);
             
             if (!IAmNotRobot.IsVoid)
             {
