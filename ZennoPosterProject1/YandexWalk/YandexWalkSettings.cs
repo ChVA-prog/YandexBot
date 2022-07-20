@@ -12,7 +12,6 @@ namespace ZennoPosterYandexWalk
     {
         readonly IZennoPosterProjectModel Project;
         readonly Instance instance;
-
         Random random = new Random();
 
         public YandexWalkSettings(Instance _instance, IZennoPosterProjectModel _project) : base(_project)
@@ -26,6 +25,7 @@ namespace ZennoPosterYandexWalk
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
             SearchCardList.Sort();
             Program.logger.Debug("Начинаем перебор карточек, решаем в какие будем переходить а какие будем изучать.");
+
             foreach (int i in SearchCardList)
             {
                 Program.logger.Debug("Получили карточку под номером: " + SearchCardList[i]);
@@ -33,33 +33,35 @@ namespace ZennoPosterYandexWalk
 
                 if (random.Next(0, 100) < CountGetCard.ParseRangeValueInt().ValueRandom)
                 {
-                    Program.logger.Debug("Будем переходить в поисковую карточку под номером: " + SearchCardList[i]);
-                    Project.SendInfoToLog("Будем переходить в карточку.");
+                    Program.logger.Info("Будем переходить в поисковую карточку под номером: " + SearchCardList[i]);
+                    Project.SendInfoToLog("Будем переходить в карточку.",true);
+
                     if (!yandexNavigate.GoSearchCard(LearnElement))
                     {
                         yandexNavigate.CloseUnnecessaryWindows();
                         continue;
                     }
                 }
+
                 else
                 {
-                    Program.logger.Debug("Изучаем карточку под номером: " + SearchCardList[i]);
+                    Program.logger.Info("Изучаем карточку под номером: " + SearchCardList[i]);
                     Project.SendInfoToLog("Просто изучаем карточку.", true);
-
                     swipeAndClick.SwipeToElement(LearnElement);
                     Thread.Sleep(random.Next(2000, 4000));
                 }                           
             }
-            Program.logger.Debug("Закончили перебор карточек на странице.");
+            Program.logger.Info("Закончили перебор карточек на странице.");
         }//Решаем переходим в карточку или просто изучаем
         public bool CheckMyUrl(string url)
-        {          
-            
+        {                  
             try
             {
                 Program.logger.Debug("Перебираем список запрещенных сайтов.");
+
                 foreach (string site in MyUrlList)
                 {
+                    
                     if (site.Contains(Convert.ToString(url)))
                     {
                         Program.logger.Debug("{0} содержится в {1} в списке MyUrlList",url,site);
@@ -70,9 +72,10 @@ namespace ZennoPosterYandexWalk
             catch (Exception ex)
             {
                 Project.SendWarningToLog("Не удалось сделать проверку URL",true);
-                Program.logger.Warn("Не удалось сделать проверку URL");
+                Program.logger.Warn("Не удалось сделать проверку URL: " + ex.Message);
                 return false;
             }
+
             return false;
         }//Проверяем не содержит ли карточка для перехода мой URL      
         public string GetRandomYandexHost()
@@ -102,17 +105,21 @@ namespace ZennoPosterYandexWalk
         {
             Program.logger.Debug("Получаем рандомные карточки с которыми будем работать.");
             List<int> SearchCardList = new List<int>();
+
             for (int i = 0; i < CountCard; i++)
             {
                 int rnd = random.Next(0, CountCard);
+
                 if (SearchCardList.Contains(rnd))
                 {
                     i--;
                     continue;
                 }
+
                 SearchCardList.Add(rnd);
                 Program.logger.Debug("Добавили карточку номер {0} в список для работы.", rnd);
             }
+
             return SearchCardList;
         } //Получение рандомного количиства карточек с которыми будем работать
     }

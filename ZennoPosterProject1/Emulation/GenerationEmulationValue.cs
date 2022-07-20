@@ -21,8 +21,6 @@ namespace ZennoPosterEmulation
         public float ValueMax { get; set; }
         public float ValueRandom {get{return(float) random.NextDouble() * (ValueMax - ValueMin) + ValueMin;}}
     }//Генерация рандомного числа с остатком из заданного диапазона
-
-
     public class CreateTouchAndSwipeParametr : EmulationValue
     {
         public CreateTouchAndSwipeParametr(IZennoPosterProjectModel project) : base(project) { }

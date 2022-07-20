@@ -36,7 +36,7 @@ namespace ZennoPosterProject1
             {
                 project.SendErrorToLog("Не смогли нагулять куки: " + ex.Message);
             }
-            Program.logger.Debug("Закончили выполнение проекта.");
+            Program.logger.Info("Закончили выполнение проекта.");
             project.SendInfoToLog("Закончили выполнение проекта.");
             return executionResult;           
         }

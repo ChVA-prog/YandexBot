@@ -3,7 +3,6 @@ using ZennoLab.CommandCenter;
 using DataBaseProfileAndProxy;
 using ZennoPosterEmulation;
 using ZennoPosterYandexWalk;
-using ZennoPosterSiteWalk;
 
 namespace ZennoPosterProject1
 {

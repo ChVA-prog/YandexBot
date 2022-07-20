@@ -30,19 +30,19 @@ namespace DataBaseProfileAndProxy
             project.SendInfoToLog("Начинаем установку прокси в инстанс.");
             AddProxyInDB();
             GetProxyFromDB();
+
             if (CheckProxy())
             {
                 Program.logger.Debug("Устанавливаем прокси в инстанс.");
                 instance.ClearProxy();
                 instance.SetProxy(ProxyLine, false, true, true, true);
                 project.SendInfoToLog("Назначили прокси: " + ProxyLine.Split('@')[1], true);
-                Program.logger.Debug("Установили прокси: " + ProxyLine.Split('@')[1] + " в инстанс.");
+                Program.logger.Info("Установили прокси: " + ProxyLine.Split('@')[1] + " в инстанс.");
                 CheckIp();
             }
             else
             {
                 ChangeStatusProxyInDB("DEATH");
-
                 project.SendErrorToLog("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой.", true);
                 Program.logger.Warn("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой.");
                 ProxyLine = null;
@@ -54,18 +54,17 @@ namespace DataBaseProfileAndProxy
         public void AddProxyInDB()
         {
             Program.logger.Debug("Добавляем прокси из входных настроек в БД.");
+
             foreach (string proxy in DataBaseProfileAndProxyValue.MyProxyList)
             {
                 SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-
                 string ProfileStringRequest = String.Format("INSERT INTO Proxy (ProxyLine, Status, ProxyChangeIpUrl) VALUES('{0}', 'Free', '{1}')", proxy.Split('|')[0], proxy.Split('|')[1]);
-
                 SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
-
                 sQLiteCommand.ExecuteReader();
                 sqliteConnection.Close();
             }
-            Program.logger.Debug("Успешно добавили прокси из входных настроек в БД.");
+
+            Program.logger.Info("Успешно добавили прокси из входных настроек в БД.");
             project.SendInfoToLog("Добавили прокси из входных настроек в БД.", true);
         }//Добавление прокси в БД
         public void GetProxyFromDB()
@@ -74,9 +73,9 @@ namespace DataBaseProfileAndProxy
             {
                 Program.logger.Debug("Получаем строку с прокси из БД.");
                 SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-
                 string ProfileStringRequest = "SELECT ProxyLine, ProxyChangeIpUrl FROM Proxy WHERE Status = 'Free' ORDER BY ProxyLine ASC LIMIT 1";
                 SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+
                 try
                 {
                     SQLiteDataReader reader = sQLiteCommand.ExecuteReader();
@@ -96,7 +95,6 @@ namespace DataBaseProfileAndProxy
                         throw new Exception("Нету свободной прокси.");
                     }
                 }
-
                 catch (Exception ex)
                 {
                     sqliteConnection.Close();
@@ -106,7 +104,7 @@ namespace DataBaseProfileAndProxy
 
                 sqliteConnection.Close();
                 project.SendInfoToLog("Получили прокси из БД: " + ProxyLine, true);
-                Program.logger.Debug("Получили прокси из БД: " + ProxyLine);
+                Program.logger.Info("Получили прокси из БД: " + ProxyLine);
                 ChangeStatusProxyInDB("Busy");
             }
         }//Взять прокси из БД
@@ -115,9 +113,11 @@ namespace DataBaseProfileAndProxy
             Program.logger.Debug("Начинаем проверку прокси: " + ProxyLine + " на живучесть.");
             var resultHttpGet = ZennoPoster.HttpGet("http://www.google.com", ProxyLine, "UTF-8",
                 ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.HeaderOnly);
+
             if (resultHttpGet.ToString().Length == 0 || (resultHttpGet.ToString().Substring(8, 3) == "502"))
             {
                 CounterCheckProxy++;
+
                 if (CounterCheckProxy != 10)
                 {
                     project.SendWarningToLog("Прокси не прошел проверку на живучесть, ждем 5 секунд и проверяем еще раз.", true);
@@ -125,12 +125,13 @@ namespace DataBaseProfileAndProxy
                     Thread.Sleep(5000);
                     CheckProxy();
                 }
+
                 Program.logger.Warn("Прокси: " + ProxyLine + " не прошел проверку на живучесть.");
                 return false;
             }
             else
             {
-                Program.logger.Debug("Прокси: " + ProxyLine + " живой.");
+                Program.logger.Info("Прокси: " + ProxyLine + " живой.");
                 return true;
             }
         }//Проверка прокси
@@ -139,7 +140,6 @@ namespace DataBaseProfileAndProxy
             Program.logger.Debug("Начинаем проверку IP у прокси: " + ProxyLine);
             string ipv6 = "https://ipv6-internet.yandex.net/api/v0/ip";
             string ipv4 = "https://ipv4-internet.yandex.net/api/v0/ip";
-
             var resultHttpGetipv6 = ZennoPoster.HttpGet(ipv6, ProxyLine, "UTF-8",
                 ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);
 
@@ -147,9 +147,9 @@ namespace DataBaseProfileAndProxy
             {
                 var resultHttpGetipv4 = ZennoPoster.HttpGet(ipv4, ProxyLine, "UTF-8",
                  ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);
-
                 project.SendInfoToLog("Текущий IpV4: " + resultHttpGetipv4.Split('"')[1], true);
-                Program.logger.Debug("Текущий IpV4 у прокси: {0} - {1}", ProxyLine, resultHttpGetipv4.Split('"')[1]);
+                Program.logger.Info("Текущий IpV4 у прокси: {0} - {1}", ProxyLine, resultHttpGetipv4.Split('"')[1]);
+
                 if (String.IsNullOrEmpty(resultHttpGetipv4))
                 {
                     project.SendWarningToLog("Не удалось определить Ip", true);
@@ -158,22 +158,20 @@ namespace DataBaseProfileAndProxy
                 }
                 return;
             }
+
             project.SendInfoToLog("Текущий IpV6: " + resultHttpGetipv6.Split('"')[1], true);
-            Program.logger.Debug("Текущий IpV6 у прокси: {0} - {1}", ProxyLine, resultHttpGetipv6.Split('"')[1]);
+            Program.logger.Info("Текущий IpV6 у прокси: {0} - {1}", ProxyLine, resultHttpGetipv6.Split('"')[1]);
         }//Проверка Ip
         public void ChangeStatusProxyInDB(string Status)
         {
             Program.logger.Debug("Меняем статус прокси {0} на: {1}",ProxyLine, Status);
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-
             string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyLine, Status);
-
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
-
             sQLiteCommand.ExecuteReader();
             sqliteConnection.Close();
             project.SendInfoToLog("Сменили статус прокси на: " + Status, true);
-            Program.logger.Debug("Успешно сменили статус прокси {0} на: {1}", ProxyLine, Status);
+            Program.logger.Info("Успешно сменили статус прокси {0} на: {1}", ProxyLine, Status);
         }//Смена статуса прокси (Free или Busy)
         public void ChangeIp()
         {
@@ -184,8 +182,9 @@ namespace DataBaseProfileAndProxy
                 string otvet = wrGETURL.GetResponse().ToString();
                 project.SendInfoToLog("Сделали запрос на смену IP", true);
                 Thread.Sleep(10000);
-                Program.logger.Debug("Успешная смена IP у прокси: {0} с помощью URL: {1}", ProxyLine, ProxyChangeIpUrl);
+                Program.logger.Info("Успешная смена IP у прокси: {0} с помощью URL: {1}", ProxyLine, ProxyChangeIpUrl);
             }
+
             catch(Exception ex)
             {
                 project.SendErrorToLog("Не удалось сменить IP: " + ex.Message);

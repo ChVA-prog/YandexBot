@@ -15,7 +15,6 @@ namespace ZennoPosterProject1
         public static object LockList = new object();
         readonly IZennoPosterProjectModel project;
         readonly Instance instance;
-
         public HtmlElement HtmlElementWhichWait { get; set; }
 
         public AdditionalMethods(Instance instance, IZennoPosterProjectModel project)
@@ -37,14 +36,15 @@ namespace ZennoPosterProject1
         {
             Random random = new Random();
             instance.ActiveTab.WaitDownloading();
-
             HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(he, 0);
+
             while (HtmlElementWhichWait.IsVoid)
             {
                 project.SendInfoToLog("Ждем появления HtmlElement", true);
                 Thread.Sleep(random.Next(4000, 6000));
                 HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(he, 0);
             }
+
             Thread.Sleep(random.Next(2000, 4000));
         }
         public void NLogCofig()
@@ -53,7 +53,6 @@ namespace ZennoPosterProject1
             {
                 var name = DateTime.Now.ToString("dd.MM.yyyy");
                 var path = project.Directory + "/Logs";
-
 
                 if (LogManager.Configuration == null)
                 {
@@ -64,7 +63,7 @@ namespace ZennoPosterProject1
 
                 var target = new FileTarget();
                 target.Layout = "${time} | ${threadid} | ${callsite} | ${level} | ${message} ";
-                target.FileName = $"{path}/{name}.csv";
+                target.FileName = $"{path}/{name}.txt";
                 target.KeepFileOpen = false;
                 target.Encoding = Encoding.UTF8;
                 target.Name = name;
@@ -113,9 +112,6 @@ namespace ZennoPosterProject1
         public static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly,
         string lpWindowName);
 
-        /// <summary>
-        /// Lock this object to mark part of code for single thread execution
-        /// </summary>
         public static object SyncObject = new object();
 
         public static void ShowOnTopUserAction(string uniqueTitle, int waitSec, Instance instance, IZennoPosterProjectModel project)
