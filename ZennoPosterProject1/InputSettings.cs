@@ -19,9 +19,12 @@ namespace ZennoPosterProject1
 
         public void InitializationInputValue()
         {
+            project.SendInfoToLog("Инициализируем входные настройки");
+            Program.logger.Debug("Начинаем инициализацию входных настроек проекта.");
             new DataBaseProfileAndProxyValue(project);
             new EmulationValue(project);
             new YandexWalkValue(project);
+            Program.logger.Debug("Закончили инициализацию входных настроек проекта.");
         }//Считывание входных настроек
     }
 }

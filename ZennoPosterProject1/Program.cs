@@ -25,14 +25,9 @@ namespace ZennoPosterProject1
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
             int executionResult = 0;
-            new AdditionalMethods(instance,project).NLogCofig();
-          
+            new AdditionalMethods(instance,project).NLogCofig();         
             project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
-            project.SendInfoToLog("Считываем входные настройки", true);
             new InputSettings(instance, project).InitializationInputValue();
-            //SwipeAndClick swipeAndClick = new SwipeAndClick(instance,project);
-            //HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'button2__text')]", 0);
-            //swipeAndClick.SwipeAndClickToElement(he);
             try
             {
                 new StartMethod(instance, project).FeedingCookies();
@@ -41,7 +36,8 @@ namespace ZennoPosterProject1
             {
                 project.SendErrorToLog("Не смогли нагулять куки: " + ex.Message);
             }
-
+            Program.logger.Debug("Закончили выполнение проекта.");
+            project.SendInfoToLog("Закончили выполнение проекта.");
             return executionResult;           
         }
     }

@@ -6,17 +6,20 @@ using ZennoPosterProject1;
 
 namespace ZennoPosterEmulation
 {   
+    
     public class RangeValueInt
     {
+        Random random = new Random();
         public int ValueMin { get; set; }
         public int ValueMax { get; set; }
-        public int ValueRandom {get{return new Random().Next(ValueMin, (ValueMax + 1));}}
+        public int ValueRandom {get{return random.Next(ValueMin, (ValueMax + 1));}}
     }//Генерация рандомного числа без остатка из заданного диапазона
     public class RangeValueFloat
     {
+        Random random = new Random();
         public float ValueMin { get; set; }
         public float ValueMax { get; set; }
-        public float ValueRandom {get{return(float) new Random().NextDouble() * (ValueMax - ValueMin) + ValueMin;}}
+        public float ValueRandom {get{return(float) random.NextDouble() * (ValueMax - ValueMin) + ValueMin;}}
     }//Генерация рандомного числа с остатком из заданного диапазона
 
 

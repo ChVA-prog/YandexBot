@@ -24,6 +24,7 @@ namespace ZennoPosterEmulation
         }
         public void SetText(HtmlElement HtmlElem, string text)
         {
+            project.SendInfoToLog("Водим текст: " + text);
             Program.logger.Debug("Получили HtmlElement для ввода текста: {0}",text);
             try
             {
@@ -59,6 +60,7 @@ namespace ZennoPosterEmulation
         }//Свайп до элемента и клик по нему       
         public void SwipeToElement(HtmlElement HtmlElem)
         {
+            project.SendInfoToLog("Делаем свайп до элемента");
             Program.logger.Debug("Получили HtmlElement для свайпа.");
             instance.ActiveTab.Touch.SetTouchEmulationParameters(new CreateTouchAndSwipeParametr(project).CreateTouchParametrs());
 
@@ -66,12 +68,12 @@ namespace ZennoPosterEmulation
             do
             {
                 SwipeMoreTime:
-                Program.logger.Debug("Деламем попытку номер {0} для свайпа до элемента.", CounterAttemptSwipe);
+                Program.logger.Debug("Делаем попытку номер {0} для свайпа до элемента.", CounterAttemptSwipe);
                 Thread.Sleep(3000);
                 if(CounterAttemptSwipe == 10)
                 {
                     project.SendWarningToLog("Сделали 10 попыток найти HtmlElement для свайпа, пропускаем его",true);
-                    throw new Exception("HtmlElement для свайпа не найден");
+                    throw new Exception("HtmlElement для свайпа не найден");                    
                 }
 
                 instance.ActiveTab.Touch.SwipeIntoView(HtmlElem);
@@ -88,15 +90,16 @@ namespace ZennoPosterEmulation
                 Program.logger.Debug("Получили позицию элемента для свайпа: " + ElementPosition);
                 InstanceHeight = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerHeight"));
                 Program.logger.Debug("Получили высоту инстанса: " + InstanceHeight);
-                CounterAttemptSwipe++;
-                Program.logger.Debug(ElementPosition > InstanceHeight || ElementPosition < 0);
+                CounterAttemptSwipe++;               
                 Program.logger.Debug("Свайп выполнен.");
+                Program.logger.Debug("while = {0}", ElementPosition > InstanceHeight || ElementPosition < 0);
             }
             while (ElementPosition > InstanceHeight || ElementPosition < 0);
 
         }//Свайп до элемента
         private void ClickToElement(HtmlElement HtmlElem)
         {
+            project.SendInfoToLog("Делаемм клик по элементу");
             Program.logger.Debug("Получили HtmlElement для клика.");
             if (HtmlElem.IsVoid)
             {

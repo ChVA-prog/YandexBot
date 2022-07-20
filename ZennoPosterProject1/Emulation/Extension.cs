@@ -7,7 +7,6 @@ namespace ZennoPosterEmulation
     {
         public static RangeValueInt ParseRangeValueInt(this string Line)
         {
-            Program.logger.Debug("Генерируем рандомное число из диапазона чисел: " + Line);
             string[] ArrayValue = Line.Split(new[] { "-" }, StringSplitOptions.RemoveEmptyEntries);
             RangeValueInt rangeValueInt = new RangeValueInt();
             rangeValueInt.ValueMin = Convert.ToInt32(ArrayValue[0]);
@@ -16,7 +15,6 @@ namespace ZennoPosterEmulation
         }//Получение рандомного числа без остатка из заданного диапазона
         public static RangeValueFloat ParseRangeValueFloat(this string Line)
         {
-            Program.logger.Debug("Генерируем рандомное число с остатком, из диапазона чисел: " + Line);
             string[] ArrayValue = Line.Split(new[] { "-" }, StringSplitOptions.RemoveEmptyEntries);
             RangeValueFloat rangeValueFloat = new RangeValueFloat();
             rangeValueFloat.ValueMin = float.Parse(ArrayValue[0]);

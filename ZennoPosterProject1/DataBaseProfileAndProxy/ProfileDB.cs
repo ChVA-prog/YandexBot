@@ -44,8 +44,6 @@ namespace DataBaseProfileAndProxy
                     string PathToSaveProfile = PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
                     project.Profile.Save(PathToSaveProfile, true, true, true, true, true, true, true, true, true, null);
                     SaveProfileDataToDB(PathToSaveProfile);
-                    project.SendInfoToLog("Сохранили профиль : " + project.Profile.NickName + " в БД",true);
-                    Program.logger.Debug("Сохранили профиль : " + project.Profile.NickName + " в БД");
                     Thread.Sleep(2000);
                 }                             
             }
@@ -61,8 +59,8 @@ namespace DataBaseProfileAndProxy
 
             sqliteConnection.Close();
 
-            project.SendInfoToLog("Количество профилей в базе данный: " + CountProfile.ToString(),true);
-            Program.logger.Debug("Количество профилей в базе данный: " + CountProfile.ToString());
+            project.SendInfoToLog("Количество профилей в базе данных: " + CountProfile.ToString(),true);
+            Program.logger.Debug("Количество профилей в базе данных: " + CountProfile.ToString());
             return Convert.ToInt32(CountProfile);
         }//Получение количества профилей для работы из БД
         private void GetProfileFromDB()
@@ -99,8 +97,8 @@ namespace DataBaseProfileAndProxy
                     }
                     if (String.IsNullOrEmpty(PathToProfile))
                     {
-                        Program.logger.Error("В БД нету подходящих профилей");
-                        throw new Exception("В БД нету подходящих профилей");
+                        Program.logger.Error("В БД нету подходящих профилей.");
+                        throw new Exception("В БД нету подходящих профилей.");
                     }
                 }
                 catch (Exception ex)
@@ -111,13 +109,13 @@ namespace DataBaseProfileAndProxy
                 }
                 sqliteConnection.Close();
                 UpdateStatusProfile("Busy");                    
-                project.SendInfoToLog("Взяли профиль из БД", true);
-                Program.logger.Debug("Взяли профиль {0} из БД", PathToProfile);
+                project.SendInfoToLog("Взяли профиль из БД.", true);
+                Program.logger.Debug("Взяли профиль {0} из БД.", PathToProfile);
             }
         }//Получение данных профиля из БД
         public void UpdateStatusProfile(string Status)
         {
-            Program.logger.Debug("Меняем статус профиля {0} на: {1}", PathToProfile, Status);
+            Program.logger.Debug("Меняем статус профиля {0} на: {1}.", PathToProfile, Status);
 
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', TimeToNextGetYandex = '{2}' WHERE PathToProfile = '{0}'",
@@ -177,6 +175,7 @@ namespace DataBaseProfileAndProxy
             sQLiteCommand.ExecuteReader();
 
             sqliteConnection.Close();
+            project.SendInfoToLog("Сохранили профиль в БД. " + project.Profile.NickName);
             Program.logger.Debug("Профиль успешно сохранен в БД: " + PathTosave);
         }//Сохранение профиля в БД
         public void SaveProfile()
@@ -184,7 +183,7 @@ namespace DataBaseProfileAndProxy
             Program.logger.Debug("Начинаем процесс сохранения профиля на ПК");
             string PathToSaveProfile = PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
             project.Profile.Save(PathToSaveProfile, false, true, true, true, true, true, true, true, true, null);
-            project.SendInfoToLog("Сохранили профиль: " + PathToSaveProfile, true);
+            project.SendInfoToLog("Сохранили профиль на ПК: " + PathToSaveProfile, true);
             Program.logger.Debug("Успешно сохранили профиль на ПК: " + PathToSaveProfile);
         }//Сохранение профиля на пк
      }

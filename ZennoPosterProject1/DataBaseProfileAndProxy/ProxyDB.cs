@@ -27,6 +27,7 @@ namespace DataBaseProfileAndProxy
         public void SetProxyInInstance()
         {
             Program.logger.Debug("Начинаем установку прокси в инстанс.");
+            project.SendInfoToLog("Начинаем установку прокси в инстанс.");
             AddProxyInDB();
             GetProxyFromDB();
             if (CheckProxy())
@@ -42,8 +43,8 @@ namespace DataBaseProfileAndProxy
             {
                 ChangeStatusProxyInDB("DEATH");
 
-                project.SendErrorToLog("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой", true);
-                Program.logger.Warn("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой");
+                project.SendErrorToLog("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой.", true);
+                Program.logger.Warn("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой.");
                 ProxyLine = null;
                 ProxyChangeIpUrl = null;
                 Program.logger.Debug("Обнулили строку с прокси и строку с URL для смены IP.");
@@ -65,7 +66,7 @@ namespace DataBaseProfileAndProxy
                 sqliteConnection.Close();
             }
             Program.logger.Debug("Успешно добавили прокси из входных настроек в БД.");
-            project.SendInfoToLog("Добавили прокси из входных настроек в БД", true);
+            project.SendInfoToLog("Добавили прокси из входных настроек в БД.", true);
         }//Добавление прокси в БД
         public void GetProxyFromDB()
         {
@@ -92,7 +93,7 @@ namespace DataBaseProfileAndProxy
                     {
                         sqliteConnection.Close();
                         Program.logger.Error("Нету свободной прокси.");
-                        throw new Exception("Нету свободной прокси");
+                        throw new Exception("Нету свободной прокси.");
                     }
                 }
 
@@ -104,7 +105,7 @@ namespace DataBaseProfileAndProxy
                 }
 
                 sqliteConnection.Close();
-                project.SendInfoToLog("Взяли прокси из базы данных: " + ProxyLine, true);
+                project.SendInfoToLog("Получили прокси из БД: " + ProxyLine, true);
                 Program.logger.Debug("Получили прокси из БД: " + ProxyLine);
                 ChangeStatusProxyInDB("Busy");
             }
@@ -119,7 +120,7 @@ namespace DataBaseProfileAndProxy
                 CounterCheckProxy++;
                 if (CounterCheckProxy != 10)
                 {
-                    project.SendWarningToLog("Прокси не прошел проверку на живучесть, ждем 5 секунд и проверяем еще раз", true);
+                    project.SendWarningToLog("Прокси не прошел проверку на живучесть, ждем 5 секунд и проверяем еще раз.", true);
                     Program.logger.Debug("Прокси: " + ProxyLine + " не прошел проверку на живучесть, ждем 5 секунд и проверяем еще раз.");
                     Thread.Sleep(5000);
                     CheckProxy();
@@ -187,6 +188,7 @@ namespace DataBaseProfileAndProxy
             }
             catch(Exception ex)
             {
+                project.SendErrorToLog("Не удалось сменить IP: " + ex.Message);
                 Program.logger.Error("Не удалось сменить IP: " + ex.Message);
                 throw new Exception("Не удалось сменить IP: " + ex.Message);
             }

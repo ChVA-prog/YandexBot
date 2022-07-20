@@ -6,6 +6,7 @@ using System.Threading;
 using ZennoPosterProject1;
 using System;
 
+
 namespace ZennoPosterYandexWalk
 {
     public class YandexWalk : YandexWalkValue
@@ -23,7 +24,8 @@ namespace ZennoPosterYandexWalk
         }
         
         public void GoYandexWalk()
-        {           
+        {
+            Program.logger.Debug("Запускаем бродилку по яндексу.");
             Project.SendInfoToLog("Запускаем бродилку по яндексу.", true);
             YandexWalkSettings yandexWalkSettings = new YandexWalkSettings(instance, Project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
@@ -37,20 +39,25 @@ namespace ZennoPosterYandexWalk
             }
             catch (Exception ex)
             {
-                throw new Exception("Ошибка при переходе в яндекс и вводе запроса: " + ex.Message);
+                Program.logger.Error("Ошибка при переходе в яндекс и вводе запроса: " + ex.Message);
+                throw new Exception("Ошибка при переходе в яндекс и вводе запроса: " + ex.Message);              
             }
             
             Project.SendInfoToLog("Будем изучать " + CountLearnPage + " страниц",true);
 
             do
             {
+                Program.logger.Debug("Перешли на страницу номер {0}, работаем с ней.",CounterPage);
                 if (CounterPage == 1)
                 {
+                    Program.logger.Debug("NextPageHtmlElementSearchResultsCard = " + HtmlElementSearchResultsCard);
                     NextPageHtmlElementSearchResultsCard = HtmlElementSearchResultsCard;
                 }
                 else
                 {
                     NextPageHtmlElementSearchResultsCard = HtmlElementPageNumber.Replace("num", CounterPage.ToString());
+                    Program.logger.Debug("Меняем путь для изучения карточек.");
+                    Program.logger.Debug(NextPageHtmlElementSearchResultsCard + " = " + HtmlElementPageNumber.Replace("num", CounterPage.ToString()));
                 }
 
                 Project.SendInfoToLog("Номер страницы " + CounterPage, true);
@@ -60,6 +67,7 @@ namespace ZennoPosterYandexWalk
                 {
                     if(CounterAttemptGetSumCard == 10)
                     {
+                        Program.logger.Error("Сделали 10 попыток получить карточки поисковой выдачи, завершаем работу.");
                         throw new Exception("Не удалось получить карточки поисковой выдачи");
                     }
 
@@ -71,17 +79,20 @@ namespace ZennoPosterYandexWalk
                 while (CountLearnCardInPage == 0);
                 
                 Project.SendInfoToLog("Будем изучать " + CountLearnCardInPage + " карточек", true);
-
+                Program.logger.Debug("Будем изучать " + CountLearnCardInPage + " карточек на странице номер {0}.", CounterPage);
                 List<int> SearchCardList = yandexWalkSettings.CountLearnCard(CountLearnCardInPage);
                 yandexWalkSettings.GoOrLearnCard(SearchCardList, NextPageHtmlElementSearchResultsCard);
 
                 Project.SendInfoToLog("Переходим на следующую страницу", true);
+                Program.logger.Debug("Переходим на следующую страницу");
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementNextPageButton, 0));
                 new AdditionalMethods(instance, Project).WaitDownloading();
                 yandexNavigate.CloseYandexTrash();
                 CounterPage++;
             }
-            while (CountLearnPage > CounterPage);                      
+            while (CountLearnPage > CounterPage);
+            Program.logger.Debug("CountLearnPage = {0} > CounterPage = {1}", CountLearnPage, CounterPage);
+            Program.logger.Debug("Закончили бродить по яндексу.");
         } //Запуск бродилки по яндексу
     }
 }

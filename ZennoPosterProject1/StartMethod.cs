@@ -18,6 +18,8 @@ namespace ZennoPosterProject1
         }
         public void FeedingCookies()
         {
+            project.SendInfoToLog("Начинаем нагуливать куки.");
+            Program.logger.Debug("Начинаем нагуливать куки.");
             ProfileDB profile = new ProfileDB(project);
             ProxyDB proxyDB = new ProxyDB(instance, project);
 
@@ -28,6 +30,7 @@ namespace ZennoPosterProject1
             catch (Exception ex)
             {
                 project.SendErrorToLog(ex.Message, true);
+                Program.logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }//Загрузка профиля в проект.
             try
@@ -37,6 +40,7 @@ namespace ZennoPosterProject1
             catch (Exception ex)
             {                
                 project.SendErrorToLog(ex.Message, true);
+                Program.logger.Error(ex.Message);
                 profile.UpdateStatusProfile("Free");
                 proxyDB.ChangeStatusProxyInDB("Free");
                 throw new Exception(ex.Message);
@@ -47,6 +51,7 @@ namespace ZennoPosterProject1
             }
             catch(Exception ex)
             {
+                Program.logger.Error(ex.Message);
                 project.SendErrorToLog(ex.Message, true);
                 profile.SaveProfile();
                 profile.UpdateStatusProfile("Free");
@@ -55,6 +60,7 @@ namespace ZennoPosterProject1
                 throw new Exception(ex.Message);
             }//Запуск нагуливания кук
             instance.CloseAllTabs();
+            Program.logger.Debug("Закрыли все окна в инстансе.");
             profile.SaveProfile();            
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");

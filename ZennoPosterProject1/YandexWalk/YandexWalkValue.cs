@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using ZennoPosterProject1;
 
 namespace ZennoPosterYandexWalk
 {
@@ -23,7 +24,7 @@ namespace ZennoPosterYandexWalk
         public YandexWalkValue(IZennoPosterProjectModel _project)
         {
             this.Project = _project;
-
+            Program.logger.Debug("Начинаем считывать входные настройки для YandexWalk.");
             HtmlElementInputSearchIn = Project.Variables["set_HtmlElementInputSearch"].Value;
             HtmlElementSearchButtonIn = Project.Variables["set_HtmlElementSearchButton"].Value;
             HtmlElementCheckingLoading = Project.Variables["set_HtmlElementCheckingLoading"].Value;
@@ -35,6 +36,7 @@ namespace ZennoPosterYandexWalk
             CountLearnCardIn = Project.Variables["set_CountLearnCard"].Value;
             CountGetCard = Project.Variables["set_CountGetCard"].Value;
             MyUrlList = Project.Variables["set_MyUrl"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+            Program.logger.Debug("Закончили считывать настройки для YandexWalk.");
         }
     }
 }
