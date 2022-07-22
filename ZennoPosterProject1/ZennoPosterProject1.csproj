@@ -164,6 +164,12 @@
     <Compile Include="StartMethod.cs" />
     <Compile Include="SiteWalk\Extension.cs" />
     <Compile Include="SiteWalk\SiteWalk.cs" />
+    <Compile Include="YandexRegistration\DBMethods.cs" />
+    <Compile Include="YandexRegistration\RegistrationAndSettingsAccount.cs" />
+    <Compile Include="YandexRegistration\SmsService\SmsHubOrg\ApiResponceJsonToCSharp.cs" />
+    <Compile Include="YandexRegistration\SmsService\SmsHubOrg\GetNumber.cs" />
+    <Compile Include="YandexRegistration\SmsService\SmsHubOrg\SmsHubOrgValue.cs" />
+    <Compile Include="YandexRegistration\YandexRegistrationValue.cs" />
     <Compile Include="YandexWalk\Extansion.cs" />
     <Compile Include="YandexWalk\YandexNavigate.cs" />
     <Compile Include="YandexWalk\YandexWalk.cs" />
@@ -186,9 +192,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="YandexRegistration\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="ValidateZennoPosterDllPath" BeforeTargets="BeforeBuild">
     <Error Text="Environment variable ZennoPosterDllPath must be set to ZennoPoster installation folder, try to launch ProjectMaker or ZennoPoster" Condition="'$(ZennoPosterDllPath)' == ''" />

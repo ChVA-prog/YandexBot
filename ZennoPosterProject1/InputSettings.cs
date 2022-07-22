@@ -3,6 +3,8 @@ using ZennoLab.CommandCenter;
 using DataBaseProfileAndProxy;
 using ZennoPosterEmulation;
 using ZennoPosterYandexWalk;
+using ZennoPosterYandexRegistration;
+using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
 
 namespace ZennoPosterProject1
 {
@@ -23,6 +25,8 @@ namespace ZennoPosterProject1
             new DataBaseProfileAndProxyValue(project);
             new EmulationValue(project);
             new YandexWalkValue(project);
+            new YandexRegistrationValue(project);
+            new SmshubValue(project);
             Program.logger.Debug("Закончили инициализацию входных настроек проекта.");
         }//Считывание входных настроек
     }
