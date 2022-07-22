@@ -165,7 +165,7 @@ namespace DataBaseProfileAndProxy
         {
             Program.logger.Debug("Меняем статус прокси {0} на: {1}",ProxyLine.Split('@')[1], Status);
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-            string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyLine.Split('@')[1], Status);
+            string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyLine, Status);
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             sQLiteCommand.ExecuteReader();
             sqliteConnection.Close();
