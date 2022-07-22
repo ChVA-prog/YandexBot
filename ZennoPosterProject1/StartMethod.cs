@@ -19,7 +19,6 @@ namespace ZennoPosterProject1
         }
         public void FeedingCookies()
         {
-            project.SendInfoToLog("Типа внес изменения.");
             project.SendInfoToLog("Начинаем нагуливать куки.");
             Program.logger.Info("Начинаем нагуливать куки.");
             ProfileDB profile = new ProfileDB(project);
