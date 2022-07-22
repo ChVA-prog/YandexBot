@@ -139,12 +139,12 @@ namespace ZennoPosterYandexWalk
             Thread.Sleep(random.Next(2000, 5000));
             instance.ActiveTab.WaitDownloading();
             new AdditionalMethods(instance,Project).FuckCapcha();
-            HtmlElement alisa = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Закрыть')]", 0); //Алиса
-            HtmlElement kinopoisk = instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Остаться')]", 0); //Кинопоиск
-            HtmlElement dzen = instance.ActiveTab.FindElementByXPath("//div[contains(text(),'Дзен')] | //div[starts-with(text(),'Пора переходить')]", 0); //Дзен
-            HtmlElement Yamerket = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Продолжить на сайте')]", 0); //Яндекс маркет
-            HtmlElement YandexBrowser = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Позже')] | //span[starts-with(text(),'Не сейчас')]", 0); //Яндекс браузер
-            HtmlElement Yamerket2 = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Скрыть')]", 0); //Яндекс маркет2
+            HtmlElement alisa = instance.ActiveTab.FindElementByXPath(HtmlElementYandexTrashAlisa, 0);
+            HtmlElement kinopoisk = instance.ActiveTab.FindElementByXPath(HtmlElementYandexTrashKinopoisk, 0);
+            HtmlElement dzen = instance.ActiveTab.FindElementByXPath(HtmlElementYandexTrashDzen, 0);
+            HtmlElement Yamerket = instance.ActiveTab.FindElementByXPath(HtmlElementYandexTrashYandexMarket, 0);
+            HtmlElement YandexBrowser = instance.ActiveTab.FindElementByXPath(HtmlElementYandexTrashYandexBrowser, 0);
+            HtmlElement Yamerket2 = instance.ActiveTab.FindElementByXPath(HtmlElementYandexTrashYandexMarket2, 0);
 
             HtmlElement[] YandexTrash = new HtmlElement[] {alisa ,kinopoisk,Yamerket,YandexBrowser,Yamerket2 };
 

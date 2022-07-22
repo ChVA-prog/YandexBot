@@ -9,6 +9,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
 using ZennoPosterEmulation;
+using ZennoPosterYandexWalk;
 
 namespace ZennoPosterProject1
 { 
@@ -89,24 +90,21 @@ namespace ZennoPosterProject1
         {
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             Random random = new Random();
-            HtmlElement IAmNotRobot = instance.ActiveTab.FindElementByXPath("//span[contains(text(),'похожи на автоматические')]", 0);
-            HtmlElement SendCaptcha = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Отправить')]", 0);
+            YandexWalkValue yandexWalkValue = new YandexWalkValue(project);
 
-            if (!IAmNotRobot.IsVoid)
+            if (!instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementPageIamNotRobot, 0).IsVoid)
             {
                 Program.logger.Debug("Нарвались на проверку робота.");
                 project.SendInfoToLog("Налетели на капчу");
-                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//div[contains(@class,'CheckboxCaptcha')]", 0));
+                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementIAmNotRobot, 0));
                 Program.logger.Debug("Нажали я не робот.");
                 Thread.Sleep(random.Next(6000, 10000));
             }
 
-            HtmlElement InpuCaptcha = instance.ActiveTab.FindElementByXPath("//label[contains(text(),'Введите текст с картинки')]", 0);
-
-            if (!InpuCaptcha.IsVoid)
+            if (!instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementPageCapcha, 0).IsVoid)
             {
                 Program.logger.Debug("Просят ввести капчу.");
-                HtmlElement Captcha = instance.ActiveTab.FindElementByXPath("//img[contains(@class,'AdvancedCaptcha')]", 0);
+                HtmlElement Captcha = instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementCapchaImage, 0);
                 Program.logger.Debug("Делаем запрос с капчей к RuCaptcha.");
                 string recognition = ZennoPoster.CaptchaRecognition("RuCaptcha.dll", Captcha.DrawToBitmap(true), "").Split('-')[0];
 
@@ -127,10 +125,10 @@ namespace ZennoPosterProject1
 
                 Program.logger.Debug("Отправляем введенную капчу");
                 new AdditionalMethods(instance, project).InstanceScreen();
-                swipeAndClick.ClickToElement(SendCaptcha);
+                swipeAndClick.ClickToElement(instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementSendCapcha, 0));
                 Thread.Sleep(random.Next(2000, 5000));
 
-                if (!instance.ActiveTab.FindElementByXPath("//span[contains(text(),'Неверно')]", 0).IsVoid)
+                if (!instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementCapchaError, 0).IsVoid)
                 {
                     Program.logger.Warn("Неверно ввели капчу, пробуем еще раз.");
                     FuckCapcha();
