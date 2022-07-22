@@ -7,6 +7,9 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System.Text;
+using System.Threading;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace ZennoPosterProject1
 {
@@ -25,7 +28,7 @@ namespace ZennoPosterProject1
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
             int executionResult = 0;
-            new AdditionalMethods(instance,project).NLogCofig();         
+            new AdditionalMethods(instance, project).NLogCofig();
             project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
             new InputSettings(instance, project).InitializationInputValue();
             try
@@ -36,9 +39,9 @@ namespace ZennoPosterProject1
             {
                 project.SendErrorToLog("Не смогли нагулять куки: " + ex.Message);
             }
-            Program.logger.Info("Закончили выполнение проекта.");
-            project.SendInfoToLog("Закончили выполнение проекта.");
-            return executionResult;           
+            Program.logger.Info("Закончили выполнение FeedCookies.");
+            project.SendInfoToLog("Закончили выполнение FeedCookies.");
+            return executionResult;            
         }
     }
 }

@@ -27,7 +27,6 @@ namespace DataBaseProfileAndProxy
         public void SetProxyInInstance()
         {
             Program.logger.Debug("Начинаем установку прокси в инстанс.");
-            project.SendInfoToLog("Начинаем установку прокси в инстанс.");
             AddProxyInDB();
             GetProxyFromDB();
 
@@ -110,7 +109,7 @@ namespace DataBaseProfileAndProxy
         }//Взять прокси из БД
         public bool CheckProxy()
         {
-            Program.logger.Debug("Начинаем проверку прокси: " + ProxyLine + " на живучесть.");
+            Program.logger.Debug("Начинаем проверку прокси: " + ProxyLine);
             var resultHttpGet = ZennoPoster.HttpGet("http://www.google.com", ProxyLine, "UTF-8",
                 ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.HeaderOnly);
 
@@ -120,18 +119,18 @@ namespace DataBaseProfileAndProxy
 
                 if (CounterCheckProxy != 10)
                 {
-                    project.SendWarningToLog("Прокси не прошел проверку на живучесть, ждем 5 секунд и проверяем еще раз.", true);
-                    Program.logger.Debug("Прокси: " + ProxyLine + " не прошел проверку на живучесть, ждем 5 секунд и проверяем еще раз.");
+                    project.SendWarningToLog("Прокси не прошел проверку, ждем 5 секунд и проверяем еще раз.", true);
+                    Program.logger.Debug("Прокси: " + ProxyLine + " не прошел проверку, ждем 5 секунд и проверяем еще раз.");
                     Thread.Sleep(5000);
                     CheckProxy();
                 }
 
-                Program.logger.Warn("Прокси: " + ProxyLine + " не прошел проверку на живучесть.");
+                Program.logger.Warn("Прокси: " + ProxyLine + " не прошел проверку.");
                 return false;
             }
             else
             {
-                Program.logger.Info("Прокси: " + ProxyLine + " живой.");
+                Program.logger.Info("Прокси: " + ProxyLine + " прошел проверку.");
                 return true;
             }
         }//Проверка прокси
@@ -164,25 +163,25 @@ namespace DataBaseProfileAndProxy
         }//Проверка Ip
         public void ChangeStatusProxyInDB(string Status)
         {
-            Program.logger.Debug("Меняем статус прокси {0} на: {1}",ProxyLine, Status);
+            Program.logger.Debug("Меняем статус прокси {0} на: {1}",ProxyLine.Split('@')[1], Status);
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-            string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyLine, Status);
+            string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyLine.Split('@')[1], Status);
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             sQLiteCommand.ExecuteReader();
             sqliteConnection.Close();
             project.SendInfoToLog("Сменили статус прокси на: " + Status, true);
-            Program.logger.Info("Успешно сменили статус прокси {0} на: {1}", ProxyLine, Status);
+            Program.logger.Info("Успешно сменили статус прокси {0} на: {1}", ProxyLine.Split('@')[1], Status);
         }//Смена статуса прокси (Free или Busy)
         public void ChangeIp()
         {
             try
             {
-                Program.logger.Debug("Начинаем процесс смены IP у прокси: {0} с помощью URL: {1}", ProxyLine, ProxyChangeIpUrl);
+                Program.logger.Debug("Начинаем процесс смены IP у прокси: {0} с помощью URL: {1}", ProxyLine.Split('@')[1], ProxyChangeIpUrl);
                 WebRequest wrGETURL = WebRequest.Create(ProxyChangeIpUrl);
                 string otvet = wrGETURL.GetResponse().ToString();
                 project.SendInfoToLog("Сделали запрос на смену IP", true);
                 Thread.Sleep(10000);
-                Program.logger.Info("Успешная смена IP у прокси: {0} с помощью URL: {1}", ProxyLine, ProxyChangeIpUrl);
+                Program.logger.Info("Успешная смена IP у прокси: {0} с помощью URL: {1}", ProxyLine.Split('@')[1], ProxyChangeIpUrl);
             }
 
             catch(Exception ex)

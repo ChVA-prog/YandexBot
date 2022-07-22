@@ -12,23 +12,34 @@ namespace ZennoPosterEmulation
     {
         private  int ElementPosition { get; set; }
         private  int InstanceHeight { get; set; }
-        int LatencyKeySetText { get { return EmulationValue.LatencyKey.ParseRangeValueInt().ValueRandom; } }
+        public int LatencyKeySetText { get { return EmulationValue.LatencyKey.ParseRangeValueInt().ValueRandom; } }
         readonly Instance instance;
         readonly IZennoPosterProjectModel project;
+        CreateTouchAndSwipeParametr CreatTuchParametrs;
 
         public SwipeAndClick(Instance instance, IZennoPosterProjectModel project)
         {
             this.instance = instance;
             this.project = project;
+            this.CreatTuchParametrs = new CreateTouchAndSwipeParametr(project);
         }
-        public void SetText(HtmlElement HtmlElem, string text)
+        
+        public void SetText(HtmlElement HtmlElem, string text, bool True_SwipeAndClick_False_Click)
         {
             project.SendInfoToLog("Вводим текст: " + text);
             Program.logger.Debug("Получили HtmlElement для ввода текста: {0}",text);
 
             try
             {
-                SwipeAndClickToElement(HtmlElem);
+                if (True_SwipeAndClick_False_Click)
+                {                   
+                    SwipeAndClickToElement(HtmlElem);
+                }
+                else
+                {
+                    ClickToElement(HtmlElem);
+                }
+                
                 char[] InputText = text.ToCharArray();
 
                 foreach (char InputChar in InputText)
@@ -65,7 +76,7 @@ namespace ZennoPosterEmulation
         public void SwipeToElement(HtmlElement HtmlElem)
         {
             Program.logger.Debug("Получили HtmlElement для свайпа.");
-            instance.ActiveTab.Touch.SetTouchEmulationParameters(new CreateTouchAndSwipeParametr(project).CreateTouchParametrs());
+            instance.ActiveTab.Touch.SetTouchEmulationParameters(CreatTuchParametrs.CreateTouchParametrs());
             int CounterAttemptSwipe = 0;
 
             do
@@ -84,7 +95,6 @@ namespace ZennoPosterEmulation
 
                 if(String.IsNullOrEmpty(HtmlElem.GetAttribute("topInTab")))
                 {
-                    project.SendWarningToLog("Не получили атрибут topInTab элемента для свайпа, пробуем еще раз.", true);
                     Program.logger.Warn("Не получили атрибут topInTab элемента для свайпа, пробуем еще раз.");
                     CounterAttemptSwipe++;
                     goto SwipeMoreTime;
@@ -101,7 +111,7 @@ namespace ZennoPosterEmulation
             while (ElementPosition > InstanceHeight || ElementPosition < 0);
 
         }//Свайп до элемента
-        private void ClickToElement(HtmlElement HtmlElem)
+        public void ClickToElement(HtmlElement HtmlElem)
         {
             Program.logger.Debug("Получили HtmlElement для клика.");
 
@@ -111,7 +121,7 @@ namespace ZennoPosterEmulation
                 throw new Exception("HtmlElement элемент для клика не найден");
             }
 
-            instance.ActiveTab.Touch.SetTouchEmulationParameters(new CreateTouchAndSwipeParametr(project).CreateTouchParametrs());
+            instance.ActiveTab.Touch.SetTouchEmulationParameters(CreatTuchParametrs.CreateTouchParametrs());
             instance.ActiveTab.Touch.Touch(HtmlElem);
             Program.logger.Debug("Клик выполнен.");
         }//Клик по элементу

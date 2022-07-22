@@ -68,10 +68,10 @@ namespace DataBaseProfileAndProxy
             {
                Program.logger.Debug("Начинаем процесс получения данных профиля для работы из БД.");
                SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-                string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSession < '{2}' ORDER BY CountSessionDay ASC LIMIT 1",
+               string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSession < '{2}' ORDER BY CountSessionDay ASC LIMIT 1",
                     DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), CountSessionLimit);
-                Program.logger.Debug(ProfileStringRequest);
-                SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+               Program.logger.Debug(ProfileStringRequest);
+               SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
                 try
                 {
@@ -83,9 +83,7 @@ namespace DataBaseProfileAndProxy
                         PathToProfile = reader.GetValue(0).ToString();
                         Program.logger.Debug("Получили путь: " + PathToProfile);
                         CountSession = Convert.ToInt32(reader.GetValue(1).ToString());
-                        Program.logger.Debug("Получили количество сессий: " + CountSession);
                         CountSessionDay = Convert.ToInt32(reader.GetValue(2).ToString());
-                        Program.logger.Debug("Получили количество дневных сессий: " + CountSession);
 
                         if (CountSessionDay != 0 && (Convert.ToDateTime(reader.GetString(3)) < DateTime.Now.Date))
                         {
@@ -121,7 +119,7 @@ namespace DataBaseProfileAndProxy
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             sQLiteCommand.ExecuteReader();
             sqliteConnection.Close();
-            Program.logger.Info("Успешно сменили статус профиля {0} на: {1}", PathToProfile, Status);
+            Program.logger.Debug("Успешно сменили статус профиля {0} на: {1}", PathToProfile, Status);
             project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
         }//Изменение статуса профиля (Free или Busy) 
         public void UpdateStatusProfile(string Status, int Session, int SessionDay)
@@ -137,7 +135,7 @@ namespace DataBaseProfileAndProxy
             sQLiteCommand.ExecuteReader();
             sqliteConnection.Close();
             project.SendInfoToLog("Изменили статус профиля на: " + Status + " Количество сессий на: " + CountSession + " Количество сессий в день на: " + CountSessionDay, true);
-            Program.logger.Info("Успешно сменили статус профиля {0} на: {1} , кол-во сессий на {2}, количество сессий за день на {3}. ", PathToProfile, Status, Session, SessionDay);
+            Program.logger.Debug("Успешно сменили статус профиля {0} на: {1} , кол-во сессий на {2}, количество сессий за день на {3}. ", PathToProfile, Status, Session, SessionDay);
         }//Изменение статуса профиля (Free или Busy), кол-во сессий и кол-во сессий в день
         private void UpdateCountSessionDay(SQLiteConnection sqliteConnection)
         {
@@ -149,7 +147,7 @@ namespace DataBaseProfileAndProxy
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             sQLiteCommand.ExecuteReader();
             project.SendInfoToLog("Обнулили количество дневных сессий", true);
-            Program.logger.Info("Успешно обнулили кол-во дневных сессий профиля: " + PathToProfile);
+            Program.logger.Debug("Успешно обнулили кол-во дневных сессий профиля: " + PathToProfile);
         }//Обнуление дневных сессий профиля
         private void SaveProfileDataToDB(string PathTosave)
         {

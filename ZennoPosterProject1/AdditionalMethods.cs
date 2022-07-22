@@ -7,6 +7,8 @@ using NLog.Config;
 using NLog.Targets;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.IO;
+using ZennoPosterEmulation;
 
 namespace ZennoPosterProject1
 { 
@@ -47,7 +49,7 @@ namespace ZennoPosterProject1
 
             Thread.Sleep(random.Next(2000, 4000));
         }
-        public void NLogCofig()
+        public bool NLogCofig()
         {
             lock (LockList)
             {
@@ -59,8 +61,7 @@ namespace ZennoPosterProject1
                     LogManager.Configuration = new LoggingConfiguration();
                 }
 
-                if (LogManager.Configuration.FindRuleByName(name) != null || LogManager.Configuration.FindTargetByName(name) != null) ;
-
+                if (LogManager.Configuration.FindRuleByName(name) != null || LogManager.Configuration.FindTargetByName(name) != null) return false;
                 var target = new FileTarget();
                 target.Layout = "${time} | ${threadid} | ${callsite} | ${level} | ${message} ";
                 target.FileName = $"{path}/{name}.txt";
@@ -70,7 +71,70 @@ namespace ZennoPosterProject1
 
                 LogManager.Configuration.AddRule(LogLevel.Trace, LogLevel.Fatal, target, name);
                 LogManager.ReconfigExistingLoggers();
+
                 Program.logger.Debug("Настроили файл конфиг для NLog");
+                return true;
+            }
+        }
+        public void InstanceScreen()
+        {
+            if (!Directory.Exists(project.Directory + @"\ErrorScreen\"))
+            {
+                Directory.CreateDirectory(project.Directory + @"\ErrorScreen\");
+            }
+            string path = project.Directory +  @"\ErrorScreen\" + DateTime.Now.ToString("dd.MM.yyyy.HH.mm.ss") + ".png";
+            File.WriteAllBytes(path, Convert.FromBase64String(instance.ActiveTab.FindElementByTag("html", 0).DrawToBitmap(false)));
+        }
+        public void FuckCapcha()
+        {
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
+            Random random = new Random();
+            HtmlElement IAmNotRobot = instance.ActiveTab.FindElementByXPath("//span[contains(text(),'похожи на автоматические')]", 0);
+            HtmlElement SendCaptcha = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Отправить')]", 0);
+
+            if (!IAmNotRobot.IsVoid)
+            {
+                Program.logger.Debug("Нарвались на проверку робота.");
+                project.SendInfoToLog("Налетели на капчу");
+                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//div[contains(@class,'CheckboxCaptcha')]", 0));
+                Program.logger.Debug("Нажали я не робот.");
+                Thread.Sleep(random.Next(6000, 10000));
+            }
+
+            HtmlElement InpuCaptcha = instance.ActiveTab.FindElementByXPath("//label[contains(text(),'Введите текст с картинки')]", 0);
+
+            if (!InpuCaptcha.IsVoid)
+            {
+                Program.logger.Debug("Просят ввести капчу.");
+                HtmlElement Captcha = instance.ActiveTab.FindElementByXPath("//img[contains(@class,'AdvancedCaptcha')]", 0);
+                Program.logger.Debug("Делаем запрос с капчей к RuCaptcha.");
+                string recognition = ZennoPoster.CaptchaRecognition("RuCaptcha.dll", Captcha.DrawToBitmap(true), "").Split('-')[0];
+
+                if (recognition.Contains("sorry"))
+                {
+                    Program.logger.Warn("Не пришел ответ с капчей, пробуем еще раз.");
+                    FuckCapcha();
+                }
+
+                Program.logger.Debug("Получили ответ: " + recognition);
+                char[] InputText = recognition.ToCharArray();
+
+                foreach (char InputChar in InputText)
+                {
+                    instance.SendText(Convert.ToString(InputChar), 0);
+                    Thread.Sleep(swipeAndClick.LatencyKeySetText);
+                }
+
+                Program.logger.Debug("Отправляем введенную капчу");
+                new AdditionalMethods(instance, project).InstanceScreen();
+                swipeAndClick.ClickToElement(SendCaptcha);
+                Thread.Sleep(random.Next(2000, 5000));
+
+                if (!instance.ActiveTab.FindElementByXPath("//span[contains(text(),'Неверно')]", 0).IsVoid)
+                {
+                    Program.logger.Warn("Неверно ввели капчу, пробуем еще раз.");
+                    FuckCapcha();
+                }
             }
         }
     }

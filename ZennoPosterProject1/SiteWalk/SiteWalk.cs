@@ -24,7 +24,7 @@ namespace ZennoPosterSiteWalk
         public void SiteRandomWalk()
         {
             Program.logger.Info("Начинаем рандомно изучать сайт");
-            Project.SendInfoToLog("Рандомно изучаем сайт");
+            Project.SendInfoToLog("Начинаем рандомно изучать сайт");
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance,Project);
             Random random = new Random();
             HtmlElement = "//p";
@@ -34,7 +34,7 @@ namespace ZennoPosterSiteWalk
             if (CountElementToSite <= 5)
             {
                 Program.logger.Debug("Кол-во элементов //p на странице меньше 5, будем изучать элементы //a");
-                HtmlElement = "//a";
+                HtmlElement = "//div";
                 SiteHtmlElement = instance.ActiveTab.FindElementsByXPath(HtmlElement);
                 CountElementToSite = SiteHtmlElement.Count;
             }

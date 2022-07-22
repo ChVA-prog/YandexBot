@@ -29,14 +29,13 @@ namespace ZennoPosterYandexWalk
             foreach (int i in SearchCardList)
             {
                 Program.logger.Debug("Получили карточку под номером: " + SearchCardList[i]);
-                HtmlElement LearnElement = instance.ActiveTab.FindElementByXPath(NextPageHtmlElementSearchResultsCard, i);
 
                 if (random.Next(0, 100) < CountGetCard.ParseRangeValueInt().ValueRandom)
                 {
                     Program.logger.Info("Будем переходить в поисковую карточку под номером: " + SearchCardList[i]);
                     Project.SendInfoToLog("Будем переходить в карточку.",true);
 
-                    if (!yandexNavigate.GoSearchCard(LearnElement))
+                    if (!yandexNavigate.GoSearchCard(instance.ActiveTab.FindElementByXPath(NextPageHtmlElementSearchResultsCard, i)))
                     {
                         yandexNavigate.CloseUnnecessaryWindows();
                         continue;
@@ -47,7 +46,7 @@ namespace ZennoPosterYandexWalk
                 {
                     Program.logger.Info("Изучаем карточку под номером: " + SearchCardList[i]);
                     Project.SendInfoToLog("Просто изучаем карточку.", true);
-                    swipeAndClick.SwipeToElement(LearnElement);
+                    swipeAndClick.SwipeToElement(instance.ActiveTab.FindElementByXPath(NextPageHtmlElementSearchResultsCard, i));
                     Thread.Sleep(random.Next(2000, 4000));
                 }                           
             }
@@ -97,7 +96,7 @@ namespace ZennoPosterYandexWalk
         public int GetRandomPageCountSearch()
         {
             Program.logger.Debug("Получаем рандомное количество страниц которые будем изучать.");
-            int CountPage = ZennoPosterEmulation.Extension.ParseRangeValueInt(PageCountSearch).ValueRandom;
+            int CountPage = Extension.ParseRangeValueInt(PageCountSearch).ValueRandom;
             Program.logger.Debug("Будем изучать {0} страниц.", CountPage);
             return CountPage;
         }//Получение рандомного количества изучаемых страниц
@@ -117,7 +116,6 @@ namespace ZennoPosterYandexWalk
                 }
 
                 SearchCardList.Add(rnd);
-                Program.logger.Debug("Добавили карточку номер {0} в список для работы.", rnd);
             }
 
             return SearchCardList;

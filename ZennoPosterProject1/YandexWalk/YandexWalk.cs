@@ -32,15 +32,16 @@ namespace ZennoPosterYandexWalk
             YandexNavigate yandexNavigate = new YandexNavigate(instance, Project);
             int CounterPage = 1;
             int CountLearnPage = yandexWalkSettings.GetRandomPageCountSearch();
+            int CounterAttemptGetSumCard = 0;
 
             try
             {
               yandexNavigate.GoToSearchQuery();
             }
-
             catch (Exception ex)
             {
                 Program.logger.Error("Ошибка при переходе в яндекс и вводе запроса: " + ex.Message);
+                new AdditionalMethods(instance, Project).InstanceScreen();
                 throw new Exception("Ошибка при переходе в яндекс и вводе запроса: " + ex.Message);              
             }
             
@@ -58,24 +59,25 @@ namespace ZennoPosterYandexWalk
 
                 else
                 {
-                    NextPageHtmlElementSearchResultsCard = HtmlElementPageNumber.Replace("num", CounterPage.ToString());
                     Program.logger.Debug("Меняем путь для изучения карточек.");
                     Program.logger.Debug(NextPageHtmlElementSearchResultsCard + " = " + HtmlElementPageNumber.Replace("num", CounterPage.ToString()));
+                    NextPageHtmlElementSearchResultsCard = HtmlElementPageNumber.Replace("num", CounterPage.ToString());
+                    Program.logger.Debug("Сменили путь для изучения карточек.");
                 }
 
                 Project.SendInfoToLog("Номер страницы " + CounterPage, true);
-                int CounterAttemptGetSumCard = 0;
 
                 do
                 {
                     if(CounterAttemptGetSumCard == 10)
                     {
                         Program.logger.Error("Сделали 10 попыток получить карточки поисковой выдачи, завершаем работу.");
+                        new AdditionalMethods(instance, Project).InstanceScreen();
                         throw new Exception("Не удалось получить карточки поисковой выдачи");
                     }
 
-                    CountLearnCardInPage = instance.ActiveTab.FindElementsByXPath(NextPageHtmlElementSearchResultsCard).Count.CalcPercentLearnCard
-                                        (CountLearnCardIn.ParseRangeValueInt().ValueRandom);
+                    CountLearnCardInPage = instance.ActiveTab.FindElementsByXPath(NextPageHtmlElementSearchResultsCard)
+                        .Count.CalcPercentLearnCard(CountLearnCardIn.ParseRangeValueInt().ValueRandom);
                     Thread.Sleep(2000);
                     CounterAttemptGetSumCard++;
                 }
@@ -85,14 +87,27 @@ namespace ZennoPosterYandexWalk
                 Program.logger.Info("Будем изучать " + CountLearnCardInPage + " карточек на странице номер {0}.", CounterPage);
                 List<int> SearchCardList = yandexWalkSettings.CountLearnCard(CountLearnCardInPage);
                 yandexWalkSettings.GoOrLearnCard(SearchCardList, NextPageHtmlElementSearchResultsCard);
+                YandexGoNextPage:
                 Project.SendInfoToLog("Переходим на следующую страницу", true);
                 Program.logger.Info("Переходим на следующую страницу");
+                Program.logger.Info("Текущая страница: " + instance.ActiveTab.URL);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementNextPageButton, 0));
-                new AdditionalMethods(instance, Project).WaitDownloading();
+                new AdditionalMethods(instance, Project).WaitDownloading();               
                 yandexNavigate.CloseYandexTrash();
-                CounterPage++;
-            }
+                if (instance.AllTabs.Length > 1)
+                {
+                    Project.SendWarningToLog("Переход на следующую страницу не удался, пробуем еще раз.", true);
+                    Program.logger.Debug("Переход на следующую страницу не удался из-за открытия лишней вкладки, пробуем закрыть ее и перейти еще раз.");
+                    yandexNavigate.CloseUnnecessaryWindows();
+                    HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath("//div[contains(@class, 'serp-cut')]");
 
+                    if (hec.Count < CounterPage || hec.Count == 0)
+                    {
+                        goto YandexGoNextPage;
+                    }             
+                }
+                    CounterPage++;
+            }
             while (CountLearnPage > CounterPage);
 
             Program.logger.Debug("CountLearnPage = {0} > CounterPage = {1}", CountLearnPage, CounterPage);

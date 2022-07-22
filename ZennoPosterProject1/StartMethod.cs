@@ -34,7 +34,6 @@ namespace ZennoPosterProject1
                 Program.logger.Error(ex.Message);
                 throw new Exception(ex.Message);
             }//Загрузка профиля в проект.
-
             try
             {
                 proxyDB.SetProxyInInstance();
@@ -46,9 +45,9 @@ namespace ZennoPosterProject1
                 Program.logger.Error(ex.Message);
                 profile.UpdateStatusProfile("Free");
                 proxyDB.ChangeStatusProxyInDB("Free");
+                new AdditionalMethods(instance, project).InstanceScreen();
                 throw new Exception(ex.Message);
             }//Установка прокси в проект.
-
             try
             {                              
                 new YandexWalk(instance, project).GoYandexWalk();
@@ -57,6 +56,7 @@ namespace ZennoPosterProject1
             catch(Exception ex)
             {
                 Program.logger.Error(ex.Message);
+                Program.logger.Error("Количество открытых вкладок: {0}. Url текущей вкладки: {1}." ,instance.AllTabs.Length, instance.ActiveTab.URL);
                 project.SendErrorToLog(ex.Message, true);
                 profile.SaveProfile();
                 profile.UpdateStatusProfile("Free");
@@ -66,7 +66,6 @@ namespace ZennoPosterProject1
             }//Запуск нагуливания кук
 
             instance.CloseAllTabs();
-            Program.logger.Debug("Закрыли все окна в инстансе.");
             profile.SaveProfile();            
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
