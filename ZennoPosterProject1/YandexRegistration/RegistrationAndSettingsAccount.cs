@@ -37,7 +37,7 @@ namespace ZennoPosterYandexRegistration
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
 
             yandexNavigate.GoToYandex();
-            additionalMethods.CheckIamNotRobot();
+            additionalMethods.FuckCapcha();
             try
             {
                 additionalMethods.WaitHtmlElement(HtmlElementEnterId);
@@ -46,20 +46,20 @@ namespace ZennoPosterYandexRegistration
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementCreatId, 0));
                 additionalMethods.WaitHtmlElement(HtmlElementSetPhoneNumber);
                 getNumber.GetNumberAndId();
-                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementSetPhoneNumber, 0), getNumber.PhoneNumber.Substring(1));
+                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementSetPhoneNumber, 0), getNumber.PhoneNumber.Substring(1),true);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementConfirmPhoneNumber, 0));
                 additionalMethods.WaitHtmlElement(HtmlElementInputCodeActivation);
                 getNumber.GetSmsCode(true);
-                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputCodeActivation, 0), getNumber.CodeActivation);
+                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputCodeActivation, 0), getNumber.CodeActivation, true);
 
                 Thread.Sleep(random.Next(3000, 5000));
                 HtmlElement formal2 = instance.ActiveTab.FindElementByXPath("//h1[contains(text(),'Немного формальностей')]", 0);
                 if (formal2.IsVoid)
                 {
                     additionalMethods.WaitHtmlElement(HtmlElementInputFirstName);
-                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputFirstName, 0), project.Profile.Name);
+                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputFirstName, 0), project.Profile.Name, true);
                     additionalMethods.WaitHtmlElement(HtmlElementInputLastName);
-                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputLastName, 0), project.Profile.Surname);
+                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputLastName, 0), project.Profile.Surname, true);
                     swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementConfirmFirstNameAndLastName, 0));
                 }
 
@@ -97,7 +97,7 @@ namespace ZennoPosterYandexRegistration
                 additionalMethods.WaitHtmlElement(HtmlElementSetLogin);
                 if (String.IsNullOrEmpty(instance.ActiveTab.FindElementByXPath(HtmlElementSetLogin, 0).GetAttribute("value")))
                 {
-                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementSetLogin, 0), project.Profile.NickName);
+                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementSetLogin, 0), project.Profile.NickName, true);
                     YandexLogin = project.Profile.NickName;
                 }
                 else
@@ -108,13 +108,13 @@ namespace ZennoPosterYandexRegistration
                 HtmlElement LoginIsBusy = instance.ActiveTab.FindElementByXPath("//div[contains(text(),'логин занят')]", 0);
                 if (!LoginIsBusy.IsVoid)
                 {
-                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementSetLogin, 0), new Random().Next(1000, 5000).ToString());
+                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementSetLogin, 0), new Random().Next(1000, 5000).ToString(), true);
                     YandexLogin = instance.ActiveTab.FindElementByXPath(HtmlElementSetLogin, 0).GetAttribute("value");
                 }
 
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementApprovedLogin, 0));
                 additionalMethods.WaitHtmlElement(HtmlElementSetPassword);
-                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementSetPassword, 0), project.Profile.Password);
+                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementSetPassword, 0), project.Profile.Password, true);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementApprovedPassword, 0));
                 YandexPassword = project.Profile.Password;
                 additionalMethods.WaitHtmlElement(HtmlElementMailAndPhone);
@@ -156,7 +156,7 @@ namespace ZennoPosterYandexRegistration
                 instance.ActiveTab.Touch.Touch(left + random.Next(30, 100), top + random.Next(100, 200));  // Выбор контрольного вопроса
 
                 additionalMethods.WaitHtmlElement(HtmlElementResponceSecurityQuestion);
-                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementResponceSecurityQuestion, 0), project.Profile.Password); //Поле ввода ответа на вопрос
+                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementResponceSecurityQuestion, 0), project.Profile.Password, true); //Поле ввода ответа на вопрос
                 additionalMethods.WaitHtmlElement(HtmlElementSaveSecurityQuestion);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementSaveSecurityQuestion, 0)); //Сохранить контрльный вопррос
                 additionalMethods.WaitDownloading();
@@ -165,7 +165,7 @@ namespace ZennoPosterYandexRegistration
                 if (!CheckHe.IsVoid)
                 {
                     additionalMethods.WaitHtmlElement(HtmlElementInputPasswordSecurityQuestion);
-                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputPasswordSecurityQuestion, 0), project.Profile.Password);
+                    swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputPasswordSecurityQuestion, 0), project.Profile.Password, true);
                     additionalMethods.WaitHtmlElement(HtmlElementConfirmPasswordSecurityQuestion);
                     swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementConfirmPasswordSecurityQuestion, 0)); //Подтвердить пароль
                 }
@@ -178,15 +178,15 @@ namespace ZennoPosterYandexRegistration
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementSendSmsForDeletePhoneNumber, 0)); // Отправить смс
                 getNumber.GetSmsCode(false);
                 additionalMethods.WaitHtmlElement(HtmlElementInputSmsCodeDeletePhoneNumber);
-                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputSmsCodeDeletePhoneNumber, 0), getNumber.CodeActivation); // Ввести смс код
+                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputSmsCodeDeletePhoneNumber, 0), getNumber.CodeActivation, true); // Ввести смс код
                 additionalMethods.WaitHtmlElement(HtmlElementInputPasswordForDeletePhoneNumber);
-                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputPasswordForDeletePhoneNumber, 0), project.Profile.Password); // Ввести парроль аккаунта
+                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputPasswordForDeletePhoneNumber, 0), project.Profile.Password, true); // Ввести парроль аккаунта
                 additionalMethods.WaitHtmlElement(HtmlElementConfirmDeletePhoneNumber);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementConfirmDeletePhoneNumber, 0)); // Подтвердить
                 additionalMethods.WaitHtmlElement(HtmlElementGoYandexFromAccountSettings);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementGoYandexFromAccountSettings, 0));
                 additionalMethods.WaitHtmlElement(YandexWalkValue.HtmlElementInputSearchIn);
-                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementInputSearchIn, 0), "Вк");
+                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementInputSearchIn, 0), "Вк", true);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchButtonIn, 0));
                 additionalMethods.WaitHtmlElement(HtmlElementSearchResultsCard);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'OrganicTitleContentSpan organic__title')]", 0));

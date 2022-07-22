@@ -19,7 +19,7 @@ namespace ZennoPosterYandexRegistration
 
         public void GetCountProfileInDB()
         {
-            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB(project).OpenConnectDb();
+            SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
             SQLiteCommand sQLiteCommand = new SQLiteCommand(sqliteConnection) { CommandText = String.Format("SELECT COUNT(*) FROM Profiles WHERE Status = 'Free' AND YandexRegistration = 'NO' AND TimeToGetYandex < '{0}'",DateTime.Now.ToString("yyyy-MM-dd")) };
 
             object CountProfile = sQLiteCommand.ExecuteScalar();
@@ -35,7 +35,7 @@ namespace ZennoPosterYandexRegistration
         }//Получение количества профилей для работы из БД
         public void GetProfileFromDB()
         {
-            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB(project).OpenConnectDb();
+            SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
 
             string ProfileStringRequest = String.Format("SELECT PathToProfile FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex < '{0}' AND YandexRegistration = 'NO' ORDER BY Status ASC LIMIT 1",
                 DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
@@ -70,7 +70,7 @@ namespace ZennoPosterYandexRegistration
         }//Загрузка профиля в зенопостер
         public void UpdateStatusProfile(string Status, string YandexRegistration, string YandexLogin, string YandexPassword)
         {
-            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB(project).OpenConnectDb();
+            SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
 
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', YandexRegistration = '{2}', DateYandexRegistration = '{3}', YandexLogin = '{4}', YandexPassword = '{5}', TimeToGetSettingAccount = '{6}' " +
                 "WHERE PathToProfile = '{0}'", PathToProfile, Status, YandexRegistration, DateTime.Now.ToString("yyyy-MM-dd"), YandexLogin, YandexPassword, DateTime.Now.AddDays(3).ToString("yyyy-MM-dd"));
@@ -84,7 +84,7 @@ namespace ZennoPosterYandexRegistration
         }//Изменение статуса регистрации в яндексе
         public void UpdateStatusProfile(string Status)
         {
-            SQLiteConnection sqliteConnection = new ZennoPosterDataBaseAndProfile.DB(project).OpenConnectDb();
+            SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
             string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}' WHERE PathToProfile = '{0}'",
                 PathToProfile, Status);
 

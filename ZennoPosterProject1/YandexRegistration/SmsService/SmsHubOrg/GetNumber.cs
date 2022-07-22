@@ -6,7 +6,7 @@ using ZennoLab.InterfacesLibrary.ProjectModel;
 
 namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
 {
-    class GetNumber
+    class GetNumber : SmshubValue
     {
         public string PhoneNumber { get; set; }
         public string IdActivation { get; set; }
@@ -14,7 +14,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
 
         readonly IZennoPosterProjectModel project;
 
-        public GetNumber(IZennoPosterProjectModel project)
+        public GetNumber(IZennoPosterProjectModel project) : base (project)
         {           
             this.project = project;
         }
@@ -66,7 +66,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
 
                 IdActivation = resultHttpGet.Split(':')[1];
                 PhoneNumber = resultHttpGet.Split(':')[2];
-                if (!PhoneNumber.Contains("7921"))
+                if (!PhoneNumber.Contains(Prefix))
                 {
                     project.SendWarningToLog("Взятый номер не подходит: " + PhoneNumber);
                     RefuseGetNumber();
