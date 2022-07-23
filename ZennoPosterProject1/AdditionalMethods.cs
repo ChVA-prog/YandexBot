@@ -123,16 +123,18 @@ namespace ZennoPosterProject1
                     Thread.Sleep(swipeAndClick.LatencyKeySetText);
                 }
 
-                Program.logger.Debug("Отправляем введенную капчу");
-                new AdditionalMethods(instance, project).InstanceScreen();
+                Program.logger.Debug("Отправляем введенную капчу");               
                 swipeAndClick.ClickToElement(instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementSendCapcha, 0));
+                instance.ActiveTab.WaitDownloading();
                 Thread.Sleep(random.Next(2000, 5000));
 
                 if (!instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementCapchaError, 0).IsVoid)
                 {
                     Program.logger.Warn("Неверно ввели капчу, пробуем еще раз.");
+                    new AdditionalMethods(instance, project).InstanceScreen();
                     FuckCapcha();
                 }
+                Program.logger.Debug("Капча успешно пройдена.");
             }
         }
     }
