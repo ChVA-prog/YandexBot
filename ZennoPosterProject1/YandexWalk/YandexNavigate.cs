@@ -13,7 +13,7 @@ namespace ZennoPosterYandexWalk
     {
         readonly Instance instance;
         readonly IZennoPosterProjectModel Project;
-
+        int CounterGoYandexPage = 0;
         public YandexNavigate(Instance instance, IZennoPosterProjectModel project) : base(project)
         {
             this.instance = instance;
@@ -40,9 +40,15 @@ namespace ZennoPosterYandexWalk
 
             if (String.IsNullOrEmpty(instance.ActiveTab.FindElementByXPath(HtmlElementInputSearchIn, 0).GetAttribute("value")))
             {
-                Program.logger.Warn("Поисковый запрос не ввелся в строку. Пробуем еще раз.");
+                Program.logger.Warn("Поисковый запрос не ввелся в строку. Пробуем еще раз.",true);
                 Project.SendWarningToLog("Поисковый запрос не ввелся в строку. Пробуем еще раз.");
                 instance.CloseAllTabs();
+                if (CounterGoYandexPage == 3)
+                {
+                    Program.logger.Error("Не удалось перейти на страницу яндекса.");
+                    throw new Exception("Не удалось перейти на страницу яндекса.");
+                }
+                CounterGoYandexPage++;
                 GoToSearchQuery();
             }
 
