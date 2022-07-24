@@ -30,7 +30,7 @@ namespace DataBaseProfileAndProxy
             AddProxyInDB();
             GetProxyFromDB();
 
-            if (CheckProxy())
+            if (true)//CheckProxy()
             {
                 Program.logger.Debug("Устанавливаем прокси в инстанс.");
                 instance.ClearProxy();
