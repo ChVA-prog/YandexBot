@@ -44,7 +44,7 @@ namespace ZennoPosterYandexWalk
 
                 else
                 {
-                    Program.logger.Info("Изучаем карточку под номером: " + SearchCardList[i]);
+                    Program.logger.Info("Просто изучаем карточку под номером: " + SearchCardList[i]);
                     Project.SendInfoToLog("Просто изучаем карточку.", true);
                     swipeAndClick.SwipeToElement(instance.ActiveTab.FindElementByXPath(NextPageHtmlElementSearchResultsCard, i));
                     Thread.Sleep(random.Next(2000, 4000));

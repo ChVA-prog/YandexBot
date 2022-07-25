@@ -108,6 +108,7 @@ namespace ZennoPosterYandexWalk
             siteWalk.SiteRandomWalk();
             Thread.Sleep(random.Next(4000, 8000));
             Program.logger.Info("Закончили работу с карточкой поисковой выдачи.");
+            Project.SendInfoToLog("Закончили изучать сайт сайт: " + ClearCurenSite, true);
             return false;
         }//Переходим в карточку
         public void CloseUnnecessaryWindows()
