@@ -113,6 +113,19 @@ namespace ZennoPosterProject1
                 dBMethods.UpdateStatusProfile("Free");
                 throw new Exception(ex.Message);
             }//Регистрируем аккаунт, устанавливаем логин с паролем, отвязываем номер.
+            try
+            {
+                registrationAndSettingsAccount.SettingsAccount();
+            }
+            catch (Exception ex)
+            {
+                project.SendErrorToLog(ex.Message);
+                profile.SaveProfile();
+                proxyDB.ChangeIp();
+                proxyDB.ChangeStatusProxyInDB("Free");
+                dBMethods.UpdateStatusProfile("Free");
+                throw new Exception(ex.Message);
+            }
             profile.SaveProfile();
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");

@@ -7,6 +7,8 @@ using System.Threading;
 using ZennoPosterProject1;
 using ZennoPosterYandexWalk;
 using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
+using System.IO;
+using System.Collections.Generic;
 
 namespace ZennoPosterYandexRegistration
 {
@@ -183,22 +185,112 @@ namespace ZennoPosterYandexRegistration
                 swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputPasswordForDeletePhoneNumber, 0), project.Profile.Password, true); // Ввести парроль аккаунта
                 additionalMethods.WaitHtmlElement(HtmlElementConfirmDeletePhoneNumber);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementConfirmDeletePhoneNumber, 0)); // Подтвердить
-                additionalMethods.WaitHtmlElement(HtmlElementGoYandexFromAccountSettings);
-                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementGoYandexFromAccountSettings, 0));
-                additionalMethods.WaitHtmlElement(YandexWalkValue.HtmlElementInputSearchIn);
-                swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementInputSearchIn, 0), "Вк", true);
-                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(YandexWalkValue.HtmlElementSearchButtonIn, 0));
-                additionalMethods.WaitHtmlElement(HtmlElementSearchResultsCard);
-                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'OrganicTitleContentSpan organic__title')]", 0));
-                additionalMethods.WaitDownloading();
-                instance.AllTabs.First().Close();
-                additionalMethods.WaitDownloading();
-                instance.CloseAllTabs();
+                new DBMethods(instance,project).UpdateStatusProfile("YES", project.Profile.NickName, project.Profile.Password);
             }
             catch (Exception ex)
             {
                 throw new Exception("Не удалось удалить номер из аккаунта: " + ex.Message);
             }
         }//Отвязка номера и установка контрольного вопроса
+        public void SettingsAccount()
+        {
+            AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
+            Random random = new Random();
+
+            HtmlElement IdAccountSettings = instance.ActiveTab.FindElementByXPath("//a[contains(@class, 'PageHeaderLogo-id')]", 0);// кнопка id, для входа в настройки акка
+            additionalMethods.WaitHtmlElement("//a[contains(@class, 'PageHeaderLogo-id')]");
+            swipeAndClick.SwipeAndClickToElement(IdAccountSettings);
+
+            HtmlElement ButtonAddAccountImg = instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Добавить фото')]", 0);// кнопка добавить фото
+            additionalMethods.WaitHtmlElement("//a[starts-with(text(),'Добавить фото')]");
+            swipeAndClick.SwipeAndClickToElement(ButtonAddAccountImg);
+
+            HtmlElement DownloadAccountImg = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Загрузить')]", 0);// Загрузить фото
+            List<string> AccountFolder = (from a in Directory.GetFiles(AccountAvatarFolder) select Path.GetFileName(a)).ToList();                                                                                                                     // 
+            instance.SetFilesForUpload(project.Directory + String.Format(@"\AccountPhoto\{0}", AccountFolder[random.Next(0, AccountFolder.Count)]));
+            swipeAndClick.SwipeAndClickToElement(DownloadAccountImg);
+
+            HtmlElement SaveAccountImg = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Сохранить')]", 0);// сохранить фото
+            additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Сохранить')]");
+            swipeAndClick.SwipeAndClickToElement(SaveAccountImg);
+
+            HtmlElement ChangePersonalSettings = instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Изменить персональную')]", 0);// Изменить персональную информацию
+            additionalMethods.WaitHtmlElement("//a[starts-with(text(),'Изменить персональную')]");
+            swipeAndClick.SwipeAndClickToElement(ChangePersonalSettings);
+
+
+            HtmlElement SetName = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'firstname')]", 0);// Указать имя
+            additionalMethods.WaitHtmlElement("//input[contains(@id, 'firstname')]");
+            swipeAndClick.SetText(SetName, project.Profile.Name,true);
+
+            HtmlElement SetSurname = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'lastname')]", 0);// Указать фамилию
+            additionalMethods.WaitHtmlElement("//input[contains(@id, 'lastname')]");
+            swipeAndClick.SetText(SetName, project.Profile.Surname, true);
+            
+            HtmlElement SetBirthdayDay = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'birthday-day')]", 0);// Указать день рождения
+            additionalMethods.WaitHtmlElement("//input[contains(@id, 'birthday-day')]");
+            swipeAndClick.SetText(SetBirthdayDay, project.Profile.BornDay.ToString(), true);
+
+            HtmlElement SetBirthdayMonth = instance.ActiveTab.FindElementByXPath("//select[contains(@name, 'month')]", 0);//указать месяц рождения
+            additionalMethods.WaitHtmlElement("//select[contains(@name, 'month')]");
+            swipeAndClick.SwipeAndClickToElement(SetBirthdayMonth);
+            var SetBirthdayMonthTop = Convert.ToInt32(SetBirthdayMonth.GetAttribute("topInTab"));
+            var SetBirthdayMonthLeft = Convert.ToInt32(SetBirthdayMonth.GetAttribute("leftInTab"));
+            Thread.Sleep(random.Next(2000, 4000));
+            instance.ActiveTab.Touch.Touch(SetBirthdayMonthLeft + random.Next(30, 100), SetBirthdayMonthTop + random.Next(100, 200));
+
+            HtmlElement SetBirthdayYear = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'birthday-year')]", 0);//указать год рождения
+            additionalMethods.WaitHtmlElement("//input[contains(@id, 'birthday-year')]");
+            swipeAndClick.SetText(SetBirthdayYear, project.Profile.BornYear.ToString(), true);
+
+            if (project.Profile.Sex.ToString().Contains("Female"))
+            {
+                HtmlElement Gender = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'Женский')]", 0);//Выбираем женский пол если акк женский
+                swipeAndClick.SwipeAndClickToElement(Gender);
+            }
+
+            HtmlElement City = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'city')]", 0);//Указываем город
+            additionalMethods.WaitHtmlElement("//input[contains(@id, 'city')]");
+            swipeAndClick.SetText(City, project.Profile.CurrentRegion, true);
+
+            HtmlElement SaveAccountSettings = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Сохранить')]", 0);//СОхраняем персональные настройки
+            additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Сохранить')]");
+            swipeAndClick.SwipeAndClickToElement(SaveAccountSettings);
+
+            HtmlElement SetPublicAdress = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'AdditionalPersonalInfo')]", 0);//указать публичный адрес
+            additionalMethods.WaitHtmlElement("//span[contains(@class, 'AdditionalPersonalInfo')]");
+            swipeAndClick.SwipeAndClickToElement(SetPublicAdress);
+
+
+            HtmlElement ChangePublicAdress = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'PublicId-suggestValue')]", 0);//выбираем предложенный адрес
+            additionalMethods.WaitHtmlElement("//span[contains(@class, 'PublicId-suggestValue')]");
+            swipeAndClick.SwipeAndClickToElement(ChangePublicAdress);
+
+            HtmlElement SavePublicAdress = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Сохранить')]", 0);//сохраняем публичный адрес
+            additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Сохранить')]");
+            swipeAndClick.SwipeAndClickToElement(SavePublicAdress);
+
+            HtmlElement AddHomeAdress = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'Добавить домашний')]", 0);//Добавить домашний адрес
+            additionalMethods.WaitHtmlElement("//div[starts-with(text(),'Добавить домашний')]");
+            swipeAndClick.SwipeAndClickToElement(AddHomeAdress);
+
+            HtmlElement SetHomeAdress = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'addressLine')]", 0);//Домашний адрес
+            additionalMethods.WaitHtmlElement("//input[contains(@id, 'addressLine')]");
+            swipeAndClick.SetText(SetHomeAdress, AdressList[random.Next(0, AdressList.Count)], true);
+            var SetHomeAdressTop = Convert.ToInt32(SetHomeAdress.GetAttribute("topInTab"));
+            var SetHomeAdressLeft = Convert.ToInt32(SetHomeAdress.GetAttribute("leftInTab"));
+            instance.ActiveTab.Touch.Touch(SetHomeAdressLeft + random.Next(30, 100), SetHomeAdressTop + random.Next(50, 60));
+
+            HtmlElement SetWorkAdress = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'addressLine')]", 1);//Работа
+            swipeAndClick.SetText(SetWorkAdress, AdressList[random.Next(0, AdressList.Count)], true);
+            var SetWorkAdressTop = Convert.ToInt32(SetWorkAdress.GetAttribute("topInTab"));
+            var SetWorkAdressLeft = Convert.ToInt32(SetWorkAdress.GetAttribute("leftInTab"));
+            instance.ActiveTab.Touch.Touch(SetWorkAdressLeft + random.Next(30, 100), SetWorkAdressTop + random.Next(50, 60));
+
+            HtmlElement SaveAdress = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Сохранить')]", 0);//Сохранить адреса
+            additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Сохранить')]");
+            swipeAndClick.SwipeAndClickToElement(SaveAdress);
+        }//Настрока данных аккаунта
     }
 }

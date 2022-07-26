@@ -122,6 +122,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
         }//Получаем смс код
         private void RefuseGetNumber()
         {
+            Thread.Sleep(1500);
             string RefuseGetNumber = String.Format("https://smshub.org/stubs/handler_api.php?api_key={0}&action=setStatus&status=8&id={1}", SmshubValue.ApiKeySmshub, IdActivation);
             ZennoPoster.HttpGet(RefuseGetNumber, "", "UTF-8",ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);
             project.SendInfoToLog("Отменили взятый номер.", true);

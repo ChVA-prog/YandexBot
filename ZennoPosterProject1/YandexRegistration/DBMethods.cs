@@ -72,8 +72,8 @@ namespace ZennoPosterYandexRegistration
         {
             SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', YandexRegistration = '{2}', DateYandexRegistration = '{3}', YandexLogin = '{4}', YandexPassword = '{5}', TimeToGetSettingAccount = '{6}' " +
-                "WHERE PathToProfile = '{0}'", PathToProfile, Status, YandexRegistration, DateTime.Now.ToString("yyyy-MM-dd"), YandexLogin, YandexPassword, DateTime.Now.AddDays(3).ToString("yyyy-MM-dd"));
+            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', YandexRegistration = '{2}', DateYandexRegistration = '{3}', YandexLogin = '{4}', YandexPassword = '{5}', TimeToGetSettingAccount = '{6}', DateLastEnterYandex = '{7}' " +
+                "WHERE PathToProfile = '{0}'", PathToProfile, Status, YandexRegistration, DateTime.Now.ToString("yyyy-MM-dd"), YandexLogin, YandexPassword, DateTime.Now.AddDays(3).ToString("yyyy-MM-dd"), DateTime.Now);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -94,5 +94,18 @@ namespace ZennoPosterYandexRegistration
             sqliteConnection.Close();
             project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
         }//Изменение статуса профиля (Free или Busy) 
+        public void UpdateStatusProfile(string YandexRegistration, string YandexLogin, string YandexPassword)
+        {
+            SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
+
+            string ProfileStringRequest = String.Format("UPDATE Profiles SET YandexRegistration = '{1}', DateYandexRegistration = '{2}', YandexLogin = '{3}', YandexPassword = '{4}', DateLastEnterYandex = '{5}' " +
+                "WHERE PathToProfile = '{0}'", PathToProfile, YandexRegistration, DateTime.Now.ToString("yyyy-MM-dd"), YandexLogin, YandexPassword, DateTime.Now);
+
+            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+
+            sQLiteCommand.ExecuteReader();
+
+            sqliteConnection.Close();
+        }//Изменение статуса регистрации в яндексе
     }
 }

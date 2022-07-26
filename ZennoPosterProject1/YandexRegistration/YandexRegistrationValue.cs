@@ -1,5 +1,7 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
-using DataBaseProfileAndProxy;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace ZennoPosterYandexRegistration
 {
@@ -28,24 +30,25 @@ namespace ZennoPosterYandexRegistration
         protected string HtmlElementMailAndPhone { get; set; }
         protected string HtmlElementChangeMailAndPhoneList { get; set; }
         protected string HtmlElementOffInputSms { get; set; }
-        protected string HtmlElementGoYandexFromAccountSettings { get;set;}
-        protected string  HtmlElementHumberSettings { get; set; }
-        protected string  HtmlElementWhyDeletePhoneNumber { get; set; }
-        protected string  HtmlElementNextPageDeleteNumber { get; set; }
-        protected string  HtmlElementSecurityQuestionMenu { get; set; }
-        protected string  HtmlElementResponceSecurityQuestion { get; set; }
-        protected string  HtmlElementSaveSecurityQuestion { get; set; }
-        protected string  HtmlElementCheckNeedWritePassword { get; set; }
-        protected string  HtmlElementInputPasswordSecurityQuestion { get; set; }
-        protected string  HtmlElementConfirmPasswordSecurityQuestion { get; set; }
-        protected string  HtmlElementDeletePhoneNumber { get; set; }
-        protected string  HtmlElementSendSmsForDeletePhoneNumber { get; set; }
-        protected string  HtmlElementInputSmsCodeDeletePhoneNumber { get; set; }
-        protected string  HtmlElementInputPasswordForDeletePhoneNumber { get; set; }
+        protected string HtmlElementGoYandexFromAccountSettings { get; set; }
+        protected string HtmlElementHumberSettings { get; set; }
+        protected string HtmlElementWhyDeletePhoneNumber { get; set; }
+        protected string HtmlElementNextPageDeleteNumber { get; set; }
+        protected string HtmlElementSecurityQuestionMenu { get; set; }
+        protected string HtmlElementResponceSecurityQuestion { get; set; }
+        protected string HtmlElementSaveSecurityQuestion { get; set; }
+        protected string HtmlElementCheckNeedWritePassword { get; set; }
+        protected string HtmlElementInputPasswordSecurityQuestion { get; set; }
+        protected string HtmlElementConfirmPasswordSecurityQuestion { get; set; }
+        protected string HtmlElementDeletePhoneNumber { get; set; }
+        protected string HtmlElementSendSmsForDeletePhoneNumber { get; set; }
+        protected string HtmlElementInputSmsCodeDeletePhoneNumber { get; set; }
+        protected string HtmlElementInputPasswordForDeletePhoneNumber { get; set; }
         protected string HtmlElementConfirmDeletePhoneNumber { get; set; }
         protected string HtmlElementBackAccountSettings { get; set; }
         protected string HtmlElementSearchResultsCard { get; set; }
-
+        protected string AccountAvatarFolder { get; set; }
+        protected List<string> AdressList { get; set; }
         public YandexRegistrationValue(IZennoPosterProjectModel project)
         {
             this.project = project;
@@ -88,6 +91,8 @@ namespace ZennoPosterYandexRegistration
             HtmlElementConfirmDeletePhoneNumber = project.Variables["set_HtmlElementConfirmDeletePhoneNumber"].Value;
             HtmlElementBackAccountSettings = project.Variables["set_HtmlElementBackAccountSettings"].Value;
             HtmlElementSearchResultsCard = project.Variables["set_HtmlElementSearchResultsCard"].Value;
-        } 
+            AccountAvatarFolder = project.Variables["set_AccountAvatarFolder"].Value;
+            AdressList = project.Variables["set_AdressList"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+        }
     }
 }
