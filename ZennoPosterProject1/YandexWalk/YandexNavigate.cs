@@ -108,7 +108,7 @@ namespace ZennoPosterYandexWalk
             siteWalk.SiteRandomWalk();
             Thread.Sleep(random.Next(4000, 8000));
             Program.logger.Info("Закончили работу с карточкой поисковой выдачи.");
-            Project.SendInfoToLog("Закончили изучать сайт сайт: " + ClearCurenSite, true);
+            Project.SendInfoToLog("Закончили изучать сайт: " + ClearCurenSite, true);
             return false;
         }//Переходим в карточку
         public void CloseUnnecessaryWindows()
@@ -117,12 +117,12 @@ namespace ZennoPosterYandexWalk
 
             if (instance.AllTabs.Length > 1)
             {
-                instance.ActiveTab.Close();
+                instance.GetTabByAddress("popup").Close();               
                 Program.logger.Info("Закрыли лишнюю вкладку. Количество открытых вкладок: " + instance.AllTabs.Length + "Url текущей вкладки: " + instance.ActiveTab.URL);
                 if (instance.AllTabs.Length > 1)
                 {
                     Program.logger.Warn("Вкладка не закрылась, пробуем еще раз.");
-                    CloseUnnecessaryWindows();
+                    instance.ActiveTab.Close();
                 }
             }
 
