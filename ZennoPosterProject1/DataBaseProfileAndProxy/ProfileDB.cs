@@ -18,12 +18,15 @@ namespace DataBaseProfileAndProxy
         }
         public void DownloadProfileInZennoposter()
         {
-            Program.logger.Debug("Начинаем процесс установки профиля в инстанс");
-            CheckAndCreateNewProfile();
-            GetProfileFromDB();
-            project.Profile.Load(PathToProfile);
-            project.SendInfoToLog("Назначили профиль " + PathToProfile + " в проект", true);
-            Program.logger.Info("Назначили профиль " + PathToProfile + " в проект");
+            lock (LockList)
+            {
+                Program.logger.Debug("Начинаем процесс установки профиля в инстанс");
+                CheckAndCreateNewProfile();
+                GetProfileFromDB();
+                project.Profile.Load(PathToProfile);
+                project.SendInfoToLog("Назначили профиль " + PathToProfile + " в проект", true);
+                Program.logger.Info("Назначили профиль " + PathToProfile + " в проект");
+            }
         }//Загрузка профиля в зенопостер
         private void CheckAndCreateNewProfile()
         {
@@ -64,8 +67,6 @@ namespace DataBaseProfileAndProxy
         }//Получение количества профилей для работы из БД
         private void GetProfileFromDB()
         {
-            lock (LockList)
-            {
                Program.logger.Debug("Начинаем процесс получения данных профиля для работы из БД.");
                SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
                string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSession < '{2}' ORDER BY CountSessionDay ASC LIMIT 1",
@@ -106,36 +107,41 @@ namespace DataBaseProfileAndProxy
                 sqliteConnection.Close();
                 UpdateStatusProfile("Busy");                    
                 project.SendInfoToLog("Взяли профиль из БД.", true);
-                Program.logger.Info("Взяли профиль {0} из БД.", PathToProfile);
-            }
+                Program.logger.Info("Взяли профиль {0} из БД.", PathToProfile);          
         }//Получение данных профиля из БД
         public void UpdateStatusProfile(string Status)
         {
-            Program.logger.Debug("Меняем статус профиля {0} на: {1}.", PathToProfile, Status);
-            SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', TimeToNextGetYandex = '{2}' WHERE PathToProfile = '{0}'",
-                PathToProfile, Status, DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm-ss"));
-            Program.logger.Debug(ProfileStringRequest);
-            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
-            sQLiteCommand.ExecuteReader();
-            sqliteConnection.Close();
-            Program.logger.Debug("Успешно сменили статус профиля {0} на: {1}", PathToProfile, Status);
-            project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
+            lock (LockList)
+            {
+                Program.logger.Debug("Меняем статус профиля {0} на: {1}.", PathToProfile, Status);
+                SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
+                string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', TimeToNextGetYandex = '{2}' WHERE PathToProfile = '{0}'",
+                    PathToProfile, Status, DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm-ss"));
+                Program.logger.Debug(ProfileStringRequest);
+                SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+                sQLiteCommand.ExecuteReader();
+                sqliteConnection.Close();
+                Program.logger.Debug("Успешно сменили статус профиля {0} на: {1}", PathToProfile, Status);
+                project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
+            }
         }//Изменение статуса профиля (Free или Busy) 
         public void UpdateStatusProfile(string Status, int Session, int SessionDay)
         {
-            Program.logger.Debug("Меняем статус профиля {0} на: {1} , кол-во сессий на {2}, количество сессий за день на {3}. ", PathToProfile, Status, Session, SessionDay);
-            CountSession = CountSession + Session;
-            CountSessionDay = CountSessionDay + SessionDay;
-            SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', CountSession = '{2}', CountSessionDay = '{3}', TimeToNextGetYandex = '{4}', DateLastEnterYandex = '{5}' " +
-                "WHERE PathToProfile = '{0}'", PathToProfile, Status, CountSession, CountSessionDay, DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm"), DateTime.Now);
-            Program.logger.Debug(ProfileStringRequest);
-            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
-            sQLiteCommand.ExecuteReader();
-            sqliteConnection.Close();
-            project.SendInfoToLog("Изменили статус профиля на: " + Status + " Количество сессий на: " + CountSession + " Количество сессий в день на: " + CountSessionDay, true);
-            Program.logger.Debug("Успешно сменили статус профиля {0} на: {1} , кол-во сессий на {2}, количество сессий за день на {3}. ", PathToProfile, Status, Session, SessionDay);
+            lock (LockList)
+            {
+                Program.logger.Debug("Меняем статус профиля {0} на: {1} , кол-во сессий на {2}, количество сессий за день на {3}. ", PathToProfile, Status, Session, SessionDay);
+                CountSession = CountSession + Session;
+                CountSessionDay = CountSessionDay + SessionDay;
+                SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
+                string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', CountSession = '{2}', CountSessionDay = '{3}', TimeToNextGetYandex = '{4}', DateLastEnterYandex = '{5}' " +
+                    "WHERE PathToProfile = '{0}'", PathToProfile, Status, CountSession, CountSessionDay, DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm"), DateTime.Now);
+                Program.logger.Debug(ProfileStringRequest);
+                SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+                sQLiteCommand.ExecuteReader();
+                sqliteConnection.Close();
+                project.SendInfoToLog("Изменили статус профиля на: " + Status + " Количество сессий на: " + CountSession + " Количество сессий в день на: " + CountSessionDay, true);
+                Program.logger.Debug("Успешно сменили статус профиля {0} на: {1} , кол-во сессий на {2}, количество сессий за день на {3}. ", PathToProfile, Status, Session, SessionDay);
+            }
         }//Изменение статуса профиля (Free или Busy), кол-во сессий и кол-во сессий в день
         private void UpdateCountSessionDay(SQLiteConnection sqliteConnection)
         {
