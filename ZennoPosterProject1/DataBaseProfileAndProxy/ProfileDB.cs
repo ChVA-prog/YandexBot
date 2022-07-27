@@ -204,7 +204,6 @@ namespace DataBaseProfileAndProxy
             }
             sqliteConnection.Close();
             Program.logger.Info("Обнулили дневные сессии у всех профилей");
-            project.SendInfoToLog("Обнулили дневные сессии у всех профилей",true);
         }
      }
 }
