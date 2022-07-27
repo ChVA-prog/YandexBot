@@ -14,6 +14,7 @@ namespace ZennoPosterYandexWalk
         readonly Instance instance;
         readonly IZennoPosterProjectModel Project;
         int CounterGoYandexPage = 0;
+        int CounterGetSearchCard = 0;
         public YandexNavigate(Instance instance, IZennoPosterProjectModel project) : base(project)
         {
             this.instance = instance;
@@ -99,7 +100,23 @@ namespace ZennoPosterYandexWalk
 
             Project.SendInfoToLog("Переходим в карточку " + ClearCurenSite, true);
             Program.logger.Info("Переходим в карточку " + ClearCurenSite);
+            GoSearchCard:
             swipeAndClick.SwipeAndClickToElement(LearnElement);
+            instance.ActiveTab.WaitDownloading();
+            if (instance.ActiveTab.URL.ToLower().Contains("search") && instance.ActiveTab.URL.ToLower().Contains("yandex"))
+            {                
+                CounterGetSearchCard++;
+                if (CounterGetSearchCard != 10)
+                {
+                    Program.logger.Warn("Переход в карточку не удался, пробуем еще раз");
+                    goto GoSearchCard;                    
+                }
+                else
+                {
+                    Project.SendWarningToLog("Не удалось перейти в карточку после 10 попыток, брасаем это гиблое дело.", true);
+                    Program.logger.Warn("Не удалось перейти в карточку после 10 попыток, брасаем это гиблое дело.");
+                }
+            }
             new AdditionalMethods(instance, Project).WaitDownloading();
             CloseYandexTrash();
             Program.logger.Debug("Url текущей вкладки: " + instance.ActiveTab.URL);
