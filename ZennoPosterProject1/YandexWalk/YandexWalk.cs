@@ -110,6 +110,7 @@ namespace ZennoPosterYandexWalk
                     {
                         Project.SendErrorToLog("Кнопка перехода на следующую страницу не найдена.", true);
                         Program.logger.Error("Кнопка перехода на следующую страницу не найдена.");
+                        new AdditionalMethods(instance,Project).InstanceScreen();
                         throw new Exception("Кнопка перехода на следующую страницу не найдена.");
                     }
                     goto YandexGoNextPage;

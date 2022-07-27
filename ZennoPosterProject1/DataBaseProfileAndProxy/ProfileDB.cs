@@ -62,7 +62,8 @@ namespace DataBaseProfileAndProxy
             object CountProfile = sQLiteCommand.ExecuteScalar();
             sqliteConnection.Close();
             project.SendInfoToLog("Количество профилей в базе данных: " + CountProfile.ToString(),true);
-            Program.logger.Info("Количество профилей в базе данных: " + CountProfile.ToString());
+            Program.logger.Info("Количество профилей в базе данных: " + CountProfile.ToString());          
+            ClearSessionDayAllProfile();
             return Convert.ToInt32(CountProfile);
         }//Получение количества профилей для работы из БД
         private void GetProfileFromDB()
@@ -86,11 +87,11 @@ namespace DataBaseProfileAndProxy
                         CountSession = Convert.ToInt32(reader.GetValue(1).ToString());
                         CountSessionDay = Convert.ToInt32(reader.GetValue(2).ToString());
 
-                        if (CountSessionDay != 0 && (Convert.ToDateTime(reader.GetString(3)) < DateTime.Now.Date))
-                        {
-                            Program.logger.Debug("Начался новый день, обнуляем количество дневных сессий профиля.");
-                            UpdateCountSessionDay(sqliteConnection);
-                        }
+                        //if (CountSessionDay != 0 && (Convert.ToDateTime(reader.GetString(3)) < DateTime.Now.Date))
+                        //{
+                        //    Program.logger.Debug("Начался новый день, обнуляем количество дневных сессий профиля.");
+                        //    UpdateCountSessionDay(sqliteConnection);
+                        //}
                     }
                     if (String.IsNullOrEmpty(PathToProfile))
                     {
@@ -143,24 +144,20 @@ namespace DataBaseProfileAndProxy
                 Program.logger.Debug("Успешно сменили статус профиля {0} на: {1} , кол-во сессий на {2}, количество сессий за день на {3}. ", PathToProfile, Status, Session, SessionDay);
             }
         }//Изменение статуса профиля (Free или Busy), кол-во сессий и кол-во сессий в день
-        private void UpdateCountSessionDay(SQLiteConnection sqliteConnection)
+        private void UpdateCountSessionDay(SQLiteConnection sqliteConnection,string path)
         {
-            Program.logger.Debug("Начинаем процесс обнуления дневных сессий профиля: " + PathToProfile);
             CountSessionDay = 0;
             string ProfileStringRequest = String.Format("UPDATE Profiles SET CountSessionDay = '0' WHERE PathToProfile = '{0}'",
-                PathToProfile);
-            Program.logger.Debug(ProfileStringRequest);
+                path);           
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             sQLiteCommand.ExecuteReader();
-            project.SendInfoToLog("Обнулили количество дневных сессий", true);
-            Program.logger.Debug("Успешно обнулили кол-во дневных сессий профиля: " + PathToProfile);
-        }//Обнуление дневных сессий профиля
+        }//Обнуление дневных сессий у всех профилей
         private void SaveProfileDataToDB(string PathTosave)
         {
             Program.logger.Debug("Начинаем процесс сохранения в БД профиля: " + PathTosave);
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-            string ProfileStringRequest = String.Format("INSERT INTO Profiles(PathToProfile, TimeToGetYandex, CountSession, CountSessionDay, TimeToNextGetYandex, Status, DateLastEnterYandex, YandexRegistration) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')",
-                PathTosave, DateTime.UtcNow.AddDays(3).ToString("yyy-MM-dd HH-mm-ss"), 0, 0, DateTime.UtcNow.ToString("yyyy-MM-dd HH-mm-ss"), "Free", DateTime.MinValue.ToString("yyyy-MM-dd"), "NO");
+            string ProfileStringRequest = String.Format("INSERT INTO Profiles(PathToProfile, TimeToGetYandex, CountSession, CountSessionDay, TimeToNextGetYandex, Status, DateLastEnterYandex, YandexRegistration, SettingsAccount) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')",
+                PathTosave, DateTime.UtcNow.AddDays(3).ToString("yyy-MM-dd HH-mm-ss"), 0, 0, DateTime.UtcNow.ToString("yyyy-MM-dd HH-mm-ss"), "Free", DateTime.MinValue.ToString("yyyy-MM-dd"), "NO", "NO");
             Program.logger.Debug(ProfileStringRequest);
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             sQLiteCommand.ExecuteReader();
@@ -176,5 +173,37 @@ namespace DataBaseProfileAndProxy
             project.SendInfoToLog("Сохранили профиль на ПК: " + PathToSaveProfile, true);
             Program.logger.Info("Успешно сохранили профиль на ПК: " + PathToSaveProfile);
         }//Сохранение профиля на пк
+        public void ClearSessionDayAllProfile()
+        {
+            Program.logger.Info("Обнуляем дневные сессии у всех профилей");
+            SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
+            string ProfileStringRequest = "SELECT PathToProfile, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' ORDER BY CountSessionDay ASC";
+            Program.logger.Debug(ProfileStringRequest);
+            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+
+            try
+            {
+                SQLiteDataReader reader = sQLiteCommand.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var path = reader.GetValue(0).ToString();
+                    var CountSessionDay = Convert.ToInt32(reader.GetValue(1).ToString());
+
+                    if (CountSessionDay != 0 && (Convert.ToDateTime(reader.GetString(2)) < DateTime.Now.Date))
+                    {                       
+                        UpdateCountSessionDay(sqliteConnection, path);
+                    }
+                }
+            }            
+            catch (Exception ex)
+            {
+                sqliteConnection.Close();
+                Program.logger.Error("Ошибка при попытке получить профили для обнуления количества сессий: " + ex.Message);
+                throw new Exception("Ошибка при попытке получить профили для обнуления количества сессий: " + ex.Message);
+            }
+            sqliteConnection.Close();
+            Program.logger.Info("Обнулили дневные сессии у всех профилей");
+        }
      }
 }
