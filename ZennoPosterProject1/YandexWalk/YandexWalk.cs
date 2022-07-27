@@ -105,6 +105,12 @@ namespace ZennoPosterYandexWalk
                 {
                     Program.logger.Debug("Переход на следующую страницу не удался, пробуем еще раз.");
                     Project.SendWarningToLog("Переход на следующую страницу не удался, пробуем еще раз.", true);
+                    if (!instance.ActiveTab.FindElementByXPath(HtmlElementNextPageButton, 0).IsVoid)
+                    {
+                        Project.SendErrorToLog("Кнопка перехода на следующую страницу не найдена.", true);
+                        Program.logger.Error("Кнопка перехода на следующую страницу не найдена.");
+                        throw new Exception("Кнопка перехода на следующую страницу не найдена.");
+                    }
                     goto YandexGoNextPage;
                 }
                 CounterPage++;
