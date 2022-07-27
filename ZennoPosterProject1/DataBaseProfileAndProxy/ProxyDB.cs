@@ -26,28 +26,31 @@ namespace DataBaseProfileAndProxy
         }
         public void SetProxyInInstance()
         {
-            Program.logger.Debug("Начинаем установку прокси в инстанс.");
-            AddProxyInDB();
-            GetProxyFromDB();
+            lock (LockList)
+            {
+                Program.logger.Debug("Начинаем установку прокси в инстанс.");
+                AddProxyInDB();
+                GetProxyFromDB();
 
-            if (true)//CheckProxy()
-            {
-                Program.logger.Debug("Устанавливаем прокси в инстанс.");
-                instance.ClearProxy();
-                instance.SetProxy(ProxyLine, false, true, true, true);
-                project.SendInfoToLog("Назначили прокси: " + ProxyLine.Split('@')[1], true);
-                Program.logger.Info("Установили прокси: " + ProxyLine.Split('@')[1] + " в инстанс.");
-                CheckIp();
-            }
-            else
-            {
-                ChangeStatusProxyInDB("DEATH");
-                project.SendErrorToLog("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой.", true);
-                Program.logger.Warn("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой.");
-                ProxyLine = null;
-                ProxyChangeIpUrl = null;
-                Program.logger.Debug("Обнулили строку с прокси и строку с URL для смены IP.");
-                SetProxyInInstance();
+                if (true)//CheckProxy()
+                {
+                    Program.logger.Debug("Устанавливаем прокси в инстанс.");
+                    instance.ClearProxy();
+                    instance.SetProxy(ProxyLine, false, true, true, true);
+                    project.SendInfoToLog("Назначили прокси: " + ProxyLine.Split('@')[1], true);
+                    Program.logger.Info("Установили прокси: " + ProxyLine.Split('@')[1] + " в инстанс.");
+                    CheckIp();
+                }
+                else
+                {
+                    ChangeStatusProxyInDB("DEATH");
+                    project.SendErrorToLog("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой.", true);
+                    Program.logger.Warn("Прокси " + ProxyLine.Split('@')[1] + "  мертвый, пробуем взять другой.");
+                    ProxyLine = null;
+                    ProxyChangeIpUrl = null;
+                    Program.logger.Debug("Обнулили строку с прокси и строку с URL для смены IP.");
+                    SetProxyInInstance();
+                }
             }
         }//Назначить прокси из БД в инстанс
         public void AddProxyInDB()
@@ -68,8 +71,6 @@ namespace DataBaseProfileAndProxy
         }//Добавление прокси в БД
         public void GetProxyFromDB()
         {
-            lock (LockList)
-            {
                 Program.logger.Debug("Получаем строку с прокси из БД.");
                 SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
                 string ProfileStringRequest = "SELECT ProxyLine, ProxyChangeIpUrl FROM Proxy WHERE Status = 'Free' ORDER BY ProxyLine ASC LIMIT 1";
@@ -104,8 +105,7 @@ namespace DataBaseProfileAndProxy
                 sqliteConnection.Close();
                 project.SendInfoToLog("Получили прокси из БД: " + ProxyLine, true);
                 Program.logger.Info("Получили прокси из БД: " + ProxyLine);
-                ChangeStatusProxyInDB("Busy");
-            }
+                ChangeStatusProxyInDB("Busy");           
         }//Взять прокси из БД
         public bool CheckProxy()
         {
@@ -163,14 +163,17 @@ namespace DataBaseProfileAndProxy
         }//Проверка Ip
         public void ChangeStatusProxyInDB(string Status)
         {
-            Program.logger.Debug("Меняем статус прокси {0} на: {1}",ProxyLine.Split('@')[1], Status);
-            SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-            string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyLine, Status);
-            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
-            sQLiteCommand.ExecuteReader();
-            sqliteConnection.Close();
-            project.SendInfoToLog("Сменили статус прокси на: " + Status, true);
-            Program.logger.Info("Успешно сменили статус прокси {0} на: {1}", ProxyLine.Split('@')[1], Status);
+            lock (LockList)
+            {
+                Program.logger.Debug("Меняем статус прокси {0} на: {1}", ProxyLine.Split('@')[1], Status);
+                SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
+                string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyLine, Status);
+                SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+                sQLiteCommand.ExecuteReader();
+                sqliteConnection.Close();
+                project.SendInfoToLog("Сменили статус прокси на: " + Status, true);
+                Program.logger.Info("Успешно сменили статус прокси {0} на: {1}", ProxyLine.Split('@')[1], Status);
+            }
         }//Смена статуса прокси (Free или Busy)
         public void ChangeIp()
         {
