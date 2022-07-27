@@ -33,6 +33,7 @@ namespace ZennoPosterYandexWalk
             int CounterPage = 1;
             int CountLearnPage = yandexWalkSettings.GetRandomPageCountSearch();
             int CounterAttemptGetSumCard = 0;
+            int CounterGetNextPage = 0;
 
             try
             {
@@ -112,9 +113,19 @@ namespace ZennoPosterYandexWalk
                         new AdditionalMethods(instance,Project).InstanceScreen();
                         throw new Exception("Кнопка перехода на следующую страницу не найдена.");
                     }
-                    goto YandexGoNextPage;
+                    if (CounterGetNextPage != 5)
+                    {
+                        CounterGetNextPage++;
+                        goto YandexGoNextPage;
+                    }
+                    else
+                    {
+                        throw new Exception("Переход на следующую страницу не удался.");
+                    }
                 }
                 CounterPage++;
+                CounterGetNextPage = 0;
+                CounterAttemptGetSumCard = 0;
             }
             while (CountLearnPage > CounterPage);
 
