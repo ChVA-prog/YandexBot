@@ -27,7 +27,6 @@ namespace ZennoPosterEmulation
 
         public TouchEmulationParameters CreateTouchParametrs()
         {
-            Program.logger.Debug("Генерируем параметры эмуляции тача и свайпа.");
             TouchEmulationParameters touchEmulationParameters = new TouchEmulationParameters();            
             touchEmulationParameters.Acceleration = Extension.ParseRangeValueFloat(Acceleration).ValueRandom;
             touchEmulationParameters.LongTouchLengthMs = Extension.ParseRangeValueInt(LongTouchLengthMs).ValueRandom;
@@ -50,7 +49,6 @@ namespace ZennoPosterEmulation
             touchEmulationParameters.SwipeFractionX = Extension.ParseRangeValueFloat(SwipeFractionX).ValueRandom;
             touchEmulationParameters.SwipeFractionY = Extension.ParseRangeValueFloat(SwipeFractionY).ValueRandom;
             touchEmulationParameters.TouchLengthMs = Extension.ParseRangeValueInt(TouchLengthMs).ValueRandom;
-            Program.logger.Debug("Генерация значений эмуляции закончена.");
             return touchEmulationParameters;
         }//Генерация рандомных параметров эмуляции свайпа и тача
     }

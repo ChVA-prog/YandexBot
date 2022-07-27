@@ -98,7 +98,8 @@ namespace ZennoPosterYandexWalk
                 {
                     Project.SendWarningToLog("Переход на следующую страницу не удался из-за открытой вкладки, пробуем еще раз.", true);
                     Program.logger.Debug("Переход на следующую страницу не удался из-за открытия лишней вкладки, пробуем закрыть ее и перейти еще раз.");
-                    yandexNavigate.CloseUnnecessaryWindows();                                                  
+                    yandexNavigate.CloseUnnecessaryWindows();
+                    Thread.Sleep(5000);
                 }
                 HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath(HtmlElementPageNumberDie);
                 if (hec.Count < CounterPage || hec.Count == 0)
