@@ -86,7 +86,6 @@ namespace ZennoPosterEmulation
 
                 if(CounterAttemptSwipe == 10)
                 {
-                    project.SendWarningToLog("Сделали 10 попыток найти HtmlElement для свайпа, пропускаем его",true);
                     break;                    
                 }
 
