@@ -113,7 +113,6 @@ namespace ZennoPosterYandexWalk
                 }
                 else
                 {
-                    Project.SendWarningToLog("Не удалось перейти в карточку после 10 попыток, брасаем это гиблое дело.", true);
                     Program.logger.Warn("Не удалось перейти в карточку после 10 попыток, брасаем это гиблое дело.");
                     return false;
                 }
