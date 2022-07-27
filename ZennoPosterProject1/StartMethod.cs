@@ -129,7 +129,7 @@ namespace ZennoPosterProject1
             profile.SaveProfile();
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
-            dBMethods.UpdateStatusProfile("Free", "YES", registrationAndSettingsAccount.YandexLogin, registrationAndSettingsAccount.YandexPassword);
+            dBMethods.UpdateStatusProfile("YES","Free");
         }//Регистрация в яндексе и отвязка номера
     }
 }
