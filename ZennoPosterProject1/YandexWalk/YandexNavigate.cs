@@ -102,7 +102,7 @@ namespace ZennoPosterYandexWalk
             Program.logger.Info("Переходим в карточку " + ClearCurenSite);
             GoSearchCard:
             swipeAndClick.SwipeAndClickToElement(LearnElement);
-            Thread.Sleep(3000);
+            Thread.Sleep(1500);
             if (instance.ActiveTab.URL.ToLower().Contains("search") && instance.ActiveTab.URL.ToLower().Contains("yandex"))
             {                
                 CounterGetSearchCard++;
