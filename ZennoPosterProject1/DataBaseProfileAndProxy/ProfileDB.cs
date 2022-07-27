@@ -146,12 +146,11 @@ namespace DataBaseProfileAndProxy
         }//Изменение статуса профиля (Free или Busy), кол-во сессий и кол-во сессий в день
         private void UpdateCountSessionDay(SQLiteConnection sqliteConnection,string path)
         {
-            CountSessionDay = 0;
             string ProfileStringRequest = String.Format("UPDATE Profiles SET CountSessionDay = '0' WHERE PathToProfile = '{0}'",
                 path);           
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             sQLiteCommand.ExecuteReader();
-        }//Обнуление дневных сессий у всех профилей
+        }//Обнуление дневных сессий у профиля
         private void SaveProfileDataToDB(string PathTosave)
         {
             Program.logger.Debug("Начинаем процесс сохранения в БД профиля: " + PathTosave);
@@ -187,12 +186,9 @@ namespace DataBaseProfileAndProxy
 
                 while (reader.Read())
                 {
-                    var path = reader.GetValue(0).ToString();
-                    var CountSessionDay = Convert.ToInt32(reader.GetValue(1).ToString());
-
-                    if (CountSessionDay != 0 && (Convert.ToDateTime(reader.GetString(2)) < DateTime.Now.Date))
+                    if (Convert.ToInt32(reader.GetValue(1).ToString()) != 0 && (Convert.ToDateTime(reader.GetString(2)) < DateTime.Now.Date))
                     {                       
-                        UpdateCountSessionDay(sqliteConnection, path);
+                        UpdateCountSessionDay(sqliteConnection, reader.GetValue(0).ToString());
                     }
                 }
             }            
@@ -204,6 +200,6 @@ namespace DataBaseProfileAndProxy
             }
             sqliteConnection.Close();
             Program.logger.Info("Обнулили дневные сессии у всех профилей");
-        }
-     }
+        }//Обнуление дневных сессий у всех профилей
+    }
 }
