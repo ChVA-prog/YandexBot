@@ -82,12 +82,10 @@ namespace ZennoPosterEmulation
             do
             {
                 SwipeMoreTime:
-                Program.logger.Debug("Делаем попытку номер {0} для свайпа до элемента.", CounterAttemptSwipe);
                 Thread.Sleep(3000);
 
                 if(CounterAttemptSwipe == 10)
                 {
-                    project.SendWarningToLog("Сделали 10 попыток найти HtmlElement для свайпа, пропускаем его",true);
                     break;                    
                 }
 
@@ -95,18 +93,14 @@ namespace ZennoPosterEmulation
 
                 if(String.IsNullOrEmpty(HtmlElem.GetAttribute("topInTab")))
                 {
-                    Program.logger.Warn("Не получили атрибут topInTab элемента для свайпа, пробуем еще раз.");
                     CounterAttemptSwipe++;
                     goto SwipeMoreTime;
                 }
 
                 ElementPosition = Convert.ToInt32(HtmlElem.GetAttribute("topInTab"));
-                Program.logger.Debug("Получили позицию элемента для свайпа: " + ElementPosition);
                 InstanceHeight = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerHeight"));
-                Program.logger.Debug("Получили высоту инстанса: " + InstanceHeight);
                 CounterAttemptSwipe++;               
                 Program.logger.Debug("Свайп выполнен.");
-                Program.logger.Debug("while = {0}", ElementPosition > InstanceHeight || ElementPosition < 0);
             }
             while (ElementPosition > InstanceHeight || ElementPosition < 0);
 

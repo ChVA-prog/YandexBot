@@ -96,17 +96,25 @@ namespace ZennoPosterYandexWalk
                 yandexNavigate.CloseYandexTrash();
                 if (instance.AllTabs.Length > 1)
                 {
-                    Project.SendWarningToLog("Переход на следующую страницу не удался, пробуем еще раз.", true);
                     Program.logger.Debug("Переход на следующую страницу не удался из-за открытия лишней вкладки, пробуем закрыть ее и перейти еще раз.");
                     yandexNavigate.CloseUnnecessaryWindows();
-                    HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath(HtmlElementPageNumberDie);
-
-                    if (hec.Count < CounterPage || hec.Count == 0)
-                    {
-                        goto YandexGoNextPage;
-                    }             
+                    Thread.Sleep(5000);
                 }
-                    CounterPage++;
+                HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath(HtmlElementPageNumberDie);
+                if (hec.Count < CounterPage || hec.Count == 0)
+                {
+                    Program.logger.Debug("Переход на следующую страницу не удался, пробуем еще раз.");
+                    Project.SendWarningToLog("Переход на следующую страницу не удался, пробуем еще раз.", true);
+                    if (!instance.ActiveTab.FindElementByXPath(HtmlElementNextPageButton, 0).IsVoid)
+                    {
+                        Project.SendErrorToLog("Кнопка перехода на следующую страницу не найдена.", true);
+                        Program.logger.Error("Кнопка перехода на следующую страницу не найдена.");
+                        new AdditionalMethods(instance,Project).InstanceScreen();
+                        throw new Exception("Кнопка перехода на следующую страницу не найдена.");
+                    }
+                    goto YandexGoNextPage;
+                }
+                CounterPage++;
             }
             while (CountLearnPage > CounterPage);
 
