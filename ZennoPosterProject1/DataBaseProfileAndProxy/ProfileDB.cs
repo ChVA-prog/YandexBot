@@ -70,7 +70,7 @@ namespace DataBaseProfileAndProxy
         {
                Program.logger.Debug("Начинаем процесс получения данных профиля для работы из БД.");
                SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-               string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSession < '{2}' ORDER BY CountSessionDay ASC LIMIT 1",
+               string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSession < '{2}' ORDER BY CountSession ASC LIMIT 1",
                     DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), CountSessionLimit);
                Program.logger.Debug(ProfileStringRequest);
                SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);

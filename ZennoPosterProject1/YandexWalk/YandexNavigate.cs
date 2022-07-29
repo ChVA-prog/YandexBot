@@ -105,10 +105,11 @@ namespace ZennoPosterYandexWalk
             Thread.Sleep(1500);
             if (instance.ActiveTab.URL.ToLower().Contains("search") && instance.ActiveTab.URL.ToLower().Contains("yandex"))
             {                
-                CounterGetSearchCard++;
-                if (CounterGetSearchCard != 10)
+                
+                if (CounterGetSearchCard != 5)
                 {
                     Program.logger.Warn("Переход в карточку не удался, пробуем еще раз");
+                    CounterGetSearchCard++;
                     goto GoSearchCard;                    
                 }
                 else
