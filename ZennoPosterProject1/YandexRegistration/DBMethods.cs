@@ -76,8 +76,7 @@ namespace ZennoPosterYandexRegistration
         {
             SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET YandexRegistration = '{1}', DateYandexRegistration = '{2}', YandexLogin = '{3}', YandexPassword = '{4}', DateLastEnterYandex = '{5}' " +
-                "WHERE PathToProfile = '{0}'", PathToProfile,YandexRegistration, DateTime.Now.ToString("yyyy-MM-dd"), YandexLogin, YandexPassword, DateTime.Now.ToString("yyyy-MM-dd"));
+            string ProfileStringRequest = String.Format("UPDATE Profiles SET YandexRegistration = '{1}', DateYandexRegistration = '{2}', YandexLogin = '{3}', YandexPassword = '{4}', DateLastEnterYandex = '{5}' WHERE PathToProfile = '{0}'", PathToProfile,YandexRegistration, DateTime.Now.ToString("yyyy-MM-dd"), YandexLogin, YandexPassword, DateTime.Now.ToString("yyyy-MM-dd"));
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -109,6 +108,6 @@ namespace ZennoPosterYandexRegistration
             sQLiteCommand.ExecuteReader();
 
             sqliteConnection.Close();
-        }//Изменение статуса регистрации в яндексе
+        }//Изменение статуса настроек акк в яндексе
     }
 }

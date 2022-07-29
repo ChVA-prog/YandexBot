@@ -90,7 +90,7 @@ namespace ZennoPosterProject1
             }//Загрузка профиля в проект.                      
             try
             {
-                proxyDB.SetProxyInInstance();
+                //proxyDB.SetProxyInInstance();
             }
             catch (Exception ex)
             {
@@ -103,6 +103,7 @@ namespace ZennoPosterProject1
                 registrationAndSettingsAccount.RegisterAccountAndSetPassword();
                 registrationAndSettingsAccount.SetLoginAndPasswordAndRemovePhoneNumber();
                 registrationAndSettingsAccount.DeletePhoneNumberFromAccount();
+                dBMethods.UpdateStatusProfile("YES", project.Profile.NickName, project.Profile.Password);
             }
             catch (Exception ex)
             {

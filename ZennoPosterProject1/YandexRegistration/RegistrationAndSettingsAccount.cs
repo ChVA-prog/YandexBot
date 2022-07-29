@@ -66,6 +66,7 @@ namespace ZennoPosterYandexRegistration
                 }
 
                 Thread.Sleep(random.Next(3000,5000));
+
                 HtmlElement he = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Создать новый аккаунт')]",0);
                 if (!he.IsVoid)
                 {
@@ -185,7 +186,6 @@ namespace ZennoPosterYandexRegistration
                 swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputPasswordForDeletePhoneNumber, 0), project.Profile.Password, true); // Ввести парроль аккаунта
                 additionalMethods.WaitHtmlElement(HtmlElementConfirmDeletePhoneNumber);
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementConfirmDeletePhoneNumber, 0)); // Подтвердить
-                new DBMethods(instance,project).UpdateStatusProfile("YES", project.Profile.NickName, project.Profile.Password);
             }
             catch (Exception ex)
             {
@@ -206,11 +206,10 @@ namespace ZennoPosterYandexRegistration
             additionalMethods.WaitHtmlElement("//a[starts-with(text(),'Добавить фото')]");
             swipeAndClick.SwipeAndClickToElement(ButtonAddAccountImg);
 
-            HtmlElement DownloadAccountImg = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Загрузить')]", 0);// Загрузить фото
+            HtmlElement DownloadAccountImg = instance.ActiveTab.FindElementByXPath("//input[contains(@name, 'attachment')]", 0);// Загрузить фото
             List<string> AccountFolder = (from a in Directory.GetFiles(AccountAvatarFolder) select Path.GetFileName(a)).ToList();                                                                                                                     // 
             instance.SetFilesForUpload(project.Directory + String.Format(@"\AccountPhoto\{0}", AccountFolder[random.Next(0, AccountFolder.Count)]));
             swipeAndClick.SwipeAndClickToElement(DownloadAccountImg);
-
             HtmlElement SaveAccountImg = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Сохранить')]", 0);// сохранить фото
             additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Сохранить')]");
             swipeAndClick.SwipeAndClickToElement(SaveAccountImg);
@@ -226,7 +225,7 @@ namespace ZennoPosterYandexRegistration
 
             HtmlElement SetSurname = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'lastname')]", 0);// Указать фамилию
             additionalMethods.WaitHtmlElement("//input[contains(@id, 'lastname')]");
-            swipeAndClick.SetText(SetName, project.Profile.Surname, true);
+            swipeAndClick.SetText(SetSurname, project.Profile.Surname, true);
             
             HtmlElement SetBirthdayDay = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'birthday-day')]", 0);// Указать день рождения
             additionalMethods.WaitHtmlElement("//input[contains(@id, 'birthday-day')]");
@@ -263,7 +262,7 @@ namespace ZennoPosterYandexRegistration
             swipeAndClick.SwipeAndClickToElement(SetPublicAdress);
 
 
-            HtmlElement ChangePublicAdress = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'PublicId-suggestValue')]", 0);//выбираем предложенный адрес
+            HtmlElement ChangePublicAdress = instance.ActiveTab.FindElementByXPath("//span[contains(@class,'PublicId-suggestValue')]", 0);//выбираем предложенный адрес
             additionalMethods.WaitHtmlElement("//span[contains(@class, 'PublicId-suggestValue')]");
             swipeAndClick.SwipeAndClickToElement(ChangePublicAdress);
 
