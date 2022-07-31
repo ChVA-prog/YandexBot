@@ -166,11 +166,20 @@ namespace DataBaseProfileAndProxy
         }//Сохранение профиля в БД
         public void SaveProfile()
         {
-            Program.logger.Debug("Начинаем процесс сохранения профиля на ПК");
-            string PathToSaveProfile = PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
-            project.Profile.Save(PathToSaveProfile, false, true, true, true, true, true, true, true, true, null);
-            project.SendInfoToLog("Сохранили профиль на ПК: " + PathToSaveProfile, true);
-            Program.logger.Info("Успешно сохранили профиль на ПК: " + PathToSaveProfile);
+            try
+            {
+                Program.logger.Debug("Начинаем процесс сохранения профиля на ПК");
+                string PathToSaveProfile = PathToFolderProfile + @"\" + project.Profile.NickName + ".zpprofile";
+                project.Profile.Save(PathToSaveProfile, false, true, true, true, true, true, true, true, true, null);
+                project.SendInfoToLog("Сохранили профиль на ПК: " + PathToSaveProfile, true);
+                Program.logger.Info("Успешно сохранили профиль на ПК: " + PathToSaveProfile);
+            }
+            catch (Exception ex)
+            {
+                Program.logger.Error("Не удалось сохранить профиль на ПК: " + ex.Message);
+                throw new Exception("Не удалось сохранить профиль на ПК: " + ex.Message);
+            }
+
         }//Сохранение профиля на пк
         public void ClearSessionDayAllProfile()
         {

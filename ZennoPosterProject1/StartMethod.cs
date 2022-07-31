@@ -66,7 +66,14 @@ namespace ZennoPosterProject1
             }//Запуск нагуливания кук
 
             instance.CloseAllTabs();
-            profile.SaveProfile();            
+            try
+            {
+                profile.SaveProfile();
+            }
+            catch (Exception)
+            {
+
+            }            
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
             profile.UpdateStatusProfile("Free", 1, 1);

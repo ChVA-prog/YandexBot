@@ -36,7 +36,8 @@ namespace ZennoPosterProject1
                 new StartMethod(instance, project).FeedingCookies();
             }
             catch (Exception ex)
-            {
+            {               
+                Program.logger.Error ("Не смогли нагулять куки: " + ex.Message);
                 project.SendErrorToLog("Не смогли нагулять куки: " + ex.Message);
             }
             Program.logger.Info("Закончили выполнение FeedCookies.");
