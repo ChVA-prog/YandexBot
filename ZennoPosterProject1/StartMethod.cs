@@ -55,7 +55,6 @@ namespace ZennoPosterProject1
 
             catch(Exception ex)
             {
-                Program.logger.Error(ex.Message);
                 Program.logger.Error("Количество открытых вкладок: {0}. Url текущей вкладки: {1}." ,instance.AllTabs.Length, instance.ActiveTab.URL);
                 project.SendErrorToLog(ex.Message, true);
                 profile.SaveProfile();
