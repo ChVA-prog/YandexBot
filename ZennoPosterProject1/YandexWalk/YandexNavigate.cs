@@ -182,13 +182,16 @@ namespace ZennoPosterYandexWalk
                 }
             }
 
-            if (!dzen.IsVoid)
+            if (instance.ActiveTab.URL.ToLower().Contains("zen.yandex"))
             {
-                Program.logger.Debug("Закрываем баннер дзена.");
-                var left = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerWidth"));
-                instance.ActiveTab.Touch.Touch(left - random.Next(20, 25), 0 + random.Next(10, 25));
+                Thread.Sleep(random.Next(2000, 4000));
+                if (!dzen.IsVoid)
+                {
+                    Program.logger.Debug("Закрываем баннер дзена.");
+                    var left = Convert.ToInt32(instance.ActiveTab.MainDocument.EvaluateScript("return window.innerWidth"));
+                    instance.ActiveTab.Touch.Touch(left - random.Next(20, 25), 0 + random.Next(10, 25));
+                }
             }
-
             Program.logger.Info("Закончили процесс закрытия яндексовского мусора.");
         }//Закрываем яндексовский мусор
     }
