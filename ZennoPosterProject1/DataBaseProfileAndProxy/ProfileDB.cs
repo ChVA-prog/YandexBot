@@ -70,8 +70,23 @@ namespace DataBaseProfileAndProxy
         {
                Program.logger.Debug("Начинаем процесс получения данных профиля для работы из БД.");
                SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-               string ProfileStringRequest = String.Format("SELECT PathToProfile, CountSession, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' AND TimeToGetYandex > '{0}' AND TimeToNextGetYandex < '{1}' AND CountSession < '{2}' ORDER BY CountSession ASC LIMIT 1",
-                    DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), CountSessionLimit);
+
+               string ProfileStringRequest = String.Format(
+                   "SELECT PathToProfile, " +
+                   "CountSession, " +
+                   "CountSessionDay, " +
+                   "DateLastEnterYandex " +
+                   "FROM Profiles " +
+                   "WHERE Status = 'Free' " +
+                   "AND TimeToGetYandex > '{0}' " +
+                   "AND TimeToNextGetYandex < '{1}' " +
+                   "AND CountSession < '{2}' " +
+                   "ORDER BY CountSession " +
+                   "ASC LIMIT 1",
+                    DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"),
+                    DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"),
+                    CountSessionLimit);
+
                Program.logger.Debug(ProfileStringRequest);
                SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -116,8 +131,16 @@ namespace DataBaseProfileAndProxy
             {
                 Program.logger.Debug("Меняем статус профиля {0} на: {1}.", PathToProfile, Status);
                 SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-                string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', TimeToNextGetYandex = '{2}' WHERE PathToProfile = '{0}'",
-                    PathToProfile, Status, DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm-ss"));
+
+                string ProfileStringRequest = String.Format(
+                    "UPDATE Profiles " +
+                    "SET Status = '{1}', " +
+                    "TimeToNextGetYandex = '{2}' " +
+                    "WHERE PathToProfile = '{0}'",
+                    PathToProfile,
+                    Status,
+                    DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm-ss"));
+
                 Program.logger.Debug(ProfileStringRequest);
                 SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
                 sQLiteCommand.ExecuteReader();
@@ -134,8 +157,22 @@ namespace DataBaseProfileAndProxy
                 CountSession = CountSession + Session;
                 CountSessionDay = CountSessionDay + SessionDay;
                 SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-                string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}', CountSession = '{2}', CountSessionDay = '{3}', TimeToNextGetYandex = '{4}', DateLastEnterYandex = '{5}' " +
-                    "WHERE PathToProfile = '{0}'", PathToProfile, Status, CountSession, CountSessionDay, DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm"), DateTime.Now);
+
+                string ProfileStringRequest = String.Format(
+                    "UPDATE Profiles " +
+                    "SET Status = '{1}', " +
+                    "CountSession = '{2}', " +
+                    "CountSessionDay = '{3}', " +
+                    "TimeToNextGetYandex = '{4}', " +
+                    "DateLastEnterYandex = '{5}' " +
+                    "WHERE PathToProfile = '{0}'", 
+                    PathToProfile, 
+                    Status, 
+                    CountSession, 
+                    CountSessionDay, 
+                    DateTime.Now.AddHours(3).ToString("yyyy-MM-dd HH-mm"), 
+                    DateTime.Now);
+
                 Program.logger.Debug(ProfileStringRequest);
                 SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
                 sQLiteCommand.ExecuteReader();
@@ -146,8 +183,12 @@ namespace DataBaseProfileAndProxy
         }//Изменение статуса профиля (Free или Busy), кол-во сессий и кол-во сессий в день
         private void UpdateCountSessionDay(SQLiteConnection sqliteConnection,string path)
         {
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET CountSessionDay = '0' WHERE PathToProfile = '{0}'",
-                path);           
+            string ProfileStringRequest = String.Format(
+                "UPDATE Profiles " +
+                "SET CountSessionDay = '0' " +
+                "WHERE PathToProfile = '{0}'",
+                path);      
+            
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             sQLiteCommand.ExecuteReader();
         }//Обнуление дневных сессий у профиля
@@ -155,8 +196,29 @@ namespace DataBaseProfileAndProxy
         {
             Program.logger.Debug("Начинаем процесс сохранения в БД профиля: " + PathTosave);
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-            string ProfileStringRequest = String.Format("INSERT INTO Profiles(PathToProfile, TimeToGetYandex, CountSession, CountSessionDay, TimeToNextGetYandex, Status, DateLastEnterYandex, YandexRegistration, SettingsAccount) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')",
-                PathTosave, DateTime.UtcNow.AddDays(3).ToString("yyy-MM-dd HH-mm-ss"), 0, 0, DateTime.UtcNow.ToString("yyyy-MM-dd HH-mm-ss"), "Free", DateTime.MinValue.ToString("yyyy-MM-dd"), "NO", "NO");
+
+            string ProfileStringRequest = String.Format(
+                "INSERT INTO Profiles" +
+                "(PathToProfile, " +
+                "TimeToGetYandex, " +
+                "CountSession, " +
+                "CountSessionDay, " +
+                "TimeToNextGetYandex, " +
+                "Status, " +
+                "DateLastEnterYandex, " +
+                "YandexRegistration, " +
+                "SettingsAccount) " +
+                "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')",
+                PathTosave, 
+                DateTime.UtcNow.AddDays(3).ToString("yyy-MM-dd HH-mm-ss"), 
+                0, 
+                0, 
+                DateTime.UtcNow.ToString("yyyy-MM-dd HH-mm-ss"), 
+                "Free", 
+                DateTime.MinValue.ToString("yyyy-MM-dd"), 
+                "NO", 
+                "NO");
+
             Program.logger.Debug(ProfileStringRequest);
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
             sQLiteCommand.ExecuteReader();
@@ -185,7 +247,15 @@ namespace DataBaseProfileAndProxy
         {
             Program.logger.Info("Обнуляем дневные сессии у всех профилей");
             SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-            string ProfileStringRequest = "SELECT PathToProfile, CountSessionDay, DateLastEnterYandex FROM Profiles WHERE Status = 'Free' ORDER BY CountSessionDay ASC";
+
+            string ProfileStringRequest = 
+                "SELECT PathToProfile, " +
+                "CountSessionDay, " +
+                "DateLastEnterYandex " +
+                "FROM Profiles " +
+                "WHERE Status = 'Free' " +
+                "ORDER BY CountSessionDay ASC";
+
             Program.logger.Debug(ProfileStringRequest);
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
