@@ -59,8 +59,8 @@ namespace ZennoPosterProject1
                 project.SendErrorToLog(ex.Message, true);
                 profile.SaveProfile();
                 profile.UpdateStatusProfile("Free");
-                proxyDB.ChangeIp();
-                proxyDB.ChangeStatusProxyInDB("Free");                
+                proxyDB.ChangeStatusProxyInDB("Free");
+                proxyDB.ChangeIp();                                
                 throw new Exception(ex.Message);
             }//Запуск нагуливания кук
 
@@ -72,10 +72,10 @@ namespace ZennoPosterProject1
             catch (Exception)
             {
 
-            }            
-            proxyDB.ChangeIp();
+            }
             proxyDB.ChangeStatusProxyInDB("Free");
             profile.UpdateStatusProfile("Free", 1, 1);
+            proxyDB.ChangeIp();                        
         }//Нагуливание кук      
     }
 }
