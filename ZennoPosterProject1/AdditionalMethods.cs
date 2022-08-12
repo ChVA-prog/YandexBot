@@ -19,6 +19,7 @@ namespace ZennoPosterProject1
         readonly IZennoPosterProjectModel project;
         readonly Instance instance;
         public HtmlElement HtmlElementWhichWait { get; set; }
+        int CounterFuckCapcha = 0;
 
         public AdditionalMethods(Instance instance, IZennoPosterProjectModel project)
         {
@@ -108,9 +109,11 @@ namespace ZennoPosterProject1
                 Program.logger.Debug("Делаем запрос с капчей к RuCaptcha.");
                 string recognition = ZennoPoster.CaptchaRecognition("RuCaptcha.dll", Captcha.DrawToBitmap(true), "").Split('-')[0];
 
-                if (recognition.Contains("sorry"))
+                if (recognition.Contains("orry") && CounterFuckCapcha !=5)
                 {
                     Program.logger.Warn("Не пришел ответ с капчей, пробуем еще раз.");
+                    Thread.Sleep(random.Next(1500, 2000));
+                    CounterFuckCapcha++;
                     FuckCapcha();
                 }
 
@@ -128,10 +131,12 @@ namespace ZennoPosterProject1
                 instance.ActiveTab.WaitDownloading();
                 Thread.Sleep(random.Next(2000, 5000));
 
-                if (!instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementCapchaError, 0).IsVoid)
+                if (!instance.ActiveTab.FindElementByXPath(yandexWalkValue.HtmlElementCapchaError, 0).IsVoid && CounterFuckCapcha !=5)
                 {
                     Program.logger.Warn("Неверно ввели капчу, пробуем еще раз.");
                     new AdditionalMethods(instance, project).InstanceScreen();
+                    Thread.Sleep(random.Next(1500, 2000));
+                    CounterFuckCapcha++;
                     FuckCapcha();
                 }
                 Program.logger.Debug("Капча успешно пройдена.");

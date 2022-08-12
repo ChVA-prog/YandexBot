@@ -56,19 +56,24 @@ namespace ZennoPosterProject1
 
             catch(Exception ex)
             {
-                Program.logger.Error(ex.Message);
                 Program.logger.Error("Количество открытых вкладок: {0}. Url текущей вкладки: {1}." ,instance.AllTabs.Length, instance.ActiveTab.URL);
                 project.SendErrorToLog(ex.Message, true);
                 profile.SaveProfile();
                 profile.UpdateStatusProfile("Free");
-                proxyDB.ChangeIp();
-                proxyDB.ChangeStatusProxyInDB("Free");                
+                proxyDB.ChangeStatusProxyInDB("Free");
+                proxyDB.ChangeIp();                                
                 throw new Exception(ex.Message);
             }//Запуск нагуливания кук
 
             instance.CloseAllTabs();
-            profile.SaveProfile();            
-            proxyDB.ChangeIp();
+            try
+            {
+                profile.SaveProfile();
+            }
+            catch (Exception)
+            {
+
+            }
             proxyDB.ChangeStatusProxyInDB("Free");
             profile.UpdateStatusProfile("Free", 1, 1);
         }//Нагуливание кук

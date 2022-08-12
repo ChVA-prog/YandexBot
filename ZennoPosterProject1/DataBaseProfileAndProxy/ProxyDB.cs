@@ -60,7 +60,16 @@ namespace DataBaseProfileAndProxy
             foreach (string proxy in DataBaseProfileAndProxyValue.MyProxyList)
             {
                 SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-                string ProfileStringRequest = String.Format("INSERT INTO Proxy (ProxyLine, Status, ProxyChangeIpUrl) VALUES('{0}', 'Free', '{1}')", proxy.Split('|')[0], proxy.Split('|')[1]);
+
+                string ProfileStringRequest = String.Format(
+                    "INSERT INTO Proxy " +
+                    "(ProxyLine, " +
+                    "Status, " +
+                    "ProxyChangeIpUrl) " +
+                    "VALUES('{0}', 'Free', '{1}')", 
+                    proxy.Split('|')[0], 
+                    proxy.Split('|')[1]);
+
                 SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
                 sQLiteCommand.ExecuteReader();
                 sqliteConnection.Close();
@@ -73,7 +82,15 @@ namespace DataBaseProfileAndProxy
         {
                 Program.logger.Debug("Получаем строку с прокси из БД.");
                 SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-                string ProfileStringRequest = "SELECT ProxyLine, ProxyChangeIpUrl FROM Proxy WHERE Status = 'Free' ORDER BY ProxyLine ASC LIMIT 1";
+
+                string ProfileStringRequest = 
+                "SELECT ProxyLine, " +
+                "ProxyChangeIpUrl " +
+                "FROM Proxy " +
+                "WHERE Status = 'Free' " +
+                "ORDER BY ProxyLine ASC " +
+                "LIMIT 1";
+
                 SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
                 try
@@ -167,7 +184,14 @@ namespace DataBaseProfileAndProxy
             {
                 Program.logger.Debug("Меняем статус прокси {0} на: {1}", ProxyLine.Split('@')[1], Status);
                 SQLiteConnection sqliteConnection = new DB().OpenConnectDb();
-                string ProfileStringRequest = String.Format("UPDATE Proxy SET Status = '{1}' WHERE ProxyLine = '{0}'", ProxyLine, Status);
+
+                string ProfileStringRequest = String.Format(
+                    "UPDATE Proxy " +
+                    "SET Status = '{1}' " +
+                    "WHERE ProxyLine = '{0}'", 
+                    ProxyLine, 
+                    Status);
+
                 SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
                 sQLiteCommand.ExecuteReader();
                 sqliteConnection.Close();
