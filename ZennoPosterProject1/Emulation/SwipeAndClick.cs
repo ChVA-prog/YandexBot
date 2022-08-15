@@ -112,7 +112,6 @@ namespace ZennoPosterEmulation
             if (HtmlElem.IsVoid)
             {
                 project.SendErrorToLog("HtmlElement элемент для клика не найден.", true);
-                throw new Exception("HtmlElement элемент для клика не найден");
             }
 
             instance.ActiveTab.Touch.SetTouchEmulationParameters(CreatTuchParametrs.CreateTouchParametrs());

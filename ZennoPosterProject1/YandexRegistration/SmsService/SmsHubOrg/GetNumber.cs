@@ -63,10 +63,10 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
                 string ApiGetResponce = String.Format("https://smshub.org/stubs/handler_api.php?api_key={0}&action=getNumber&service=ya&operator={1}&country=0", SmshubValue.ApiKeySmshub, SmshubValue.SmshubOperator);
                 var resultHttpGet = ZennoPoster.HttpGet(ApiGetResponce, "", "UTF-8",
                     ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly);
-
+                
                 IdActivation = resultHttpGet.Split(':')[1];
                 PhoneNumber = resultHttpGet.Split(':')[2];
-                if (!PhoneNumber.Contains(Prefix))
+                if (!PhoneNumber.Contains(Prefix.Split('|')[0]) && !PhoneNumber.Contains(Prefix.Split('|')[1]) && !PhoneNumber.Contains(Prefix.Split('|')[2]))
                 {
                     project.SendWarningToLog("Взятый номер не подходит: " + PhoneNumber);
                     RefuseGetNumber();

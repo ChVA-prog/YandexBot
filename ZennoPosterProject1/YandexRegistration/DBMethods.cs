@@ -106,7 +106,7 @@ namespace ZennoPosterYandexRegistration
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
             sQLiteCommand.ExecuteReader();
-
+            project.SendInfoToLog("Сменили статус профиля на Free, поставили отметку о том что акк заполнен.");
             sqliteConnection.Close();
         }//Изменение статуса настроек акк в яндексе
     }

@@ -96,7 +96,7 @@ namespace ZennoPosterProject1
             }//Загрузка профиля в проект.                      
             try
             {
-                //proxyDB.SetProxyInInstance();
+                proxyDB.SetProxyInInstance();
             }
             catch (Exception ex)
             {
