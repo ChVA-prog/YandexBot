@@ -36,12 +36,12 @@ namespace ZennoPosterProject1
             instance.ActiveTab.WaitDownloading();
             Program.logger.Debug("Закончили ожидать загрузку страницы.");
         }//Ожидание загрузки страницы
-        public void WaitHtmlElement(string he)
+        public HtmlElement WaitHtmlElement(string He, int NumberElement)
         {
             Random random = new Random();
             int counter = 0;
             instance.ActiveTab.WaitDownloading();
-            HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(he, 0);
+            HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(He, NumberElement);
 
             while (HtmlElementWhichWait.IsVoid)
             {
@@ -52,10 +52,11 @@ namespace ZennoPosterProject1
                 }
                 project.SendInfoToLog("Ждем появления HtmlElement", true);
                 Thread.Sleep(random.Next(1000, 1500));
-                HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(he, 0);
+                HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(He, NumberElement);
             }
 
             Thread.Sleep(random.Next(1000, 1500));
+            return HtmlElementWhichWait;
         }
         public bool NLogCofig()
         {
