@@ -84,6 +84,19 @@ namespace ZennoPosterYandexRegistration
             project.SendInfoToLog("Сохранили регистрацию аккаунта в БД");
             sqliteConnection.Close();
         }//Изменение статуса регистрации в яндексе
+        public void UpdateStatusProfile(string SettingsAccount, string Status)
+        {
+            SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
+
+            string ProfileStringRequest = String.Format("UPDATE Profiles SET SettingsAccount = '{1}', DateLastEnterYandex = '{2}', Status = '{3}' " +
+                "WHERE PathToProfile = '{0}'", PathToProfile, SettingsAccount, DateTime.Now.ToString("yyyy-MM-dd"), Status);
+
+            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+
+            sQLiteCommand.ExecuteReader();
+            project.SendInfoToLog("Сменили статус профиля на Free, поставили отметку о том что акк заполнен.");
+            sqliteConnection.Close();
+        }//Изменение статуса настроек акка в яндексе
         public void UpdateStatusProfile(string Status)
         {
             SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
@@ -96,18 +109,6 @@ namespace ZennoPosterYandexRegistration
             sqliteConnection.Close();
             project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
         }//Изменение статуса профиля (Free или Busy) 
-        public void UpdateStatusProfile(string SettingsAccount,string Status)
-        {
-            SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
-
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET SettingsAccount = '{1}', DateLastEnterYandex = '{2}', Status = '{3}' " +
-                "WHERE PathToProfile = '{0}'", PathToProfile, SettingsAccount, DateTime.Now.ToString("yyyy-MM-dd"), Status);
-
-            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
-
-            sQLiteCommand.ExecuteReader();
-            project.SendInfoToLog("Сменили статус профиля на Free, поставили отметку о том что акк заполнен.");
-            sqliteConnection.Close();
-        }//Изменение статуса настроек акк в яндексе
+        
     }
 }

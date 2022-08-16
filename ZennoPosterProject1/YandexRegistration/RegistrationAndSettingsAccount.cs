@@ -30,22 +30,24 @@ namespace ZennoPosterYandexRegistration
         }
 
         public void RegisterAccountAndSetPassword()
-        {
-
-            YandexNavigate yandexNavigate = new YandexNavigate(instance, project);
+        {         
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
-            Random random = new Random();
+            YandexNavigate yandexNavigate = new YandexNavigate(instance, project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
+            Random random = new Random();
+            
 
             yandexNavigate.GoToYandex();
             additionalMethods.FuckCapcha();
+
             try
             {
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementEnterId, 0));
-                Thread.Sleep(2000);
+                Thread.Sleep(random.Next(2000,3000));
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementCreatId, 0));               
 escho:
                 getNumber.GetNumberAndId();
+
                 swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementSetPhoneNumber, 0), getNumber.PhoneNumber.Substring(1), false);
                 swipeAndClick.ClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementConfirmPhoneNumber, 0));
                 
@@ -67,15 +69,6 @@ escho:
                 swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputCodeActivation, 0), getNumber.CodeActivation, false);
 
                 Thread.Sleep(random.Next(3000, 5000));
-                HtmlElement formal2 = instance.ActiveTab.FindElementByXPath("//h1[contains(text(),'Немного формальностей')]", 0);
-                if (formal2.IsVoid)
-                {
-                    swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputFirstName, 0), project.Profile.Name, true);
-                    //swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputLastName, 0), project.Profile.Surname, true);
-                    //swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementConfirmFirstNameAndLastName, 0));
-                }
-
-                Thread.Sleep(random.Next(3000, 5000));
                 if (!instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Создать новый аккаунт')]", 0).IsVoid)
                 {
                     swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Создать новый аккаунт')]", 0));
@@ -93,15 +86,16 @@ escho:
         }//Регистрация аккаунта
         public void SetLoginAndPasswordAndRemovePhoneNumber()
         {
-            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);           
             Random random = new Random();
+
             try
             {
-                additionalMethods.WaitDownloading();
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAccountMenu, 0));
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSettings, 0));
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAccountSettings, 0));
+
                 Thread.Sleep(random.Next(4000,6000));
                 if (!instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'Card_cover')]", 0).IsVoid)
                 {
@@ -143,9 +137,9 @@ escho:
                     YandexLogin = instance.ActiveTab.FindElementByXPath(HtmlElementSetLogin, 0).GetAttribute("value");
                 }
 
-                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementApprovedLogin, 0));
+                swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementApprovedLogin, 0));
                 swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementSetPassword, 0), project.Profile.Password, false);
-                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementApprovedPassword, 0));
+                swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementApprovedPassword, 0));
                 YandexPassword = project.Profile.Password;
                 swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementMailAndPhone, 0));
                 swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementChangeMailAndPhoneList, 0));
@@ -165,14 +159,9 @@ escho:
 
             try
             {
-                ;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementHumberSettings, 0)); // Настройки номера
-                ;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementWhyDeletePhoneNumber,0));  //как удалить
-                ;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementNextPageDeleteNumber, 0)); // Далее
-                additionalMethods.WaitDownloading();
-                ;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSecurityQuestionMenu, 0)); //Выпадающее меню конктрольный вопрос
 
                 HtmlElement he = instance.ActiveTab.FindElementByXPath(HtmlElementSecurityQuestionMenu, 0);
@@ -182,29 +171,20 @@ escho:
                 Thread.Sleep(random.Next(2000, 4000));
                 instance.ActiveTab.Touch.Touch(left + random.Next(30, 100), top + random.Next(100, 200));  // Выбор контрольного вопроса
 
-                ;
                 swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementResponceSecurityQuestion, 0), project.Profile.Password, false); //Поле ввода ответа на вопрос
-                ;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSaveSecurityQuestion, 0)); //Сохранить контрльный вопррос
                 additionalMethods.WaitDownloading();
 
                 HtmlElement CheckHe = instance.ActiveTab.FindElementByXPath(HtmlElementCheckNeedWritePassword, 0); //Введите парроль еще раз (проверрка)
                 if (!CheckHe.IsVoid)
                 {
-                    ;
                     swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputPasswordSecurityQuestion, 0), project.Profile.Password, true);
-                    ;
                     swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementConfirmPasswordSecurityQuestion, 0)); //Подтвердить пароль
                 }
 
-                ;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementHumberSettings, 0)); // Настройки номера
-                ;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementDeletePhoneNumber, 0)); // Удалить номер
-                ;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSendSmsForDeletePhoneNumber, 0)); // Отправить смс
-
-
 
                 try
                 {
@@ -212,7 +192,6 @@ escho:
                 }
                 catch (Exception)
                 {
-
                     swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//button[contains(@class, 'PhonesLayout-backButton')]", 0));
                     swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementHumberSettings, 0)); // Настройки номера
                     swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementDeletePhoneNumber, 0));
@@ -222,20 +201,9 @@ escho:
                     swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementNextPageDeleteNumber, 0));
                 }
 
-                //ОБРАБОТКА НЕ ПРИШЕДШЕЙ ВТОРОЙ СМС
-
-
-
-
-
-
-
-
 
                 swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputSmsCodeDeletePhoneNumber, 0), getNumber.CodeActivation, false); // Ввести смс код
-                ;
                 swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputPasswordForDeletePhoneNumber, 0), project.Profile.Password, false); // Ввести парроль аккаунта
-                ;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementConfirmDeletePhoneNumber, 0)); // Подтвердить
             }
             catch (Exception ex)
@@ -250,60 +218,48 @@ escho:
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             Random random = new Random();
 
-            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//a[contains(@class, 'PageHeaderLogo-id')]", 0));// кнопка id, для входа в настройки акка
-            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//span[contains(@class, 'avatar-mask')]", 0));// кнопка добавить фото
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementButtonIdForSettingsAccount, 0));// кнопка id, для входа в настройки акка
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAddAccountPhoto, 0));// кнопка добавить фото
 
 
             List<string> AccountFolder = (from a in Directory.GetFiles(AccountAvatarFolder) select Path.GetFileName(a)).ToList();                                                                                                                     // 
-            instance.SetFilesForUpload(project.Directory + String.Format(@"\AccountPhoto\{0}", AccountFolder[random.Next(0, AccountFolder.Count)]));
-            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//input[contains(@name, 'attachment')]", 0));// Загрузить фото
+            instance.SetFilesForUpload(AccountAvatarFolder + @"\" + AccountFolder[random.Next(0, AccountFolder.Count)]);
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementDownloadAccountPhoto, 0));// Загрузить фото
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSaveAccountPhoto, 0));// сохранить фото
 
-            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Сохранить')]", 0));// сохранить фото
-
-            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//div[contains(@class, 'AdditionalPersonalInfo-change')]", 0));// Изменить персональную информацию
-
-            swipeAndClick.SetText(additionalMethods.WaitHtmlElement("//input[contains(@id, 'firstname')]", 0), project.Profile.Name, false);// Указать имя
-
-            
-            swipeAndClick.SetText(additionalMethods.WaitHtmlElement("//input[contains(@id, 'lastname')]", 0), project.Profile.Surname, false); // Указать фамилию
-
-
-            swipeAndClick.SetText(additionalMethods.WaitHtmlElement("//input[contains(@id, 'birthday-day')]", 0), project.Profile.BornDay.ToString(), false);
-
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAdditionalPersonalInfo, 0));// Изменить персональную информацию
+            swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputName, 0), project.Profile.Name, false);// Указать имя
+            swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputLastName, 0), project.Profile.Surname, false); // Указать фамилию
+            swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputBirthdayDay, 0), project.Profile.BornDay.ToString(), false);//указать день рождения
 
             HtmlElement he = instance.GetTabByAddress("page").GetDocumentByAddress("0").FindElementByTag("form", 0).FindChildByName("month");
-            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//select[contains(@name, 'month')]", 0));//указать месяц рождения
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementInputBirthdayMonth, 0));//указать месяц рождения
             Thread.Sleep(random.Next(1500,2500));
             he.SetValue(project.Profile.BornMonth.ToString(), instance.EmulationLevel, false);
             Thread.Sleep(random.Next(1500, 2500));
             instance.SendText("{ENTER}", 15);
 
-            swipeAndClick.SetText(additionalMethods.WaitHtmlElement("//input[contains(@id, 'birthday-year')]", 0), project.Profile.BornYear.ToString(), false);
+            swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputBirthdayYear, 0), project.Profile.BornYear.ToString(), false);//указать год рождения
 
             if (project.Profile.Sex.ToString().Contains("Female"))
             {
-                HtmlElement Gender = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'Женский')]", 0);//Выбираем женский пол если акк женский
+                HtmlElement Gender = instance.ActiveTab.FindElementByXPath(HtmlElementChangeGender, 0);//Выбираем женский пол если акк женский
                 swipeAndClick.SwipeAndClickToElement(Gender);
             }
 
-            swipeAndClick.SetText(additionalMethods.WaitHtmlElement("//input[contains(@id, 'city')]", 0), project.Profile.CurrentRegion, true);
+            swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputMySity, 0), project.Profile.CurrentRegion, true);//Ввод родного города
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSavePersonalSettings, 0));//СОхраняем персональные настройки
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAdditionalPersonalAdress, 0));//указать публичный адрес
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementChangePersonalAdress, 0));//выбираем предложенный адрес
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSavePersonalAdress, 0));//сохраняем публичный адрес
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAdditionalHomeAdress, 0));//Добавить домашний адрес
 
-            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Сохранить')]", 0));//СОхраняем персональные настройки
-
-            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//span[contains(@class, 'AdditionalPersonalInfo-link')]", 0));//указать публичный адрес
-
-            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//span[contains(@class, 'PublicId-suggestValue')]", 0));//выбираем предложенный адрес
-
-            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Сохранить')]", 0));//сохраняем публичный адрес
-
-            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//div[contains(@class, 'Addresses-link')]", 0));//Добавить домашний адрес
-
-            swipeAndClick.SetText(additionalMethods.WaitHtmlElement("//input[contains(@id, 'addressLine')]", 0), AdressList[random.Next(0, AdressList.Count)], true);//Домашний адрес
-            var SetHomeAdressTop = Convert.ToInt32(additionalMethods.WaitHtmlElement("//input[contains(@id, 'addressLine')]", 0).GetAttribute("topInTab"));
-            var SetHomeAdressLeft = Convert.ToInt32(additionalMethods.WaitHtmlElement("//input[contains(@id, 'addressLine')]", 0).GetAttribute("leftInTab"));
+            swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputHomeAndWorkAdress, 0), AdressList[random.Next(0, AdressList.Count)], true);//Домашний адрес
+            var SetHomeAdressTop = Convert.ToInt32(additionalMethods.WaitHtmlElement(HtmlElementInputHomeAndWorkAdress, 0).GetAttribute("topInTab"));
+            var SetHomeAdressLeft = Convert.ToInt32(additionalMethods.WaitHtmlElement(HtmlElementInputHomeAndWorkAdress, 0).GetAttribute("leftInTab"));
             instance.ActiveTab.Touch.Touch(SetHomeAdressLeft + random.Next(30, 100), SetHomeAdressTop + random.Next(50, 60));
 
-            HtmlElement SetWorkAdress = instance.ActiveTab.FindElementByXPath("//input[contains(@id, 'addressLine')]", 1);//Работа
+            HtmlElement SetWorkAdress = instance.ActiveTab.FindElementByXPath(HtmlElementInputHomeAndWorkAdress, 1);//Работа
             swipeAndClick.SetText(SetWorkAdress, AdressList[random.Next(0, AdressList.Count)], true);
             Thread.Sleep(random.Next(1000,2000));
             var SetWorkAdressTop = Convert.ToInt32(SetWorkAdress.GetAttribute("topInTab"));
@@ -311,7 +267,8 @@ escho:
             instance.ActiveTab.Touch.Touch(SetWorkAdressLeft + random.Next(30, 100), SetWorkAdressTop + random.Next(50, 60));
 
 
-            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Сохранить')]", 0));//Сохранить адреса
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSaveHomeAndWorkAdress, 0));//Сохранить адреса
+
 
             swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//div[contains(@class, 'user-pic user-pic_has-plus_ user-account__pic')]", 0)); //Иконка профиля
             swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Почта')]", 0));//Почта
@@ -329,8 +286,6 @@ escho:
             swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//div[contains(@class, 'ico_rounded')]", 0));//Назад
             instance.ActiveTab.Navigate("vk.com", instance.ActiveTab.URL);
             Thread.Sleep(random.Next(1000, 2000));
-            
-
         }//Настрока данных аккаунта
     }
 }

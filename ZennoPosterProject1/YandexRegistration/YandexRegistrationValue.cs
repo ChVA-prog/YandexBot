@@ -49,6 +49,25 @@ namespace ZennoPosterYandexRegistration
         protected string HtmlElementSearchResultsCard { get; set; }
         protected string AccountAvatarFolder { get; set; }
         protected List<string> AdressList { get; set; }
+        protected string HtmlElementButtonIdForSettingsAccount { get; set; }
+        protected string HtmlElementAddAccountPhoto { get; set; }
+        protected string HtmlElementDownloadAccountPhoto { get; set; }
+        protected string HtmlElementSaveAccountPhoto { get; set; }                         
+        protected string HtmlElementAdditionalPersonalInfo { get; set; }
+        protected string HtmlElementInputName { get; set; }
+        protected string HtmlElementInputBirthdayDay { get; set; }
+        protected string HtmlElementInputBirthdayMonth { get; set; }
+        protected string HtmlElementInputBirthdayYear { get; set; }
+        protected string HtmlElementChangeGender { get; set; }
+        protected string HtmlElementInputMySity { get; set; }
+        protected string HtmlElementSavePersonalSettings { get; set; }
+        protected string HtmlElementAdditionalPersonalAdress { get; set; }
+        protected string HtmlElementChangePersonalAdress { get; set; }
+        protected string HtmlElementSavePersonalAdress { get; set; }
+        protected string HtmlElementAdditionalHomeAdress { get; set; }
+        protected string HtmlElementInputHomeAndWorkAdress { get; set; }
+        protected string HtmlElementSaveHomeAndWorkAdress { get; set; }
+
         public YandexRegistrationValue(IZennoPosterProjectModel project)
         {
             this.project = project;
@@ -93,6 +112,26 @@ namespace ZennoPosterYandexRegistration
             HtmlElementSearchResultsCard = project.Variables["set_HtmlElementSearchResultsCard"].Value;
             AccountAvatarFolder = project.Variables["set_AccountAvatarFolder"].Value;
             AdressList = project.Variables["set_AdressList"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+
+
+            HtmlElementButtonIdForSettingsAccount = project.Variables["set_HtmlElementButtonIdForSettingsAccount"].Value;
+            HtmlElementAddAccountPhoto = project.Variables["set_HtmlElementAddAccountPhoto"].Value;
+            HtmlElementDownloadAccountPhoto = project.Variables["set_HtmlElementDownloadAccountPhoto"].Value;
+            HtmlElementSaveAccountPhoto = project.Variables["set_HtmlElementSaveAccountPhoto"].Value;
+            HtmlElementAdditionalPersonalInfo = project.Variables["set_HtmlElementAdditionalPersonalInfo"].Value;
+            HtmlElementInputName = project.Variables["set_HtmlElementInputName"].Value;
+            HtmlElementInputBirthdayDay = project.Variables["set_HtmlElementInputBirthdayDay"].Value;
+            HtmlElementInputBirthdayMonth = project.Variables["set_HtmlElementInputBirthdayMonth"].Value;
+            HtmlElementInputBirthdayYear = project.Variables["set_HtmlElementInputBirthdayYear"].Value;
+            HtmlElementChangeGender = project.Variables["set_HtmlElementChangeGender"].Value;
+            HtmlElementInputMySity = project.Variables["set_HtmlElementInputMySity"].Value;
+            HtmlElementSavePersonalSettings = project.Variables["set_HtmlElementSavePersonalSettings"].Value;
+            HtmlElementAdditionalPersonalAdress = project.Variables["set_HtmlElementAdditionalPersonalAdress"].Value;
+            HtmlElementChangePersonalAdress = project.Variables["set_HtmlElementChangePersonalAdress"].Value;
+            HtmlElementSavePersonalAdress = project.Variables["set_HtmlElementSavePersonalAdress"].Value;
+            HtmlElementAdditionalHomeAdress = project.Variables["set_HtmlElementAdditionalHomeAdress"].Value;
+            HtmlElementInputHomeAndWorkAdress = project.Variables["set_HtmlElementInputHomeAndWorkAdress"].Value;
+            HtmlElementSaveHomeAndWorkAdress = project.Variables["set_HtmlElementSaveHomeAndWorkAdress"].Value;
         }
     }
 }

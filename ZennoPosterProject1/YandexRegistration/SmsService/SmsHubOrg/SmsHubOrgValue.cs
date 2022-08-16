@@ -1,12 +1,4 @@
-﻿using System;
-using ZennoLab.CommandCenter;
-using ZennoLab.InterfacesLibrary.ProjectModel;
-using System.Threading;
-using System.Data.SQLite;
-using DataBaseProfileAndProxy;
-using System.Net;
-using System.IO;
-using ZennoPosterProject1;
+﻿using ZennoLab.InterfacesLibrary.ProjectModel;
 
 namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
 {
