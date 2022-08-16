@@ -52,10 +52,11 @@ namespace ZennoPosterProject1
                 }
                 project.SendInfoToLog("Ждем появления HtmlElement", true);
                 Thread.Sleep(random.Next(1000, 1500));
-                HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(he, 0);
+                HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(He, NumberElement);
             }
 
             Thread.Sleep(random.Next(1000, 1500));
+            return HtmlElementWhichWait;
         }
         public bool NLogCofig()
         {
