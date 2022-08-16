@@ -102,6 +102,7 @@ namespace ZennoPosterProject1
             {
                 project.SendErrorToLog(ex.Message, true);
                 dBMethods.UpdateStatusProfile("Free");
+                proxyDB.ChangeStatusProxyInDB("Free");
                 throw new Exception(ex.Message);
             }//Установка прокси в инстанс.
             try

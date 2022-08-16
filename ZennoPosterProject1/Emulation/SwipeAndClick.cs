@@ -118,5 +118,26 @@ namespace ZennoPosterEmulation
             instance.ActiveTab.Touch.Touch(HtmlElem);
             Program.logger.Debug("Клик выполнен.");
         }//Клик по элементу
+
+
+
+        public void LongTuch(HtmlElement HtmlElem)
+        {
+
+            if (HtmlElem.IsVoid)
+            {
+                project.SendErrorToLog("HtmlElement элемент для лонгтача не найден.", true);
+            }
+
+            instance.ActiveTab.Touch.SetTouchEmulationParameters(CreatTuchParametrs.CreateTouchParametrs());
+            instance.ActiveTab.Touch.LongTouch(HtmlElem);
+            Program.logger.Debug("Лонгтач выполнен.");
+        }//Клик по элементу
+
+
+
+
+
+
     }
 }

@@ -34,6 +34,10 @@ namespace ZennoPosterProject1
 
             StartMethod startMethod = new StartMethod(instance, project);
 
+
+
+
+
             try
             {
                 startMethod.YandexRegistration();

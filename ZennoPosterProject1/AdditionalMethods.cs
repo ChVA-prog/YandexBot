@@ -45,11 +45,11 @@ namespace ZennoPosterProject1
             while (HtmlElementWhichWait.IsVoid)
             {
                 project.SendInfoToLog("Ждем появления HtmlElement", true);
-                Thread.Sleep(random.Next(4000, 6000));
+                Thread.Sleep(random.Next(1000, 1500));
                 HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(He, NumberElement);
             }
 
-            Thread.Sleep(random.Next(2000, 4000));
+            Thread.Sleep(random.Next(500, 500));
             return HtmlElementWhichWait;
         }
         public bool NLogCofig()

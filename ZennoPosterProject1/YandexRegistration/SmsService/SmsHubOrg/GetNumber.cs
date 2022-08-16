@@ -53,6 +53,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
         }//Получение баланса
         public void GetNumberAndId()
         {
+            
             project.SendInfoToLog("Получаем номер для смс.", true);
             bool CountNumber = GetCountNumber();
             int CountBalance = Balance();
@@ -74,6 +75,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
                     goto nomernepodhodit;
                 }
                 project.SendInfoToLog("Получили номер: " + PhoneNumber, true);
+                Thread.Sleep(new Random().Next(1500,2000));
             }
             else
             {
@@ -95,6 +97,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
                 if(CounterOfReceiveToSms == 30)
                 {
                   RefuseGetNumber();
+                  CounterOfReceiveToSms = 0;
                   throw new Exception("Смс с кодом не пришла после 150 секунд ожидания, отменили активацию.");
                 }
                 Thread.Sleep(5000);
