@@ -24,7 +24,17 @@ namespace ZennoPosterYandexWalk
         {
             Program.logger.Info("Переходим в яндекс.");
             Project.SendInfoToLog("Переходим в яндекс", true);
-            instance.ActiveTab.Navigate(new YandexWalkSettings(instance, Project).GetRandomYandexHost());
+            instance.ActiveTab.NavigateTimeout = 180;
+            try
+            {
+                instance.ActiveTab.Navigate(new YandexWalkSettings(instance, Project).GetRandomYandexHost());
+            }
+            catch (Exception ex )
+            {
+
+                throw new Exception("Не удалось перейти в яндекс " + ex.Message);
+            }
+           
             new AdditionalMethods(instance, Project).WaitDownloading();
             CloseYandexTrash();
             Program.logger.Debug("Успешно перешли в яндекс.");
