@@ -39,18 +39,23 @@ namespace ZennoPosterProject1
         public HtmlElement WaitHtmlElement(string He, int NumberElement)
         {
             Random random = new Random();
+            int counter = 0;
             instance.ActiveTab.WaitDownloading();
             HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(He, NumberElement);
 
             while (HtmlElementWhichWait.IsVoid)
             {
+                if (counter == 60)
+                {
+                    project.SendInfoToLog("HtmlElement не появился.", true);
+                    break;
+                }
                 project.SendInfoToLog("Ждем появления HtmlElement", true);
                 Thread.Sleep(random.Next(1000, 1500));
-                HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(He, NumberElement);
+                HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(he, 0);
             }
 
-            Thread.Sleep(random.Next(500, 500));
-            return HtmlElementWhichWait;
+            Thread.Sleep(random.Next(1000, 1500));
         }
         public bool NLogCofig()
         {
