@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using ZennoPosterEmulation;
 using ZennoPosterYandexWalk;
+using System.Text.RegularExpressions;
 
 namespace ZennoPosterProject1
 { 
@@ -148,6 +149,55 @@ namespace ZennoPosterProject1
                 }
                 Program.logger.Debug("Капча успешно пройдена.");
             }
+        }
+        public string AcceptMail(string mail, string pass)
+        {            
+            string link = null;//переменная для ссылки из письма
+            string proxy = instance.GetProxy();//получаем прокси установленный в браузере
+
+            if (String.IsNullOrWhiteSpace(proxy)) proxy = null;//если в proxy пусто, то присваиваем null
+
+            for (int i = 0; i <= 4; i++)//4 попытки для получения ссылки из письма
+            {
+
+                Tuple<string, string, string, string>[] allMails = ZennoPoster.BulkMailDownload(mail, pass, lastHours: 1, proxyString: proxy);//кортеж для полученных писем
+
+                foreach (Tuple<string, string, string, string> tuple in allMails) //перебираем письма
+                {
+                    project.SendInfoToLog(tuple.Item1);
+                    project.SendInfoToLog(tuple.Item2);
+                    project.SendInfoToLog(tuple.Item3);
+                    project.SendInfoToLog(tuple.Item4);
+
+                    //проверяем тему письма на содержание в нем слова "завершение"
+                    if (tuple.Item1.ToLower().Contains("завершение"))
+                    {
+                        project.SendInfoToLog("Письмо найдено. Подтверждаем аккаунт", true);
+                        link = new Regex(@"https://profile.*?(?="")").Match(tuple.Item3).Value;//парсим ссылку
+
+                        if (link != String.Empty) break;//если в переменной есть значение прерываем перебор писем
+                    }
+
+                }
+
+                if (link == String.Empty)//если в переменной пусто, значит письмо не получено - начинаем цикл заново
+                {
+                    Thread.Sleep(10000);
+                    continue;
+
+                }
+                else//письмо получено выходим из цикла
+                {
+                    project.SendInfoToLog("Выполнено! Ссылка из письма: " + link);
+                }
+
+            }
+
+            if (link == String.Empty) //проверяем получили ли ссылку
+            {
+                throw new Exception("Привязка почты не удалась. Причина: не было получено письмо с подтверждением");
+            }
+            return link;
         }
     }
     public class WaitUser
