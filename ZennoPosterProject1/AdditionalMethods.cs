@@ -151,7 +151,7 @@ namespace ZennoPosterProject1
             }
         }
         public string AcceptMail(string mail, string pass)
-        {            
+        {
             string link = null;//переменная для ссылки из письма
             string proxy = instance.GetProxy();//получаем прокси установленный в браузере
 
@@ -168,12 +168,11 @@ namespace ZennoPosterProject1
                     project.SendInfoToLog(tuple.Item2);
                     project.SendInfoToLog(tuple.Item3);
                     project.SendInfoToLog(tuple.Item4);
-
                     //проверяем тему письма на содержание в нем слова "завершение"
-                    if (tuple.Item1.ToLower().Contains("завершение"))
+                    if (tuple.Item1.ToLower().Contains("привязка"))
                     {
                         project.SendInfoToLog("Письмо найдено. Подтверждаем аккаунт", true);
-                        link = new Regex(@"https://profile.*?(?="")").Match(tuple.Item3).Value;//парсим ссылку
+                        link = new Regex("(?<=введите\\ код\\ <b>).*(?=</b>\\ или\\ перейдите\\ по\\ ссылке)").Match(tuple.Item3).Value;//парсим ссылку
 
                         if (link != String.Empty) break;//если в переменной есть значение прерываем перебор писем
                     }
@@ -189,6 +188,7 @@ namespace ZennoPosterProject1
                 else//письмо получено выходим из цикла
                 {
                     project.SendInfoToLog("Выполнено! Ссылка из письма: " + link);
+                    return link;
                 }
 
             }
