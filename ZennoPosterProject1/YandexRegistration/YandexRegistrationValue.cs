@@ -67,6 +67,7 @@ namespace ZennoPosterYandexRegistration
         protected string HtmlElementAdditionalHomeAdress { get; set; }
         protected string HtmlElementInputHomeAndWorkAdress { get; set; }
         protected string HtmlElementSaveHomeAndWorkAdress { get; set; }
+        protected string EmailListPath { get; set; }
 
         public YandexRegistrationValue(IZennoPosterProjectModel project)
         {
@@ -112,7 +113,7 @@ namespace ZennoPosterYandexRegistration
             HtmlElementSearchResultsCard = project.Variables["set_HtmlElementSearchResultsCard"].Value;
             AccountAvatarFolder = project.Variables["set_AccountAvatarFolder"].Value;
             AdressList = project.Variables["set_AdressList"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
-
+            EmailListPath = project.Variables["set_EmailList"].Value;
 
             HtmlElementButtonIdForSettingsAccount = project.Variables["set_HtmlElementButtonIdForSettingsAccount"].Value;
             HtmlElementAddAccountPhoto = project.Variables["set_HtmlElementAddAccountPhoto"].Value;

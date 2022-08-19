@@ -123,6 +123,19 @@ namespace ZennoPosterProject1
             }//Регистрируем аккаунт, устанавливаем логин с паролем, отвязываем номер.
             try
             {
+                string MailLine = registrationAndSettingsAccount.LinkEmail();
+                string Mail = MailLine.Split(':')[0];
+                string MailPassword = MailLine.Split(':')[1];
+                string MailPasswordIMAP = MailLine.Split(':')[2];
+                dBMethods.UpdateStatusProfile("YES", Mail, MailPassword, MailPasswordIMAP);
+            }
+            catch (Exception)
+            {
+
+                
+            }//Привязываем почту
+            try
+            {
                 registrationAndSettingsAccount.SettingsAccount();
             }
             catch (Exception ex)
@@ -133,7 +146,7 @@ namespace ZennoPosterProject1
                 proxyDB.ChangeStatusProxyInDB("Free");
                 dBMethods.UpdateStatusProfile("Free");
                 throw new Exception(ex.Message);
-            }
+            }//Заполняем аккаунт
             profile.SaveProfile();
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");

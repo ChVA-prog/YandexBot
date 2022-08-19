@@ -20,7 +20,11 @@ namespace ZennoPosterYandexRegistration
 
         public string YandexLogin { get; set; }
         public string YandexPassword { get; set; }
+        public string Mail { get; set; }
+        public string MailPassword { get; set; }
+        public string MailPasswordIMAP { get; set; }
 
+        public static object LockList = new object();
 
         public RegistrationAndSettingsAccount(Instance instance, IZennoPosterProjectModel project) : base(project)
         {
@@ -211,6 +215,45 @@ escho:
                 throw new Exception("Не удалось удалить номер из аккаунта: " + ex.Message);
             }
         }//Отвязка номера и установка контрольного вопроса
+        public string LinkEmail()
+        {
+            AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
+
+            lock (LockList)
+            {
+
+                string MailLine = File.ReadLines(EmailListPath).Skip(0).First();
+                if (string.IsNullOrEmpty(MailLine) || string.IsNullOrWhiteSpace(MailLine))
+                {
+                    project.SendErrorToLog("Закончились Доп.Емейлы.", true);
+                    return "NULL" + ":" + "NULL" + ":" + "NULL";
+                }
+                Mail = MailLine.Split(':')[0];
+                MailPassword = MailLine.Split(':')[1];
+                MailPasswordIMAP = MailLine.Split(':')[2];
+                File.WriteAllLines(EmailListPath, File.ReadAllLines(EmailListPath).Skip(1));
+            }
+
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementButtonIdForSettingsAccount, 0));// кнопка id, для входа в настройки акка
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementMailAndPhone, 0));
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//a[starts-with(text(),'Добавить адрес')]", 0));
+            swipeAndClick.SetText(additionalMethods.WaitHtmlElement("//input[contains(@name, 'email')]", 0), Mail,false);
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//div[contains(@class, 'p-control-saveblock-cell-right p-control-saveblock-button')]", 0));
+            Thread.Sleep(2000);
+            string EmailCode;
+            do
+            {
+                EmailCode = additionalMethods.AcceptMail(Mail, MailPasswordIMAP);
+            } while (string.IsNullOrEmpty(EmailCode));            
+
+            swipeAndClick.SetText(additionalMethods.WaitHtmlElement("//input[contains(@name, 'code')]", 0), EmailCode, false);
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//div[contains(@class, 'p-control-saveblock-cell-right p-control-saveblock-button')]", 0));
+
+            
+            return Mail+":"+MailPassword+":"+MailPasswordIMAP;
+
+        }
         public void SettingsAccount()
         {
             
@@ -285,7 +328,8 @@ escho:
                 Thread.Sleep(random.Next(1000, 2000));
             }
 
-            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//div[contains(@class, 'ico_rounded')]", 0));//Назад
+            Thread.Sleep(random.Next(1000, 2000));
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//div[starts-with(text(),'Прочитано')]", 0));//Назад
             instance.ActiveTab.Navigate("vk.com", instance.ActiveTab.URL);
             Thread.Sleep(random.Next(1000, 2000));
         }//Настрока данных аккаунта

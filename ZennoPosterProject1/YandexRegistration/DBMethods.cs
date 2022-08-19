@@ -72,6 +72,18 @@ namespace ZennoPosterYandexRegistration
                 project.SendInfoToLog("Назначили профиль " + PathToProfile + " в проект", true);
             }
         }//Загрузка профиля в зенопостер
+        public void UpdateStatusProfile(string MailStatus, string Mail, string MailPassword, string MailPasswordIMAP)
+        {
+            SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
+
+            string ProfileStringRequest = String.Format("UPDATE Profiles SET MailStatus = '{1}', Mail = '{2}', MailPassword = '{3}', MailPassowrdIMAP = '{4}', DateLastEnterYandex = '{5}' WHERE PathToProfile = '{0}'", PathToProfile, MailStatus, Mail, MailPassword, MailPasswordIMAP, DateTime.Now.ToString("yyyy-MM-dd"));
+
+            SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
+
+            sQLiteCommand.ExecuteReader();
+            project.SendInfoToLog("Сохранили привязанную почту аккаунта в БД");
+            sqliteConnection.Close();
+        }//Изменение статуса регистрации в яндексе
         public void UpdateStatusProfile(string YandexRegistration, string YandexLogin, string YandexPassword)
         {
             SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
@@ -109,6 +121,7 @@ namespace ZennoPosterYandexRegistration
             sqliteConnection.Close();
             project.SendInfoToLog("Изменили статус профиля на: " + Status, true);
         }//Изменение статуса профиля (Free или Busy) 
+
         
     }
 }
