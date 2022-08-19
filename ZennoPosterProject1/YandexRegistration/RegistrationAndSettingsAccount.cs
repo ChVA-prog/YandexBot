@@ -222,10 +222,12 @@ escho:
             swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAddAccountPhoto, 0));// кнопка добавить фото
 
 
-            List<string> AccountFolder = (from a in Directory.GetFiles(AccountAvatarFolder) select Path.GetFileName(a)).ToList();                                                                                                                     // 
-            instance.SetFilesForUpload(AccountAvatarFolder + @"\" + AccountFolder[random.Next(0, AccountFolder.Count)]);
+            List<string> AccountFolder = (from a in Directory.GetFiles(AccountAvatarFolder) select Path.GetFileName(a)).ToList();
+            string PathhToPhoto = AccountAvatarFolder + @"\" + AccountFolder[random.Next(0, AccountFolder.Count)];
+            instance.SetFilesForUpload(PathhToPhoto);
             swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementDownloadAccountPhoto, 0));// Загрузить фото
             swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSaveAccountPhoto, 0));// сохранить фото
+            File.Delete(PathhToPhoto);
 
             swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAdditionalPersonalInfo, 0));// Изменить персональную информацию
             swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputName, 0), project.Profile.Name, false);// Указать имя
