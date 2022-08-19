@@ -152,51 +152,47 @@ namespace ZennoPosterProject1
         }
         public string AcceptMail(string mail, string pass)
         {
-            string link = null;//переменная для ссылки из письма
-            string proxy = instance.GetProxy();//получаем прокси установленный в браузере
+            string link = null;
+            string proxy = instance.GetProxy();
 
-            if (String.IsNullOrWhiteSpace(proxy)) proxy = null;//если в proxy пусто, то присваиваем null
+            if (String.IsNullOrWhiteSpace(proxy)) proxy = null;
 
-            for (int i = 0; i <= 4; i++)//4 попытки для получения ссылки из письма
+            for (int i = 0; i <= 4; i++)
             {
 
-                Tuple<string, string, string, string>[] allMails = ZennoPoster.BulkMailDownload(mail, pass, lastHours: 1, proxyString: proxy);//кортеж для полученных писем
+                Tuple<string, string, string, string>[] allMails = ZennoPoster.BulkMailDownload(mail, pass, lastHours: 1, proxyString: proxy);
 
-                foreach (Tuple<string, string, string, string> tuple in allMails) //перебираем письма
+                foreach (Tuple<string, string, string, string> tuple in allMails)
                 {
                     project.SendInfoToLog(tuple.Item1);
                     project.SendInfoToLog(tuple.Item2);
                     project.SendInfoToLog(tuple.Item3);
                     project.SendInfoToLog(tuple.Item4);
-                    //проверяем тему письма на содержание в нем слова "завершение"
+
                     if (tuple.Item1.ToLower().Contains("привязка"))
                     {
-                        project.SendInfoToLog("Письмо найдено. Подтверждаем аккаунт", true);
-                        link = new Regex("(?<=введите\\ код\\ <b>).*(?=</b>\\ или\\ перейдите\\ по\\ ссылке)").Match(tuple.Item3).Value;//парсим ссылку
+                        project.SendInfoToLog("Письмо найдено.", true);
+                        link = new Regex("(?<=введите\\ код\\ <b>).*(?=</b>\\ или\\ перейдите\\ по\\ ссылке)").Match(tuple.Item3).Value;
 
-                        if (link != String.Empty) break;//если в переменной есть значение прерываем перебор писем
+                        if (link != String.Empty) break;
                     }
 
                 }
 
-                if (link == String.Empty)//если в переменной пусто, значит письмо не получено - начинаем цикл заново
+                if (string.IsNullOrEmpty(link))
                 {
                     Thread.Sleep(10000);
                     continue;
 
                 }
-                else//письмо получено выходим из цикла
+                else
                 {
-                    project.SendInfoToLog("Выполнено! Ссылка из письма: " + link);
+                    project.SendInfoToLog("Код из письма: " + link);
                     return link;
                 }
 
             }
 
-            if (link == String.Empty) //проверяем получили ли ссылку
-            {
-                throw new Exception("Привязка почты не удалась. Причина: не было получено письмо с подтверждением");
-            }
             return link;
         }
     }
