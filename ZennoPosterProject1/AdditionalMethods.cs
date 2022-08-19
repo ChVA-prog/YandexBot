@@ -164,11 +164,6 @@ namespace ZennoPosterProject1
 
                 foreach (Tuple<string, string, string, string> tuple in allMails)
                 {
-                    project.SendInfoToLog(tuple.Item1);
-                    project.SendInfoToLog(tuple.Item2);
-                    project.SendInfoToLog(tuple.Item3);
-                    project.SendInfoToLog(tuple.Item4);
-
                     if (tuple.Item1.ToLower().Contains("привязка"))
                     {
                         project.SendInfoToLog("Письмо найдено.", true);
@@ -176,7 +171,6 @@ namespace ZennoPosterProject1
 
                         if (link != String.Empty) break;
                     }
-
                 }
 
                 if (string.IsNullOrEmpty(link))
