@@ -207,8 +207,9 @@ namespace DataBaseProfileAndProxy
                 "Status, " +
                 "DateLastEnterYandex, " +
                 "YandexRegistration, " +
-                "SettingsAccount) " +
-                "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')",
+                "SettingsAccount, " +
+                "MailStatus) " +
+                "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')",
                 PathTosave, 
                 DateTime.UtcNow.AddDays(3).ToString("yyy-MM-dd HH-mm-ss"), 
                 0, 
@@ -217,6 +218,7 @@ namespace DataBaseProfileAndProxy
                 "Free", 
                 DateTime.MinValue.ToString("yyyy-MM-dd"), 
                 "NO", 
+                "NO",
                 "NO");
 
             Program.logger.Debug(ProfileStringRequest);
