@@ -110,7 +110,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
             }
             if (resultHttpGet.Contains("STATUS_OK"))
             {
-                CodeActivation = resultHttpGet.Split(':')[1];
+                CodeActivation = resultHttpGet.Split(':')[1].Replace("-","");
                 project.SendInfoToLog("Получили код: " + CodeActivation, true);
 
                 if (GetMoreSms)

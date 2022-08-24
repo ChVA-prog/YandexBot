@@ -50,6 +50,7 @@ namespace ZennoPosterYandexRegistration
                 Thread.Sleep(random.Next(2000,3000));
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementCreatId, 0));               
 escho:
+                Thread.Sleep(random.Next(2000, 3000));
                 getNumber.GetNumberAndId();
 
                 swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementSetPhoneNumber, 0), getNumber.PhoneNumber.Substring(1), false);
@@ -93,7 +94,7 @@ escho:
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);           
             Random random = new Random();
-
+            additionalMethods.WaitDownloading();
             try
             {
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAccountMenu, 0));
@@ -289,6 +290,11 @@ escho:
             if (project.Profile.Sex.ToString().Contains("Female"))
             {
                 HtmlElement Gender = instance.ActiveTab.FindElementByXPath(HtmlElementChangeGender, 0);//Выбираем женский пол если акк женский
+                swipeAndClick.SwipeAndClickToElement(Gender);
+            }
+            else
+            {
+                HtmlElement Gender = instance.ActiveTab.FindElementByXPath("//div[starts-with(text(),'Мужской')]", 0);//Выбираем женский пол если акк женский
                 swipeAndClick.SwipeAndClickToElement(Gender);
             }
 

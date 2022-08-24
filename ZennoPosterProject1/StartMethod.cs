@@ -115,10 +115,10 @@ namespace ZennoPosterProject1
             catch (Exception ex)
             {
                 project.SendErrorToLog(ex.Message);
+                proxyDB.ChangeStatusProxyInDB("Free");
+                dBMethods.UpdateStatusProfile("Free");               
                 profile.SaveProfile();
                 proxyDB.ChangeIp();
-                proxyDB.ChangeStatusProxyInDB("Free");
-                dBMethods.UpdateStatusProfile("Free");
                 throw new Exception(ex.Message);
             }//Регистрируем аккаунт, устанавливаем логин с паролем, отвязываем номер.
             try
@@ -141,16 +141,16 @@ namespace ZennoPosterProject1
             catch (Exception ex)
             {
                 project.SendErrorToLog(ex.Message);
-                profile.SaveProfile();
+                profile.SaveProfile();               
+                dBMethods.UpdateStatusProfile("Free");
                 proxyDB.ChangeIp();
                 proxyDB.ChangeStatusProxyInDB("Free");
-                dBMethods.UpdateStatusProfile("Free");
                 throw new Exception(ex.Message);
-            }//Заполняем аккаунт
+            }//Заполняем аккаунт            
             profile.SaveProfile();
+            dBMethods.UpdateStatusProfile("YES","Free");            
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
-            dBMethods.UpdateStatusProfile("YES","Free");
         }//Регистрация в яндексе и отвязка номера
     }
 }
