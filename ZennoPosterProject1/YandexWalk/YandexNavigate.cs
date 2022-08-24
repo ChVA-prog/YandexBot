@@ -143,15 +143,23 @@ namespace ZennoPosterYandexWalk
         public void CloseUnnecessaryWindows()
         {
             Program.logger.Debug("Начинаем закрытие лишней вкладки : " + instance.ActiveTab.Name +" | " + instance.ActiveTab.URL);
-
+            Program.logger.Debug("Текущая вкладка : " + instance.ActiveTab.Name + " | " + instance.ActiveTab.URL);
             if (instance.AllTabs.Length > 1)
             {
                 instance.GetTabByAddress("popup-1").Close();               
                 Program.logger.Info("Закрыли лишнюю вкладку. Количество открытых вкладок: " + instance.AllTabs.Length + "Url текущей вкладки: " + instance.ActiveTab.URL);
                 if (instance.AllTabs.Length > 1)
                 {
-                    Program.logger.Warn("Вкладка не закрылась, пробуем еще раз.");
-                    instance.ActiveTab.Close();
+                    if (instance.ActiveTab.Name.ToLower().Contains("page"))
+                    {
+                        instance.GetTabByAddress("popup").Close();
+                    }
+                    else
+                    {
+                        Program.logger.Warn("Вкладка не закрылась, пробуем еще раз.");
+                        instance.ActiveTab.Close();
+                    }
+                    
                 }
             }
 
