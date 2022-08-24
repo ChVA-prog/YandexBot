@@ -62,6 +62,12 @@ namespace ZennoPosterYandexWalk
             swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementSearchButtonIn, 0));
             new AdditionalMethods(instance,Project).WaitDownloading();
 
+            if (instance.AllTabs.Length > 1)
+            {
+                instance.GetTabByAddress("page").Close();
+
+            }
+
             if (instance.ActiveTab.FindElementByXPath(HtmlElementNextPageButton, 0).IsVoid)
             {
                 Project.SendWarningToLog("Кнопка \"Найти\" не нажалась. Пробуем еще раз.");
@@ -140,7 +146,7 @@ namespace ZennoPosterYandexWalk
 
             if (instance.AllTabs.Length > 1)
             {
-                instance.GetTabByAddress("popup").Close();               
+                instance.GetTabByAddress("popup-1").Close();               
                 Program.logger.Info("Закрыли лишнюю вкладку. Количество открытых вкладок: " + instance.AllTabs.Length + "Url текущей вкладки: " + instance.ActiveTab.URL);
                 if (instance.AllTabs.Length > 1)
                 {
