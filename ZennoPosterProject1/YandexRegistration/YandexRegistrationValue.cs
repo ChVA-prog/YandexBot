@@ -68,7 +68,15 @@ namespace ZennoPosterYandexRegistration
         protected string HtmlElementInputHomeAndWorkAdress { get; set; }
         protected string HtmlElementSaveHomeAndWorkAdress { get; set; }
         protected string EmailListPath { get; set; }
-
+        protected string HtmlElementButtonBack { get; set; }
+        protected string HtmlElementCreateNewAccount { get; set; }
+        protected string HtmlElementCheckInterfaceVersion { get; set; }
+        protected string HtmlElementNewInterface { get; set; }
+        protected string HtmlElementNewInterfacePublicData { get; set; }
+        protected string HtmlElementNewInterfaceMainPhone { get; set; }
+        protected string HtmlElementNewInterfaceConfirm { get; set; }
+        protected string HtmlElementNewInterfaceButtonBack { get; set; }
+        protected string HtmlElementNewInterfaceCheckBox { get; set; }
         public YandexRegistrationValue(IZennoPosterProjectModel project)
         {
             this.project = project;
@@ -133,6 +141,15 @@ namespace ZennoPosterYandexRegistration
             HtmlElementAdditionalHomeAdress = project.Variables["set_HtmlElementAdditionalHomeAdress"].Value;
             HtmlElementInputHomeAndWorkAdress = project.Variables["set_HtmlElementInputHomeAndWorkAdress"].Value;
             HtmlElementSaveHomeAndWorkAdress = project.Variables["set_HtmlElementSaveHomeAndWorkAdress"].Value;
+            HtmlElementButtonBack = project.Variables["set_HtmlElementButtonBack"].Value;
+            HtmlElementCreateNewAccount = project.Variables["set_HtmlElementCreateNewAccount"].Value;
+            HtmlElementCheckInterfaceVersion = project.Variables["set_HtmlElementCheckInterfaceVersion"].Value;
+            HtmlElementNewInterface = project.Variables["set_HtmlElementNewInterface"].Value;
+            HtmlElementNewInterfacePublicData = project.Variables["set_HtmlElementNewInterfacePublicData"].Value;
+            HtmlElementNewInterfaceMainPhone = project.Variables["set_HtmlElementNewInterfaceMainPhone"].Value;
+            HtmlElementNewInterfaceConfirm = project.Variables["set_HtmlElementNewInterfaceConfirm"].Value;
+            HtmlElementNewInterfaceButtonBack = project.Variables["set_HtmlElementNewInterfaceButtonBack"].Value;
+            HtmlElementNewInterfaceCheckBox = project.Variables["set_HtmlElementNewInterfaceCheckBox"].Value;
         }
     }
 }

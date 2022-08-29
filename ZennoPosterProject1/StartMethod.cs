@@ -146,7 +146,15 @@ namespace ZennoPosterProject1
                 proxyDB.ChangeIp();
                 proxyDB.ChangeStatusProxyInDB("Free");
                 throw new Exception(ex.Message);
-            }//Заполняем аккаунт            
+            }//Заполняем аккаунт
+            try
+            {
+                registrationAndSettingsAccount.EndUseAccount();
+            }
+            catch (Exception)
+            {
+
+            }//Мягко выходим из настроек
             profile.SaveProfile();
             dBMethods.UpdateStatusProfile("YES","Free");            
             proxyDB.ChangeIp();
