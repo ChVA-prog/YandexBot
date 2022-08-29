@@ -48,12 +48,13 @@ namespace ZennoPosterProject1
             {
                 if (counter == 60)
                 {
-                    project.SendInfoToLog("HtmlElement не появился.", true);
+                    project.SendInfoToLog("HtmlElement " + He + " не появился.", true);
                     break;
                 }
                 project.SendInfoToLog("Ждем появления HtmlElement", true);
-                Thread.Sleep(random.Next(1000, 1500));
+                Thread.Sleep(random.Next(1500, 2000));
                 HtmlElementWhichWait = instance.ActiveTab.FindElementByXPath(He, NumberElement);
+                counter++;
             }
 
             Thread.Sleep(random.Next(1000, 1500));
