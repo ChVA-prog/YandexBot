@@ -76,7 +76,20 @@ namespace ZennoPosterYandexRegistration
         {
             SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET MailStatus = '{1}', Mail = '{2}', MailPassword = '{3}', MailPassowrdIMAP = '{4}', DateLastEnterYandex = '{5}' WHERE PathToProfile = '{0}'", PathToProfile, MailStatus, Mail, MailPassword, MailPasswordIMAP, DateTime.Now.ToString("yyyy-MM-dd"));
+            string ProfileStringRequest = String.Format(
+                "UPDATE Profiles " +
+                "SET MailStatus = '{1}'," +
+                " Mail = '{2}'," +
+                " MailPassword = '{3}'," +
+                " MailPassowrdIMAP = '{4}'," +
+                " DateLastEnterYandex = '{5}'" +
+                " WHERE PathToProfile = '{0}'",
+                PathToProfile,
+                MailStatus,
+                Mail,
+                MailPassword,
+                MailPasswordIMAP,
+                DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -88,7 +101,20 @@ namespace ZennoPosterYandexRegistration
         {
             SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET YandexRegistration = '{1}', DateYandexRegistration = '{2}', YandexLogin = '{3}', YandexPassword = '{4}', DateLastEnterYandex = '{5}' WHERE PathToProfile = '{0}'", PathToProfile,YandexRegistration, DateTime.Now.ToString("yyyy-MM-dd"), YandexLogin, YandexPassword, DateTime.Now.ToString("yyyy-MM-dd"));
+            string ProfileStringRequest = String.Format(
+                "UPDATE Profiles " +
+                "SET YandexRegistration = '{1}'," +
+                " DateYandexRegistration = '{2}'," +
+                " YandexLogin = '{3}'," +
+                " YandexPassword = '{4}'," +
+                " DateLastEnterYandex = '{5}'" +
+                " WHERE PathToProfile = '{0}'",
+                PathToProfile,
+                YandexRegistration,
+                DateTime.Now.ToString("yyyy-MM-dd"),
+                YandexLogin,
+                YandexPassword,
+                DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -100,8 +126,16 @@ namespace ZennoPosterYandexRegistration
         {
             SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
 
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET SettingsAccount = '{1}', DateLastEnterYandex = '{2}', Status = '{3}' " +
-                "WHERE PathToProfile = '{0}'", PathToProfile, SettingsAccount, DateTime.Now.ToString("yyyy-MM-dd"), Status);
+            string ProfileStringRequest = String.Format(
+                "UPDATE Profiles" +
+                " SET SettingsAccount = '{1}'," +
+                " DateLastEnterYandex = '{2}'," +
+                " Status = '{3}' " +
+                "WHERE PathToProfile = '{0}'",
+                PathToProfile,
+                SettingsAccount,
+                DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"),
+                Status);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
@@ -112,8 +146,12 @@ namespace ZennoPosterYandexRegistration
         public void UpdateStatusProfile(string Status)
         {
             SQLiteConnection sqliteConnection = new DataBaseProfileAndProxy.DB().OpenConnectDb();
-            string ProfileStringRequest = String.Format("UPDATE Profiles SET Status = '{1}' WHERE PathToProfile = '{0}'",
-                PathToProfile, Status);
+            string ProfileStringRequest = String.Format(
+                "UPDATE Profiles" +
+                " SET Status = '{1}'" +
+                " WHERE PathToProfile = '{0}'",
+                PathToProfile,
+                Status);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);
 
