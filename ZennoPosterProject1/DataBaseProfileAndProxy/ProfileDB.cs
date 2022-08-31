@@ -102,11 +102,6 @@ namespace DataBaseProfileAndProxy
                         CountSession = Convert.ToInt32(reader.GetValue(1).ToString());
                         CountSessionDay = Convert.ToInt32(reader.GetValue(2).ToString());
 
-                        //if (CountSessionDay != 0 && (Convert.ToDateTime(reader.GetString(3)) < DateTime.Now.Date))
-                        //{
-                        //    Program.logger.Debug("Начался новый день, обнуляем количество дневных сессий профиля.");
-                        //    UpdateCountSessionDay(sqliteConnection);
-                        //}
                     }
                     if (String.IsNullOrEmpty(PathToProfile))
                     {
@@ -211,12 +206,12 @@ namespace DataBaseProfileAndProxy
                 "MailStatus) " +
                 "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')",
                 PathTosave, 
-                DateTime.UtcNow.AddDays(3).ToString("yyy-MM-dd HH-mm-ss"), 
+                DateTime.UtcNow.AddDays(7).ToString("yyy-MM-dd HH-mm-ss"), 
                 0, 
                 0, 
                 DateTime.UtcNow.ToString("yyyy-MM-dd HH-mm-ss"), 
                 "Free", 
-                DateTime.MinValue.ToString("yyyy-MM-dd"), 
+                DateTime.MinValue.ToString("yyyy-MM-dd HH-mm-ss"), 
                 "NO", 
                 "NO",
                 "NO");
