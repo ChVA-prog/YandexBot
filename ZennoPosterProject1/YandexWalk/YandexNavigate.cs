@@ -27,11 +27,11 @@ namespace ZennoPosterYandexWalk
             instance.ActiveTab.NavigateTimeout = 120;
             instance.ActiveTab.Navigate(new YandexWalkSettings(instance, Project).GetRandomYandexHost());           
             new AdditionalMethods(instance, Project).WaitDownloading();
+            CloseYandexTrash();
             if (instance.ActiveTab.FindElementByXPath(HtmlElementSearchButtonIn, 0).IsVoid)
             {
                 throw new Exception("Страница яндекса не загрузилась.");
             }
-            CloseYandexTrash();
             Program.logger.Debug("Успешно перешли в яндекс.");
         }//Переход в яндекс
         public void GoToSearchQuery()
