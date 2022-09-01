@@ -101,8 +101,16 @@ goto escho;
             additionalMethods.WaitDownloading();
             try
             {
-                swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAccountMenu, 0));
-                swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSettings, 0));
+                do
+                {
+                  swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAccountMenu, 0));
+                } while (!instance.ActiveTab.FindElementByXPath(HtmlElementSettings, 0).IsVoid);
+                
+                do
+                {
+                  Thread.Sleep(random.Next(1000, 2000));
+                  swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSettings, 0));
+                } while (!instance.ActiveTab.URL.ToLower().Contains("retpath"));               
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAccountSettings, 0));
 
                 additionalMethods.WaitHtmlElement(HtmlElementCheckInterfaceVersion, 0);
@@ -224,14 +232,10 @@ goto escho;
             {
 
                 string MailLine = File.ReadLines(EmailListPath).Skip(0).First();
-                if (System.IO.File.ReadAllLines(EmailListPath).Length < 5)
-                {
-                    project.SendWarningToLog("В файле с доп. емейлами осталось "+ System.IO.File.ReadAllLines(EmailListPath).Length + " строк!", true);
-                }
-
+                project.SendWarningToLog("В файле с емейлами осталось "+ System.IO.File.ReadAllLines(EmailListPath).Length + " строк!", true);
                 if (string.IsNullOrEmpty(MailLine) || string.IsNullOrWhiteSpace(MailLine))
                 {
-                    project.SendErrorToLog("Закончились Доп.Емейлы.", true);
+                    project.SendErrorToLog("Закончились eмейлы.", true);
                     return "NULL" + ":" + "NULL" + ":" + "NULL";
                 }
                 Mail = MailLine.Split(':')[0];
@@ -275,10 +279,7 @@ goto escho;
             
             try
             {
-                if (AccountFolder.Count < 5)
-                {
-                    project.SendWarningToLog("В папке с аватарками осталось "+ AccountFolder.Count + " файла!", true);
-                }
+                project.SendWarningToLog("В папке с аватарками осталось "+ AccountFolder.Count + " файла!", true);
                 PathhToPhoto = AccountAvatarFolder + @"\" + AccountFolder[random.Next(0, AccountFolder.Count)];
                 instance.SetFilesForUpload(PathhToPhoto);
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementDownloadAccountPhoto, 0));
