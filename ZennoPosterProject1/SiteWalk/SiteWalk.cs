@@ -3,6 +3,7 @@ using ZennoLab.CommandCenter;
 using System;
 using ZennoPosterEmulation;
 using System.Threading;
+using ZennoPosterProject1;
 
 
 namespace ZennoPosterSiteWalk
@@ -11,24 +12,51 @@ namespace ZennoPosterSiteWalk
     {
         readonly IZennoPosterProjectModel Project;
         readonly Instance instance;
+        private string HtmlElement { get; set; }
+        private int CountElementToSite { get; set; }
 
         public SiteWalk(Instance instance, IZennoPosterProjectModel project)
         {
             this.instance = instance;
             this.Project = project;           
         }
+
         public void SiteRandomWalk()
         {
+            Program.logger.Info("Начинаем рандомно изучать сайт");
+            Project.SendInfoToLog("Начинаем рандомно изучать сайт");
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance,Project);
             Random random = new Random();
-            HtmlElementCollection hec = instance.ActiveTab.FindElementsByXPath("//p");
+            HtmlElement = "//p";
+            HtmlElementCollection SiteHtmlElement = instance.ActiveTab.FindElementsByXPath(HtmlElement);
+            CountElementToSite = SiteHtmlElement.Count;
 
-            for (int i = 0; i <= random.Next(0, hec.Count); i++)
+            if (CountElementToSite <= 5)
             {
-                HtmlElement he = instance.ActiveTab.FindElementByXPath("//p",i);
-                swipeAndClick.SwipeToElement(he);
-                Thread.Sleep(random.Next(3000, 7000));
+                Program.logger.Debug("Кол-во элементов //p на странице меньше 5, будем изучать элементы //a");
+                HtmlElement = "//div";
+                SiteHtmlElement = instance.ActiveTab.FindElementsByXPath(HtmlElement);
+                CountElementToSite = SiteHtmlElement.Count;
             }
+
+            while (CountElementToSite > 30)
+            {
+                Program.logger.Debug("Кол-во изучаемых элементов ({0}) больше 30, делим их на 2", CountElementToSite);
+                CountElementToSite = CountElementToSite / 2;
+            }
+            
+            int CounElementToLearn = random.Next(0, CountElementToSite);
+            Program.logger.Debug("Будем изучать {0} элементов.", CounElementToLearn);
+
+            for (int i = 0; i <= CounElementToLearn; i++)
+            {               
+                HtmlElement he = instance.ActiveTab.FindElementByXPath(HtmlElement, i);
+                swipeAndClick.SwipeToElement(he);
+                Thread.Sleep(random.Next(3000, 5000));
+            }
+
+            Program.logger.Info("Закончили изучение сайта.");
+            Project.SendInfoToLog("Закончили изучение сайта");
         }//Рандомное изучение сайта
     }
 }

@@ -1,12 +1,4 @@
-﻿using System;
-using ZennoLab.CommandCenter;
-using ZennoLab.InterfacesLibrary.ProjectModel;
-using System.Threading;
-using System.Data.SQLite;
-using ZennoPosterDataBaseAndProfile;
-using System.Net;
-using System.IO;
-using ZennoPosterProject1;
+﻿using ZennoLab.InterfacesLibrary.ProjectModel;
 
 namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
 {
@@ -14,9 +6,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
     {
         public static string ApiKeySmshub { get; set; }
         public static string SmshubOperator { get; set; }
-        public static string PhoneNumber { get; set; }
-        public static string IdActivation { get; set; }
-        public static string CodeActivation { get; set; }
+        public static string Prefix { get; set; }
 
         readonly IZennoPosterProjectModel project;
         public SmshubValue(IZennoPosterProjectModel project)
@@ -25,6 +15,7 @@ namespace ZennoPosterYandexRegistrationSmsServiceSmsHubOrg
 
             ApiKeySmshub = project.Variables["set_ApiKeySmshub"].Value;
             SmshubOperator = project.Variables["set_SmshubOperator"].Value;
+            Prefix = project.Variables["set_Prefix"].Value;
         }
 
 

@@ -1,11 +1,11 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
+using ZennoPosterProject1;
 
 namespace ZennoPosterEmulation
 {    
     public class EmulationValue
     {
         readonly IZennoPosterProjectModel Project;
-
         protected static string Acceleration { get; set; }
         protected static string LongTouchLengthMs { get; set; }
         protected static string MaxCurvature { get; set; }
@@ -27,14 +27,11 @@ namespace ZennoPosterEmulation
         protected static string SwipeFractionX { get; set; }
         protected static string SwipeFractionY { get; set; }
         protected static string TouchLengthMs { get; set; }
-        protected static string LatencyKey { get; set; }
-        protected static int ElementPosition { get; set; }
-        protected static int InstanceHeight { get; set; }
+        public static string LatencyKey { get; set; }
 
         public EmulationValue(IZennoPosterProjectModel project)
         {
             this.Project = project;
-
             Acceleration = Project.Variables["set_Acceleration"].Value;
             LongTouchLengthMs = Project.Variables["set_LongTouchLengthMs"].Value;
             MaxCurvature = Project.Variables["set_MaxCurvature"].Value;

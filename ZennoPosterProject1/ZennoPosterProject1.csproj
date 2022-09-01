@@ -71,6 +71,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog">
+      <HintPath>F:\Programs\ZennoPoster\RU\ZennoPoster Pro V7\7.7.0.0\Progs\ExternalAssemblies\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
@@ -82,6 +85,7 @@
       <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\lib\net46\System.Data.SQLite.dll</HintPath>
@@ -96,6 +100,7 @@
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
@@ -106,6 +111,12 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -139,26 +150,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionalMethods.cs" />
-    <Compile Include="DataBaseAndProfile\DataBaseAndProfileValue.cs" />
-    <Compile Include="DataBaseAndProfile\DB.cs" />
-    <Compile Include="DataBaseAndProfile\Profile.cs" />
+    <Compile Include="DataBaseProfileAndProxy\DataBaseProfileAndProxyValue.cs" />
+    <Compile Include="DataBaseProfileAndProxy\DB.cs" />
+    <Compile Include="DataBaseProfileAndProxy\ProfileDB.cs" />
     <Compile Include="Emulation\Extension.cs" />
     <Compile Include="Emulation\GenerationEmulationValue.cs" />
     <Compile Include="InputSettings.cs" />
-    <Compile Include="NitkaDogWalk\SiteNavigateMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Emulation\SwipeAndClick.cs" />
     <Compile Include="Emulation\EmulationValue.cs" />
-    <Compile Include="Proxy\ProxyDB.cs" />
-    <Compile Include="Proxy\ProxySettings.cs" />
-    <Compile Include="Proxy\ProxyValue.cs" />
+    <Compile Include="DataBaseProfileAndProxy\ProxyDB.cs" />
     <Compile Include="StartMethod.cs" />
     <Compile Include="SiteWalk\Extension.cs" />
-    <Compile Include="SiteWalk\SiteNavigate.cs" />
     <Compile Include="SiteWalk\SiteWalk.cs" />
-    <Compile Include="SiteWalk\SiteWalkSettings.cs" />
-    <Compile Include="SiteWalk\SIteWalkValue.cs" />
     <Compile Include="YandexRegistration\DBMethods.cs" />
     <Compile Include="YandexRegistration\RegistrationAndSettingsAccount.cs" />
     <Compile Include="YandexRegistration\SmsService\SmsHubOrg\ApiResponceJsonToCSharp.cs" />

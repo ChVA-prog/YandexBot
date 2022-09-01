@@ -1,12 +1,10 @@
 ﻿using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoLab.CommandCenter;
-using ZennoPosterDataBaseAndProfile;
+using DataBaseProfileAndProxy;
 using ZennoPosterEmulation;
-using ZennoPosterProxy;
 using ZennoPosterYandexWalk;
-using ZennoPosterSiteWalk;
-using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
 using ZennoPosterYandexRegistration;
+using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
 
 namespace ZennoPosterProject1
 {
@@ -22,13 +20,14 @@ namespace ZennoPosterProject1
 
         public void InitializationInputValue()
         {
-            new DataBaseAndProfileValue(project);
+            project.SendInfoToLog("Инициализируем входные настройки");
+            Program.logger.Debug("Начинаем инициализацию входных настроек проекта.");
+            new DataBaseProfileAndProxyValue(project);
             new EmulationValue(project);
-            new ProxyValue(instance, project);
             new YandexWalkValue(project);
-            new SiteWalkValue(instance, project);
-            new SmshubValue(project);
             new YandexRegistrationValue(project);
+            new SmshubValue(project);
+            Program.logger.Debug("Закончили инициализацию входных настроек проекта.");
         }//Считывание входных настроек
     }
 }

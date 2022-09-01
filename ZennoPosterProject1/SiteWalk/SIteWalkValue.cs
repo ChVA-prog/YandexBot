@@ -8,8 +8,8 @@ namespace ZennoPosterSiteWalk
         readonly IZennoPosterProjectModel Project;
         readonly Instance instance;
 
-        public static string UrlListToVisit { get; set; }
-        public static string CountSitesToVisit { get; set; }
+        protected string UrlListToVisit { get; set; }
+        protected string CountSitesToVisit { get; set; }
 
 
         public SiteWalkValue(Instance instance, IZennoPosterProjectModel project)
@@ -21,5 +21,4 @@ namespace ZennoPosterSiteWalk
             CountSitesToVisit = Project.Variables["set_CountSitesToVisit"].Value;
         }
     }
-
 }
