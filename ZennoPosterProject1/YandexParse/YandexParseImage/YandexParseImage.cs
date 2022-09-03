@@ -43,9 +43,10 @@ namespace ZennoPosterYandexParseImage
             int Counter = 0;
             while (true)
             {
-                HtmlElement hhe = instance.ActiveTab.FindElementByXPath("//a[contains(@class, 'link link_theme')]", Counter);
+                HtmlElement hhe = instance.ActiveTab.FindElementByXPath("//a[contains(@class, 'link link_theme')]", Counter+1);
                 swipeAndClick.ClickToElement(hhe);
                 Thread.Sleep(500);
+                instance.ActiveTab.Touch.SwipeBetween(random.Next(50, 100), random.Next(400, 500), random.Next(50, 100), random.Next(200, 300));
                 HtmlElement aa = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 0);
                 swipeAndClick.ClickToElement(aa);
                 aa = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 1);
@@ -55,6 +56,7 @@ namespace ZennoPosterYandexParseImage
                 if (instance.AllTabs.Length > 1)
                 {
                     instance.GetTabByAddress("popup").Close();
+                    Counter++;
                     continue;
                 }
                 HtmlElement bb = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'share-copy__icon share-copy__copy-text icon icon_type_share2')]", 0);
