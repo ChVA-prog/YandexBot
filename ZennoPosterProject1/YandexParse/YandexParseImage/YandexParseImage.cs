@@ -11,7 +11,7 @@ using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
 using ZennoPosterProject1;
 
-namespace ZennoPosterYandexParse
+namespace ZennoPosterYandexParseImage
 {
     class YandexParseImage
     {
@@ -29,7 +29,7 @@ namespace ZennoPosterYandexParse
             WebClient Client = new WebClient();
 
 
-            string DirPath = project.Directory + @"\AccountPhoto\";
+            string DirPath = project.Directory + @"\ResultImage\";
 
 
 

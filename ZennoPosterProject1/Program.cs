@@ -11,6 +11,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Threading;
 using System.Net;
+using ZennoPosterYandexParseImage;
 
 namespace ZennoPosterProject1
 {
@@ -36,11 +37,12 @@ namespace ZennoPosterProject1
 
             try
             {
-                startMethod.YandexRegistration();
+                YandexParseImage yandexParseImage = new YandexParseImage(instance, project);
+                yandexParseImage.parse();
             }
             catch (Exception ex)
             {
-                project.SendErrorToLog("Не смогли зарегестрировать аккаунт: " + ex.Message);
+                
             }
 
             return executionResult;

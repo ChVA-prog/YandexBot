@@ -164,7 +164,8 @@
     <Compile Include="StartMethod.cs" />
     <Compile Include="SiteWalk\Extension.cs" />
     <Compile Include="SiteWalk\SiteWalk.cs" />
-    <Compile Include="YandexParse\YandexParseImage.cs" />
+    <Compile Include="YandexParse\YandexParseImage\YandexParseImage.cs" />
+    <Compile Include="YandexParse\YandexParseImage\YandexParseImageValue.cs" />
     <Compile Include="YandexRegistration\DBMethods.cs" />
     <Compile Include="YandexRegistration\RegistrationAndSettingsAccount.cs" />
     <Compile Include="YandexRegistration\SmsService\SmsHubOrg\ApiResponceJsonToCSharp.cs" />
