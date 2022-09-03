@@ -31,6 +31,7 @@ namespace ZennoPosterYandexParseImage
             ParseImageSettings parseImageSettings = new ParseImageSettings(instance,project);
             YandexNavigate yandexNavigate = new YandexNavigate(instance, project);
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
+            Random random = new Random();
 
             string ParseKeyword = parseImageSettings.ReadParseKeyword();
             yandexNavigate.GoToSearchQuery(ParseKeyword);
@@ -45,7 +46,6 @@ namespace ZennoPosterYandexParseImage
                 HtmlElement hhe = instance.ActiveTab.FindElementByXPath("//a[contains(@class, 'link link_theme')]", Counter);
                 swipeAndClick.ClickToElement(hhe);
                 Thread.Sleep(500);
-            eshc:
                 HtmlElement aa = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 0);
                 swipeAndClick.ClickToElement(aa);
                 aa = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 1);
@@ -55,11 +55,10 @@ namespace ZennoPosterYandexParseImage
                 if (instance.AllTabs.Length > 1)
                 {
                     instance.GetTabByAddress("popup").Close();
-                    goto eshc;
+                    continue;
                 }
                 HtmlElement bb = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'share-copy__icon share-copy__copy-text icon icon_type_share2')]", 0);
-                var utrl = bb.InnerHtml;
-                string ImagePath = DirPath + bb.InnerHtml.Split('/').Last();
+                string ImagePath = DirPath + bb.InnerHtml.Split('/').Last().Split('.')[0] + ".jpg";
 
                 try
                 {
@@ -75,23 +74,13 @@ namespace ZennoPosterYandexParseImage
 
                 additionalMethods.WaitHtmlElement("//a[contains(@class, 'link link_theme')]", Counter + 1);
 
-                foreach (var items in System.IO.Directory.GetFiles(DirPath))
-                {
-                    System.IO.FileInfo file = new System.IO.FileInfo(items);
-                    if (System.IO.Path.GetExtension(items) == ".jpg" && file.Length / 1024 <= 0)
-                    {
-                        try
-                        {
-                            file.Delete();
-                        }
-                        catch (Exception) { }
-                    }
-                }
+                parseImageSettings.DeleteBrokenFile(DirPath);
+
                 if (new DirectoryInfo(DirPath).GetFiles().Length == CountParseImage)
                 {
                     break;
                 }
-
+                instance.ActiveTab.Touch.SwipeBetween(random.Next(50, 100), random.Next(400, 500), random.Next(150, 200), random.Next(200, 300));
                 Counter++;
             }
         }

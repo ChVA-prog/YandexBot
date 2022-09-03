@@ -50,18 +50,39 @@ namespace ZennoPosterYandexParseImage
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             HtmlElement Image = instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Картинки')]", 0);
             swipeAndClick.ClickToElement(Image);
-            if (ParseFilter.Contains("Обои"))
+            instance.ActiveTab.WaitDownloading();
+            if (!instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Обои')]", 0).IsVoid)
             {
-                swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Обои')]", 0));
+                if (ParseFilter.Contains("Обои"))
+                {
+                    swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Обои')]", 0));
+                }
+                if (ParseFilter.Contains("Лица"))
+                {
+                    swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Лица')]", 0));
+                }
             }
-            if (ParseFilter.Contains("Лица"))
-            {
-                swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//span[starts-with(text(),'Лица')]", 0));
-            }
+            
             Thread.Sleep(2000);
             if (!instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Закрыть')]", 0).IsVoid)
             {
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Закрыть')]", 0));
+            }
+        }
+        public void DeleteBrokenFile(string DirPath)//Удаление битых файлов
+        {
+            foreach (var items in System.IO.Directory.GetFiles(DirPath))
+            {
+                System.IO.FileInfo file = new System.IO.FileInfo(items);
+                if (System.IO.Path.GetExtension(items) == ".jpg" && file.Length / 1024 <= 0)
+                {
+                    try
+                    {
+                        file.Delete();
+                    }
+                    catch (Exception) { }
+                }
+
             }
         }
 
