@@ -10,45 +10,47 @@ using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
 using ZennoPosterProject1;
+using ZennoPosterYandexWalk;
 
 namespace ZennoPosterYandexParseImage
 {
-    class YandexParseImage 
+    class YandexParseImage : YandexParseImageValue
     {
         readonly IZennoPosterProjectModel project;
         readonly Instance instance;
 
-        public YandexParseImage(Instance instance, IZennoPosterProjectModel project)
+        public YandexParseImage(Instance instance, IZennoPosterProjectModel project) : base(project)
         {
             this.instance = instance;
             this.project = project;
         }
-        public void parse()
+        public void StartParse()
         {
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             WebClient Client = new WebClient();
             ParseImageSettings parseImageSettings = new ParseImageSettings(instance,project);
+            YandexNavigate yandexNavigate = new YandexNavigate(instance, project);
+            AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
 
             string ParseKeyword = parseImageSettings.ReadParseKeyword();
-            string DirPath = project.Directory + @"\ResultImage\" + ParseKeyword + @"\";
+            yandexNavigate.GoToSearchQuery(ParseKeyword);
+            parseImageSettings.SetSearchImageFilter();
 
+            string DirPath = project.Directory + @"\ResultImage\" + ParseKeyword + @"\";
             if (!Directory.Exists(DirPath)) Directory.CreateDirectory(DirPath);
 
-
-
-
-            AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
-            int counter = 100;
-            int i = 0;
+            int Counter = 0;
             while (true)
             {
-                HtmlElement hhe = instance.ActiveTab.FindElementByXPath("//a[contains(@class, 'link link_theme')]", i);
+                HtmlElement hhe = instance.ActiveTab.FindElementByXPath("//a[contains(@class, 'link link_theme')]", Counter);
                 swipeAndClick.ClickToElement(hhe);
                 Thread.Sleep(500);
             eshc:
                 HtmlElement aa = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 0);
                 swipeAndClick.ClickToElement(aa);
-
+                aa = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 1);
+                swipeAndClick.ClickToElement(aa);
+               
                 Thread.Sleep(1000);
                 if (instance.AllTabs.Length > 1)
                 {
@@ -56,12 +58,12 @@ namespace ZennoPosterYandexParseImage
                     goto eshc;
                 }
                 HtmlElement bb = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'share-copy__icon share-copy__copy-text icon icon_type_share2')]", 0);
-
-                string path = DirPath + i + ".jpg";
+                var utrl = bb.InnerHtml;
+                string ImagePath = DirPath + bb.InnerHtml.Split('/').Last();
 
                 try
                 {
-                    Client.DownloadFileAsync(new Uri(bb.InnerHtml), path);
+                    Client.DownloadFileAsync(new Uri(bb.InnerHtml), ImagePath);
                 }
                 catch (Exception)
                 {
@@ -71,7 +73,7 @@ namespace ZennoPosterYandexParseImage
 
                 instance.ActiveTab.MainDocument.EvaluateScript("javascript:history.back()");
 
-                additionalMethods.WaitHtmlElement("//a[contains(@class, 'link link_theme')]", i + 1);
+                additionalMethods.WaitHtmlElement("//a[contains(@class, 'link link_theme')]", Counter + 1);
 
                 foreach (var items in System.IO.Directory.GetFiles(DirPath))
                 {
@@ -85,15 +87,12 @@ namespace ZennoPosterYandexParseImage
                         catch (Exception) { }
                     }
                 }
-                if (new DirectoryInfo(DirPath).GetFiles().Length < counter)
-                {
-
-                }
-                else
+                if (new DirectoryInfo(DirPath).GetFiles().Length == CountParseImage)
                 {
                     break;
                 }
-                i++;
+
+                Counter++;
             }
         }
 
