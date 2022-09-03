@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Collections.Generic;
 using System.Threading;
+using System.Net;
 
 namespace ZennoPosterProject1
 {
@@ -31,12 +32,7 @@ namespace ZennoPosterProject1
             project.SendInfoToLog("Это сборка из ветки YandexRegistration!", true);
             project.SendInfoToLog("Считываем входные настройки", true);
             new InputSettings(instance, project).InitializationInputValue();
-
             StartMethod startMethod = new StartMethod(instance, project);
-
-
-
-
 
             try
             {

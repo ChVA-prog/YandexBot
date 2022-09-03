@@ -32,7 +32,8 @@ namespace ZennoPosterYandexRegistration
         }
 
         public void RegisterAccountAndSetPassword()
-        {         
+        {
+            project.SendWarningToLog("Начинаем регистарцию акка");
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             YandexNavigate yandexNavigate = new YandexNavigate(instance, project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
@@ -92,9 +93,11 @@ goto escho;
             {
                 throw new Exception("Не удалось зарегестрировать аккаунт: " + ex.Message);
             }
+            project.SendWarningToLog("Закончили регистрацию акка");
         }//Регистрация аккаунта
         public void SetLoginAndPasswordAndRemovePhoneNumber()
         {
+            project.SendWarningToLog("Начинаем установку логина и пароля");
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);           
             Random random = new Random();
@@ -104,7 +107,7 @@ goto escho;
                 do
                 {
                   swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAccountMenu, 0));
-                } while (!instance.ActiveTab.FindElementByXPath(HtmlElementSettings, 0).IsVoid);
+                } while (!instance.ActiveTab.URL.ToLower().Contains("profile"));
                 
                 do
                 {
@@ -135,6 +138,7 @@ goto escho;
                     swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementMailAndPhone, 0));
                     swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementChangeMailAndPhoneList, 0));
                     swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementOffInputSms, 0));
+                    project.SendWarningToLog("Закончили установку логина и пароля");
                     return;
                 }//Обработка если вывалился новый интерфейс
 
@@ -167,10 +171,11 @@ goto escho;
             {
                 throw new Exception("Не удалось установить логин или отключить вход по смс: " + ex.Message);
             }
-
+            project.SendWarningToLog("Закончили установку логина и пароля");
         }//Указание логина и пароля для аккаунта
         public void DeletePhoneNumberFromAccount()
         {
+            project.SendWarningToLog("Начинаем отвязку номера");
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             Random random = new Random();
@@ -181,10 +186,13 @@ goto escho;
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementNextPageDeleteNumber, 0));
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSecurityQuestionMenu, 0));
 
-                int top = Convert.ToInt32(instance.ActiveTab.FindElementByXPath(HtmlElementSecurityQuestionMenu, 0).GetAttribute("topInTab"));
-                int left = Convert.ToInt32(instance.ActiveTab.FindElementByXPath(HtmlElementSecurityQuestionMenu, 0).GetAttribute("leftInTab"));               
-                Thread.Sleep(random.Next(2000, 4000));
-                instance.ActiveTab.Touch.Touch(left + random.Next(30, 100), top + random.Next(100, 200));
+                HtmlElement he = instance.GetTabByAddress("page").GetDocumentByAddress("0").FindElementByTag("form", 0).FindChildByName("control_question");
+                instance.WaitFieldEmulationDelay();
+                Thread.Sleep(random.Next(1500, 2500));
+                he.SetValue(random.Next(1,9).ToString(), instance.EmulationLevel, false);
+                Thread.Sleep(random.Next(1500, 2500));
+                instance.SendText("{ENTER}", 15);
+
 
                 swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementResponceSecurityQuestion, 0), project.Profile.Password, false);
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSaveSecurityQuestion, 0));
@@ -222,9 +230,11 @@ goto escho;
             {
                 throw new Exception("Не удалось удалить номер из аккаунта: " + ex.Message);
             }
+            project.SendWarningToLog("Закончили отвязку номера");
         }//Отвязка номера и установка контрольного вопроса
         public string LinkEmail()
         {
+            project.SendWarningToLog("Начинаем привязку почты");
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
 
@@ -265,7 +275,7 @@ goto escho;
         }//Привязка почты
         public void SettingsAccount()
         {
-            
+            project.SendWarningToLog("Начинаем заполнение акка");
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             Random random = new Random();
@@ -329,19 +339,30 @@ goto escho;
             swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSavePersonalAdress, 0));
             swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAdditionalHomeAdress, 0));
 
+
+
+
+
+
             swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputHomeAndWorkAdress, 0), AdressList[random.Next(0, AdressList.Count)], true);
             var SetHomeAdressTop = Convert.ToInt32(additionalMethods.WaitHtmlElement(HtmlElementInputHomeAndWorkAdress, 0).GetAttribute("topInTab"));
             var SetHomeAdressLeft = Convert.ToInt32(additionalMethods.WaitHtmlElement(HtmlElementInputHomeAndWorkAdress, 0).GetAttribute("leftInTab"));
-            instance.ActiveTab.Touch.Touch(SetHomeAdressLeft + random.Next(30, 100), SetHomeAdressTop + random.Next(50, 60));
+            instance.ActiveTab.Touch.Touch(SetHomeAdressLeft + random.Next(30, 60), SetHomeAdressTop + random.Next(50, 60));
 
             HtmlElement SetWorkAdress = instance.ActiveTab.FindElementByXPath(HtmlElementInputHomeAndWorkAdress, 1);
+            if (SetWorkAdress.IsVoid)
+            {
+goto save;
+            }
             swipeAndClick.SetText(SetWorkAdress, AdressList[random.Next(0, AdressList.Count)], true);
             Thread.Sleep(random.Next(1000,2000));
             var SetWorkAdressTop = Convert.ToInt32(SetWorkAdress.GetAttribute("topInTab"));
             var SetWorkAdressLeft = Convert.ToInt32(SetWorkAdress.GetAttribute("leftInTab"));
-            instance.ActiveTab.Touch.Touch(SetWorkAdressLeft + random.Next(30, 100), SetWorkAdressTop + random.Next(50, 60));
+            instance.ActiveTab.Touch.Touch(SetWorkAdressLeft + random.Next(30, 60), SetWorkAdressTop + random.Next(50, 60));
 
+save:
             swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSaveHomeAndWorkAdress, 0));
+            project.SendWarningToLog("Закончили заполнение акка");
         }//Настрока личных данных аккаунта
         public void EndUseAccount()//Выход из настроек аккаунта
         {
