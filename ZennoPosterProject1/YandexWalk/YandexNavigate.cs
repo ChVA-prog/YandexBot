@@ -78,7 +78,51 @@ namespace ZennoPosterYandexWalk
 
             Program.logger.Debug("Успешно ввели поисковый запрос и перешли по нему.");
             CloseYandexTrash();          
-        }//Ввод поискового запроса и переход по нему
+        }//Ввод рандомного поискового запроса и переход по нему
+        public void GoToSearchQuery(string SearchQuery)
+        {
+            Program.logger.Debug("Начинаем процесс ввода поискового запроса в строку.");
+            SwipeAndClick swipeAndClick = new SwipeAndClick(instance, Project);
+            GoToYandex();
+            Project.SendInfoToLog("Вводим поисковый запрос.", true);
+            Program.logger.Info("Вводим поисковый запрос в строку: " + SearchQuery);
+            swipeAndClick.SetText(instance.ActiveTab.FindElementByXPath(HtmlElementInputSearchIn, 0), SearchQuery, false);
+
+            if (String.IsNullOrEmpty(instance.ActiveTab.FindElementByXPath(HtmlElementInputSearchIn, 0).GetAttribute("value")))
+            {
+                Program.logger.Warn("Поисковый запрос не ввелся в строку. Пробуем еще раз.", true);
+                Project.SendWarningToLog("Поисковый запрос не ввелся в строку. Пробуем еще раз.");
+                instance.CloseAllTabs();
+                if (CounterGoYandexPage == 3)
+                {
+                    Program.logger.Error("Не удалось перейти на страницу яндекса.");
+                    throw new Exception("Не удалось перейти на страницу яндекса.");
+                }
+                CounterGoYandexPage++;
+                GoToSearchQuery(SearchQuery);
+            }
+
+            Program.logger.Debug("Кликаем по кнопке найти.");
+            swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath(HtmlElementSearchButtonIn, 0));
+            new AdditionalMethods(instance, Project).WaitDownloading();
+
+            if (instance.AllTabs.Length > 1)
+            {
+                instance.GetTabByAddress("page").Close();
+
+            }
+
+            if (instance.ActiveTab.FindElementByXPath(HtmlElementNextPageButton, 0).IsVoid)
+            {
+                Project.SendWarningToLog("Кнопка \"Найти\" не нажалась. Пробуем еще раз.");
+                Program.logger.Warn("Кнопка \"Найти\" не нажалась. Пробуем еще раз.");
+                instance.CloseAllTabs();
+                GoToSearchQuery(SearchQuery);
+            }
+
+            Program.logger.Debug("Успешно ввели поисковый запрос и перешли по нему.");
+            CloseYandexTrash();
+        }//Ввод конкретного поискового запроса и переход по нему
         public bool GoSearchCard(HtmlElement LearnElement)
         {
             Program.logger.Debug("Начинаем работу с карточкой для перехода.");
