@@ -5,6 +5,7 @@ using ZennoPosterEmulation;
 using ZennoPosterYandexWalk;
 using ZennoPosterYandexRegistration;
 using ZennoPosterYandexRegistrationSmsServiceSmsHubOrg;
+using ZennoPosterYandexParseImage;
 
 namespace ZennoPosterProject1
 {
@@ -27,6 +28,7 @@ namespace ZennoPosterProject1
             new YandexWalkValue(project);
             new YandexRegistrationValue(project);
             new SmshubValue(project);
+            new YandexParseImageValue(project);
             Program.logger.Debug("Закончили инициализацию входных настроек проекта.");
         }//Считывание входных настроек
     }

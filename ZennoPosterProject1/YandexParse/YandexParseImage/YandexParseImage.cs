@@ -13,7 +13,7 @@ using ZennoPosterProject1;
 
 namespace ZennoPosterYandexParseImage
 {
-    class YandexParseImage
+    class YandexParseImage 
     {
         readonly IZennoPosterProjectModel project;
         readonly Instance instance;
@@ -27,10 +27,12 @@ namespace ZennoPosterYandexParseImage
         {
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             WebClient Client = new WebClient();
+            ParseImageSettings parseImageSettings = new ParseImageSettings(instance,project);
 
+            string ParseKeyword = parseImageSettings.ReadParseKeyword();
+            string DirPath = project.Directory + @"\ResultImage\" + ParseKeyword + @"\";
 
-            string DirPath = project.Directory + @"\ResultImage\";
-
+            if (!Directory.Exists(DirPath)) Directory.CreateDirectory(DirPath);
 
 
 

@@ -164,6 +164,7 @@
     <Compile Include="StartMethod.cs" />
     <Compile Include="SiteWalk\Extension.cs" />
     <Compile Include="SiteWalk\SiteWalk.cs" />
+    <Compile Include="YandexParse\YandexParseImage\ParseImageSettings.cs" />
     <Compile Include="YandexParse\YandexParseImage\YandexParseImage.cs" />
     <Compile Include="YandexParse\YandexParseImage\YandexParseImageValue.cs" />
     <Compile Include="YandexRegistration\DBMethods.cs" />
