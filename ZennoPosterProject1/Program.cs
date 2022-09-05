@@ -34,19 +34,15 @@ namespace ZennoPosterProject1
             project.SendInfoToLog("Считываем входные настройки", true);
             new InputSettings(instance, project).InitializationInputValue();
             StartMethod startMethod = new StartMethod(instance, project);
-            YandexParseImage yandexParseImage = new YandexParseImage(instance, project);
-            ParseImageSettings parseImageSettings = new ParseImageSettings(instance, project);
-            yandexParseImage.StartParse();
 
-            //try
-            //{
-
-            //    yandexParseImage.StartParse();
-            //}
-            //catch (Exception ex)
-            //{
-
-            //}
+            try
+            {
+                startMethod.ParseImage();
+            }
+            catch (Exception ex)
+            {
+                project.SendErrorToLog(ex.Message, true);
+            }
 
             return executionResult;
         }

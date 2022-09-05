@@ -4,6 +4,7 @@ using DataBaseProfileAndProxy;
 using ZennoPosterYandexWalk;
 using System;
 using ZennoPosterYandexRegistration;
+using ZennoPosterYandexParseImage;
 
 
 namespace ZennoPosterProject1
@@ -160,5 +161,17 @@ namespace ZennoPosterProject1
             proxyDB.ChangeIp();
             proxyDB.ChangeStatusProxyInDB("Free");
         }//Регистрация в яндексе и отвязка номера
+        public void ParseImage()
+        {
+            YandexParseImage yandexParseImage = new YandexParseImage(instance, project);
+            try
+            {
+                yandexParseImage.StartParseImage();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Не удалось спарсить изображения: " + ex.Message);
+            }
+        }//Парсинг изображений
     }
 }

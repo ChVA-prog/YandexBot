@@ -24,7 +24,7 @@ namespace ZennoPosterYandexParseImage
             this.instance = instance;
             this.project = project;
         }
-        public void StartParse()
+        public  void StartParseImage()
         {
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             WebClient Client = new WebClient();
@@ -43,16 +43,15 @@ namespace ZennoPosterYandexParseImage
             int Counter = 0;
             while (true)
             {
-                HtmlElement hhe = instance.ActiveTab.FindElementByXPath("//a[contains(@class, 'link link_theme')]", Counter+1);
-                swipeAndClick.ClickToElement(hhe);
-                Thread.Sleep(500);
-                
-                HtmlElement aa = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 0);
-                swipeAndClick.ClickToElement(aa);
-                aa = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 1);
-                swipeAndClick.ClickToElement(aa);
-                aa = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 2);
-                swipeAndClick.ClickToElement(aa);
+                HtmlElement Image = instance.ActiveTab.FindElementByXPath("//a[contains(@class, 'link link_theme')]", Counter+1);
+                swipeAndClick.ClickToElement(Image);
+                instance.ActiveTab.WaitDownloading();                
+                HtmlElement ButtonShare = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 0);
+                swipeAndClick.ClickToElement(ButtonShare);
+                ButtonShare = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 1);
+                swipeAndClick.ClickToElement(ButtonShare);
+                ButtonShare = instance.ActiveTab.FindElementByXPath("//button[contains(text(),'Поделиться')]", 2);
+                swipeAndClick.ClickToElement(ButtonShare);
 
                 Thread.Sleep(1000);
                 if (instance.AllTabs.Length > 1)
@@ -61,24 +60,28 @@ namespace ZennoPosterYandexParseImage
                     Counter++;
                     continue;
                 }
-                HtmlElement bb = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'share-copy__icon share-copy__copy-text icon icon_type_share2')]", 0);
-                string ImagePath = DirPath + bb.InnerHtml.Split('/').Last().Split('.')[0] + ".jpg";
 
-                try
+                HtmlElement ButtonShareUrl = instance.ActiveTab.FindElementByXPath("//span[contains(@class, 'share-copy__icon share-copy__copy-text icon icon_type_share2')]", 0);
+                string ImagePath = DirPath + ButtonShareUrl.InnerHtml.Split('/').Last().Split('.')[0] + ".jpg";
+
+
+                void Downloads(Object stateInfo)
                 {
-                    Client.DownloadFileAsync(new Uri(bb.InnerHtml), ImagePath);
+                    try
+                    {
+                        Client.DownloadFile(new Uri(ButtonShareUrl.InnerHtml), ImagePath);
+                    }
+                    catch (Exception)
+                    {
+                        project.SendWarningToLog("Не уудалось загрузить файл.",true);
+                    }                   
                 }
-                catch (Exception)
-                {
 
-                }
-
+                ThreadPool.QueueUserWorkItem(Downloads);
 
                 instance.ActiveTab.MainDocument.EvaluateScript("javascript:history.back()");
 
                 additionalMethods.WaitHtmlElement("//a[contains(@class, 'link link_theme')]", Counter + 1);
-
-                parseImageSettings.DeleteBrokenFile(DirPath);
 
                 if (new DirectoryInfo(DirPath).GetFiles().Length == CountParseImage)
                 {
@@ -87,6 +90,7 @@ namespace ZennoPosterYandexParseImage
                 
                 Counter++;
             }
+            parseImageSettings.DeleteBrokenFile(DirPath);
         }
 
     }

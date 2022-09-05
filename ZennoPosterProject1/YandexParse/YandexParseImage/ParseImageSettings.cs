@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using ZennoLab.CommandCenter;
 using ZennoLab.InterfacesLibrary.ProjectModel;
 using ZennoPosterEmulation;
 using ZennoPosterProject1;
-using ZennoPosterYandexWalk;
 
 namespace ZennoPosterYandexParseImage
 {
@@ -95,7 +91,6 @@ namespace ZennoPosterYandexParseImage
                 }
 
             }
-        }
-
+        }        
     }
 }
