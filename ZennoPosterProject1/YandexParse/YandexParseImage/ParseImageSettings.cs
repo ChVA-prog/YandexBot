@@ -68,6 +68,17 @@ namespace ZennoPosterYandexParseImage
             {
                 swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Закрыть')]", 0));
             }
+            if (!instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Установить')]", 0).IsVoid)
+            {
+                swipeAndClick.SwipeAndClickToElement(instance.ActiveTab.FindElementByXPath("//a[starts-with(text(),'Установить')]", 0));
+            }
+            Thread.Sleep(2000);
+            if (instance.AllTabs.Length > 1)
+            {
+                instance.GetTabByAddress("popup").Close();
+            }
+
+
         }
         public void DeleteBrokenFile(string DirPath)//Удаление битых файлов
         {
