@@ -134,7 +134,7 @@ namespace ZennoPosterYandexRegistration
                 "WHERE PathToProfile = '{0}'",
                 PathToProfile,
                 SettingsAccount,
-                DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"),
+                DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"),
                 Status);
 
             SQLiteCommand sQLiteCommand = new SQLiteCommand(ProfileStringRequest, sqliteConnection);

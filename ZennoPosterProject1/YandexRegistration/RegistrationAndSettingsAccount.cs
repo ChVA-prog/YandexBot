@@ -38,6 +38,7 @@ namespace ZennoPosterYandexRegistration
             YandexNavigate yandexNavigate = new YandexNavigate(instance, project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             Random random = new Random();
+            int CounterGetSms = 0;
             
             yandexNavigate.GoToYandex();
             additionalMethods.FuckCapcha();
@@ -70,7 +71,17 @@ escho:
                         swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementEnterId, 0));
                     }
                     swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementCreatId, 0));
+
+                    if (CounterGetSms == 3)
+                    {
+                        project.SendErrorToLog("Не удалось получить смс после 3х попытх", true);
+                        throw new Exception("Не удалось получить смс после 3х попытх");
+                    }
+                    else
+                    {
+                        CounterGetSms++;
 goto escho;
+                    }
                 }//Получаем смс
 
                 swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementInputCodeActivation, 0), getNumber.CodeActivation, false);
@@ -130,8 +141,8 @@ goto escho;
                     if (!instance.ActiveTab.FindElementByXPath("//div[contains(text(),'логин занят')]", 0).IsVoid)
                     {
                         swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementSetLogin, 0), new Random().Next(1000, 5000).ToString(), false);
-                        project.Profile.NickName = instance.ActiveTab.FindElementByXPath(HtmlElementSetLogin, 0).GetAttribute("value");
-                    }                    
+                        project.Profile.NickName = additionalMethods.WaitHtmlElement("//input[contains(@id, 'login')]", 0).GetAttribute("value");
+                    }
                     swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementNextPageDeleteNumber, 0));
                     swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementNewInterfaceConfirm, 0));
                     swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementButtonIdForSettingsAccount, 0));
@@ -156,7 +167,7 @@ goto escho;
                 if (!LoginIsBusy.IsVoid)
                 {
                     swipeAndClick.SetText(additionalMethods.WaitHtmlElement(HtmlElementSetLogin, 0), new Random().Next(1000, 5000).ToString(), false);
-                    project.Profile.NickName = instance.ActiveTab.FindElementByXPath(HtmlElementSetLogin, 0).GetAttribute("value");
+                    project.Profile.NickName = additionalMethods.WaitHtmlElement("//input[contains(@id, 'login')]", 0).GetAttribute("value");
                 }
 
                 swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementApprovedLogin, 0));
@@ -238,11 +249,13 @@ goto escho;
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
 
+            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementButtonIdForSettingsAccount, 0));// кнопка id, для входа в настройки акка
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementMailAndPhone, 0));
+            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//a[starts-with(text(),'Добавить адрес')]", 0));
             lock (LockList)
             {
-
                 string MailLine = File.ReadLines(EmailListPath).Skip(0).First();
-                project.SendWarningToLog("В файле с емейлами осталось "+ System.IO.File.ReadAllLines(EmailListPath).Length + " строк!", true);
+                project.SendWarningToLog("В файле с емейлами осталось " + System.IO.File.ReadAllLines(EmailListPath).Length + " строк!", true);
                 if (string.IsNullOrEmpty(MailLine) || string.IsNullOrWhiteSpace(MailLine))
                 {
                     project.SendErrorToLog("Закончились eмейлы.", true);
@@ -253,10 +266,6 @@ goto escho;
                 MailPasswordIMAP = MailLine.Split(':')[2];
                 File.WriteAllLines(EmailListPath, File.ReadAllLines(EmailListPath).Skip(1));
             }
-
-            swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementButtonIdForSettingsAccount, 0));// кнопка id, для входа в настройки акка
-            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement(HtmlElementMailAndPhone, 0));
-            swipeAndClick.SwipeAndClickToElement(additionalMethods.WaitHtmlElement("//a[starts-with(text(),'Добавить адрес')]", 0));
             swipeAndClick.SetText(additionalMethods.WaitHtmlElement("//input[contains(@name, 'email')]", 0), Mail,false);
             swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement("//div[contains(@class, 'p-control-saveblock-cell-right p-control-saveblock-button')]", 0));
             Thread.Sleep(2000);
@@ -279,18 +288,23 @@ goto escho;
             AdditionalMethods additionalMethods = new AdditionalMethods(instance, project);
             SwipeAndClick swipeAndClick = new SwipeAndClick(instance, project);
             Random random = new Random();
+            string sex = null;
 
             swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementButtonIdForSettingsAccount, 0));
             swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementAddAccountPhoto, 0));
 
 
-            List<string> AccountFolder = (from a in Directory.GetFiles(AccountAvatarFolder) select Path.GetFileName(a)).ToList();
+            List<string> AccountFolder = null;
             string PathhToPhoto;
             
             try
             {
-                project.SendWarningToLog("В папке с аватарками осталось "+ AccountFolder.Count + " файла!", true);
-                PathhToPhoto = AccountAvatarFolder + @"\" + AccountFolder[random.Next(0, AccountFolder.Count)];
+                project.SendInfoToLog("Выбираем " + project.Profile.Sex + " аватарку", true);
+                AccountFolder = (from a in Directory.GetFiles(AccountAvatarFolder + project.Profile.Sex + @"\") select Path.GetFileName(a)).ToList();
+                PathhToPhoto = AccountAvatarFolder + project.Profile.Sex + @"\" + AccountFolder[random.Next(0, AccountFolder.Count)];
+
+                project.SendWarningToLog("В папке с аватарками осталось " + AccountFolder.Count + " файла!", true);
+               
                 instance.SetFilesForUpload(PathhToPhoto);
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementDownloadAccountPhoto, 0));
                 swipeAndClick.ClickToElement(additionalMethods.WaitHtmlElement(HtmlElementSaveAccountPhoto, 0));
