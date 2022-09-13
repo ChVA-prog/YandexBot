@@ -233,8 +233,9 @@ namespace ZennoPosterYandexWalk
             HtmlElement Yamerket = instance.ActiveTab.FindElementByXPath(HtmlElementYandexTrashYandexMarket, 0);
             HtmlElement YandexBrowser = instance.ActiveTab.FindElementByXPath(HtmlElementYandexTrashYandexBrowser, 0);
             HtmlElement Yamerket2 = instance.ActiveTab.FindElementByXPath(HtmlElementYandexTrashYandexMarket2, 0);
+            HtmlElement NewYandexPageDzen = instance.ActiveTab.FindElementByXPath("//span[starts-with(text(),'Продолжить')]", 0);
 
-            HtmlElement[] YandexTrash = new HtmlElement[] {alisa ,kinopoisk,Yamerket,YandexBrowser,Yamerket2 };
+            HtmlElement[] YandexTrash = new HtmlElement[] {alisa ,kinopoisk,Yamerket,YandexBrowser,Yamerket2, NewYandexPageDzen };
 
             foreach (var item in YandexTrash)
             {

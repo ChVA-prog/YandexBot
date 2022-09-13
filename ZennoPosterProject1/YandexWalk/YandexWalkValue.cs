@@ -34,7 +34,9 @@ namespace ZennoPosterYandexWalk
         public string HtmlElementSendCapcha { get; set; }
         public string HtmlElementCapchaImage { get; set; }
         public string HtmlElementCapchaError { get; set; }
-        
+        public string HtmlElementNewYandexPageDzen { get; set; }
+
+
         protected List<string> MyUrlList { get; set; }
         public YandexWalkValue(IZennoPosterProjectModel _project)
         {
@@ -63,6 +65,7 @@ namespace ZennoPosterYandexWalk
             HtmlElementSendCapcha = Project.Variables["set_HtmlElementSendCapcha"].Value;
             HtmlElementCapchaImage = Project.Variables["set_HtmlElementCapchaImage"].Value;
             HtmlElementCapchaError = Project.Variables["set_HtmlElementCapchaError"].Value;
+            HtmlElementNewYandexPageDzen = Project.Variables["set_HtmlElementNewYandexPageDzen"].Value;
             MyUrlList = Project.Variables["set_MyUrl"].Value.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
         }
     }

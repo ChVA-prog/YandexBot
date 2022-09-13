@@ -28,20 +28,43 @@ namespace ZennoPosterProject1
         public int Execute(Instance instance, IZennoPosterProjectModel project)
         {
             int executionResult = 0;
-            new AdditionalMethods(instance, project).NLogCofig();
-            project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
-            new InputSettings(instance, project).InitializationInputValue();
-            try
+
+            switch (project.Variables["set_WorkMode"].Value)
             {
-                new StartMethod(instance, project).FeedingCookies();
+                case "Нагуливание кук":
+                    {
+                        new AdditionalMethods(instance, project).NLogCofig();
+                        project.SendInfoToLog("Это сборка из ветки FeedCookies!", true);
+                        new InputSettings(instance, project).InitializationInputValue();
+                        try
+                        {
+                            new StartMethod(instance, project).FeedingCookies();
+                        }
+                        catch (Exception ex)
+                        {
+                            Program.logger.Error("Не смогли нагулять куки: " + ex.Message);
+                            project.SendErrorToLog("Не смогли нагулять куки: " + ex.Message);
+                        }
+                        Program.logger.Info("Закончили выполнение FeedCookies.");
+                        project.SendInfoToLog("Закончили выполнение FeedCookies.");
+                    }
+                    break;
+                case "Регистрация аккаунтов":
+                    {
+
+                    }
+                    break;
+                case "Парсинг изображений":
+                    {
+
+                    }
+                    break;
+                default:
+                    {
+                    
+                    }
+                    break;
             }
-            catch (Exception ex)
-            {               
-                Program.logger.Error ("Не смогли нагулять куки: " + ex.Message);
-                project.SendErrorToLog("Не смогли нагулять куки: " + ex.Message);
-            }
-            Program.logger.Info("Закончили выполнение FeedCookies.");
-            project.SendInfoToLog("Закончили выполнение FeedCookies.");
             return executionResult;            
         }
     }
